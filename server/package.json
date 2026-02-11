@@ -1,0 +1,33 @@
+{
+  "name": "memovoice-server",
+  "version": "0.1.0",
+  "description": "MemoVoice CVF Engine — Cognitive Voice Fingerprint for Alzheimer's detection",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node --test src/**/*.test.js",
+    "validate": "node src/scripts/validate-pipeline.js",
+    "extract": "node src/scripts/extract-features.js",
+    "simulate": "node src/scripts/simulate-timeline.js",
+    "demo": "node src/scripts/run-demo.js",
+    "demo:data": "node src/scripts/generate-demo-data.js"
+  },
+  "keywords": [
+    "alzheimer",
+    "cognitive",
+    "voice",
+    "fingerprint",
+    "nlp"
+  ],
+  "author": "remifrancois",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "latest",
+    "@fastify/cors": "^11.2.0",
+    "dotenv": "^17.2.4",
+    "fastify": "^5",
+    "uuid": "^11"
+  }
+}
