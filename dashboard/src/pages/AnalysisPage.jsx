@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import Topbar from '../components/layout/Topbar'
 import { Card, CardHeader } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
-import { DOMAIN_LABELS, DOMAIN_COLORS } from '../lib/constants'
+import { DOMAIN_COLORS } from '../lib/constants'
 import { api } from '../lib/api'
+import { useT } from '../lib/i18n'
 
 export default function AnalysisPage() {
+  const { t } = useT()
   const [patients, setPatients] = useState([])
   const [timeline, setTimeline] = useState(null)
 
@@ -24,32 +26,32 @@ export default function AnalysisPage() {
 
   return (
     <>
-      <Topbar title="Analysis" subtitle="Deep dive into CVF feature vectors" />
+      <Topbar title={t('analysis.title')} subtitle={t('analysis.subtitle')} />
 
       <div className="p-6 space-y-6">
         {/* Feature Matrix */}
         <Card>
-          <CardHeader title="25-Dimension Feature Vector" subtitle="Latest session raw values and z-scores from baseline" />
+          <CardHeader title={t('analysis.featureVector')} subtitle={t('analysis.featureVectorDesc')} />
           {latest?.feature_vector ? (
-            <FeatureMatrix vector={latest.feature_vector} delta={latest.delta} />
+            <FeatureMatrix vector={latest.feature_vector} delta={latest.delta} t={t} />
           ) : (
-            <div className="text-sm text-slate-500 py-4">Select a patient with monitoring data to view feature analysis.</div>
+            <div className="text-sm text-slate-500 py-4">{t('analysis.noDataDesc')}</div>
           )}
         </Card>
 
         {/* AD Cascade Tracker */}
         <Card>
-          <CardHeader title="AD Linguistic Cascade Tracker" subtitle="Monitoring progression stages per Fraser 2016 taxonomy" />
-          <CascadeTracker domainScores={latest?.domain_scores} />
+          <CardHeader title={t('analysis.cascadeTracker')} subtitle={t('analysis.cascadeDesc')} />
+          <CascadeTracker domainScores={latest?.domain_scores} t={t} />
         </Card>
 
         {/* Domain deep dive */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {Object.entries(DOMAIN_LABELS).map(([domain, label]) => (
+          {['lexical', 'syntactic', 'coherence', 'fluency', 'memory'].map(domain => (
             <DomainCard
               key={domain}
               domain={domain}
-              label={label}
+              label={t(`domains.${domain}`)}
               score={latest?.domain_scores?.[domain]}
               features={latest?.feature_vector}
               delta={latest?.delta}
@@ -61,7 +63,7 @@ export default function AnalysisPage() {
   )
 }
 
-function FeatureMatrix({ vector, delta }) {
+function FeatureMatrix({ vector, delta, t }) {
   const domains = {
     lexical: ['L1_ttr', 'L2_brunet', 'L3_honore', 'L4_content_density', 'L5_word_frequency'],
     syntactic: ['S1_mlu', 'S2_subordination', 'S3_completeness', 'S4_passive_ratio', 'S5_embedding_depth'],
@@ -75,10 +77,10 @@ function FeatureMatrix({ vector, delta }) {
       <table className="w-full text-xs">
         <thead>
           <tr className="border-b border-slate-800">
-            <th className="text-left py-2 px-3 text-slate-500 font-medium">Feature</th>
-            <th className="text-right py-2 px-3 text-slate-500 font-medium">Raw Value</th>
-            <th className="text-right py-2 px-3 text-slate-500 font-medium">Z-Score</th>
-            <th className="text-left py-2 px-3 text-slate-500 font-medium w-32">Level</th>
+            <th className="text-left py-2 px-3 text-slate-500 font-medium">{t('analysis.feature')}</th>
+            <th className="text-right py-2 px-3 text-slate-500 font-medium">{t('analysis.rawValue')}</th>
+            <th className="text-right py-2 px-3 text-slate-500 font-medium">{t('analysis.zScore')}</th>
+            <th className="text-left py-2 px-3 text-slate-500 font-medium w-32">{t('analysis.level')}</th>
           </tr>
         </thead>
         <tbody>
@@ -128,12 +130,12 @@ function MicroBar({ value }) {
   )
 }
 
-function CascadeTracker({ domainScores }) {
+function CascadeTracker({ domainScores, t }) {
   const stages = [
-    { stage: 0, name: 'Pre-symptomatic', desc: 'Fluency early warning (Young 2024)', check: (d) => d?.fluency < -0.5 && d?.lexical > -0.3 },
-    { stage: 1, name: 'Semantic Memory', desc: 'Lexical + coherence decline', check: (d) => d?.lexical < -0.5 && d?.coherence < -0.5 },
-    { stage: 2, name: 'Syntactic Simplification', desc: 'Syntactic decline on top of semantic', check: (d) => d?.syntactic < -0.5 && d?.lexical < -0.5 },
-    { stage: 3, name: 'Discourse Collapse', desc: 'Coherence + fluency breakdown', check: (d) => d?.coherence < -1.0 && d?.fluency < -0.5 },
+    { stage: 0, nameKey: 'analysis.preSymptomatic', descKey: 'analysis.preSympDesc', check: (d) => d?.fluency < -0.5 && d?.lexical > -0.3 },
+    { stage: 1, nameKey: 'analysis.semanticMemory', descKey: 'analysis.semanticDesc', check: (d) => d?.lexical < -0.5 && d?.coherence < -0.5 },
+    { stage: 2, nameKey: 'analysis.syntacticSimplification', descKey: 'analysis.syntacticDesc', check: (d) => d?.syntactic < -0.5 && d?.lexical < -0.5 },
+    { stage: 3, nameKey: 'analysis.discourseCollapse', descKey: 'analysis.discourseDesc', check: (d) => d?.coherence < -1.0 && d?.fluency < -0.5 },
   ]
 
   return (
@@ -146,10 +148,10 @@ function CascadeTracker({ domainScores }) {
               <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${active ? 'bg-red-500/20 text-red-400' : 'bg-slate-700 text-slate-500'}`}>
                 {s.stage}
               </div>
-              <span className={`text-xs font-medium ${active ? 'text-red-300' : 'text-slate-400'}`}>{s.name}</span>
-              {active && <Badge variant="danger">Active</Badge>}
+              <span className={`text-xs font-medium ${active ? 'text-red-300' : 'text-slate-400'}`}>{t(s.nameKey)}</span>
+              {active && <Badge variant="danger">{t('analysis.active')}</Badge>}
             </div>
-            <p className="text-[10px] text-slate-500 mt-1">{s.desc}</p>
+            <p className="text-[10px] text-slate-500 mt-1">{t(s.descKey)}</p>
           </div>
         )
       })}

@@ -1,11 +1,20 @@
 import { ALERT_LEVELS } from '../../lib/constants'
+import { useT } from '../../lib/i18n'
+
+const ALERT_LABEL_KEYS = {
+  green: 'alerts.normal',
+  yellow: 'alerts.monitor',
+  orange: 'alerts.attention',
+  red: 'alerts.alert',
+}
 
 export function AlertBadge({ level, pulse = false }) {
+  const { t } = useT()
   const config = ALERT_LEVELS[level] || ALERT_LEVELS.green
   return (
     <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${config.bg} ${config.text} border ${config.border}`}>
       <span className={`w-1.5 h-1.5 rounded-full ${config.dot} ${pulse && level === 'red' ? 'animate-pulse' : ''}`} />
-      {config.label}
+      {t(ALERT_LABEL_KEYS[level] || ALERT_LABEL_KEYS.green)}
     </span>
   )
 }

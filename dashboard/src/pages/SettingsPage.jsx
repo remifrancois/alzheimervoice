@@ -5,8 +5,10 @@ import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
 import { Icon } from '../components/ui/Icon'
 import { api } from '../lib/api'
+import { useT } from '../lib/i18n'
 
 export default function SettingsPage() {
+  const { t } = useT()
   const [health, setHealth] = useState(null)
 
   useEffect(() => {
@@ -15,28 +17,28 @@ export default function SettingsPage() {
 
   return (
     <>
-      <Topbar title="Settings" subtitle="System configuration and administration" />
+      <Topbar title={t('settings.title')} subtitle={t('settings.subtitle')} />
 
       <div className="p-6 space-y-6">
         {/* System Status */}
         <Card>
-          <CardHeader title="System Status" subtitle="MemoVoice CVF Engine health" />
+          <CardHeader title={t('settings.systemStatus')} subtitle={t('settings.systemStatusDesc')} />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <StatusItem
-              label="API Server"
-              value={health ? 'Online' : 'Checking...'}
+              label={t('settings.apiServer')}
+              value={health ? t('settings.online') : t('settings.checking')}
               status={health ? 'success' : 'warning'}
               detail={health?.version ? `v${health.version}` : ''}
             />
             <StatusItem
-              label="Claude API"
-              value="Configured"
+              label={t('settings.claudeApi')}
+              value={t('settings.configured')}
               status="success"
               detail="claude-opus-4-6"
             />
             <StatusItem
-              label="Data Storage"
-              value="Local JSON"
+              label={t('settings.dataStorage')}
+              value={t('settings.localJson')}
               status="success"
               detail="./data/"
             />
@@ -45,40 +47,40 @@ export default function SettingsPage() {
 
         {/* CVF Engine Configuration */}
         <Card>
-          <CardHeader title="CVF Engine Configuration" subtitle="Feature extraction and analysis parameters" />
+          <CardHeader title={t('settings.cvfConfig')} subtitle={t('settings.cvfConfigDesc')} />
           <div className="space-y-4">
-            <SettingRow label="Baseline Sessions Required" value="14" description="Minimum sessions to establish individual baseline" />
-            <SettingRow label="High Variance Threshold" value="0.30" description="Coefficient of variation threshold for extending calibration" />
-            <SettingRow label="Extended Thinking Budget" value="10,000 tokens" description="Claude Opus 4.6 thinking budget for weekly analysis" />
-            <SettingRow label="Feature Extraction Model" value="claude-opus-4-6" description="Model used for 25-dimension CVF vector extraction" />
+            <SettingRow label={t('settings.baselineSessions')} value={t('settings.baselineSessionsVal')} description={t('settings.baselineSessionsDesc')} />
+            <SettingRow label={t('settings.highVariance')} value={t('settings.highVarianceVal')} description={t('settings.highVarianceDesc')} />
+            <SettingRow label={t('settings.thinkingBudget')} value={t('settings.thinkingBudgetVal')} description={t('settings.thinkingBudgetDesc')} />
+            <SettingRow label={t('settings.featureModel')} value={t('settings.featureModelVal')} description={t('settings.featureModelDesc')} />
           </div>
         </Card>
 
         {/* Alert Thresholds */}
         <Card>
-          <CardHeader title="Alert Thresholds" subtitle="Composite z-score boundaries" />
+          <CardHeader title={t('settings.alertThresholds')} subtitle={t('settings.alertThresholdsDesc')} />
           <div className="grid grid-cols-4 gap-3">
-            <ThresholdCard level="green" range="> -0.5" label="Normal variation" />
-            <ThresholdCard level="yellow" range="-0.5 to -1.0" label="Notable drift" />
-            <ThresholdCard level="orange" range="-1.0 to -1.5" label="Significant drift" />
-            <ThresholdCard level="red" range="< -1.5" label="Critical drift" />
+            <ThresholdCard level="green" range="> -0.5" label={t('settings.normalVariation')} />
+            <ThresholdCard level="yellow" range="-0.5 to -1.0" label={t('settings.notableDrift')} />
+            <ThresholdCard level="orange" range="-1.0 to -1.5" label={t('settings.significantDrift')} />
+            <ThresholdCard level="red" range="< -1.5" label={t('settings.criticalDrift')} />
           </div>
         </Card>
 
         {/* Domain Weights */}
         <Card>
-          <CardHeader title="Domain Weights" subtitle="Relative importance in composite score" />
+          <CardHeader title={t('settings.domainWeights')} subtitle={t('settings.domainWeightsDesc')} />
           <div className="space-y-3">
             {[
-              { domain: 'Lexical Richness', weight: 0.25, color: '#8b5cf6' },
-              { domain: 'Syntactic Complexity', weight: 0.20, color: '#3b82f6' },
-              { domain: 'Semantic Coherence', weight: 0.25, color: '#06b6d4' },
-              { domain: 'Speech Fluency', weight: 0.20, color: '#10b981' },
-              { domain: 'Memory Recall', weight: 0.10, color: '#f59e0b' },
+              { key: 'lexical', weight: 0.25, color: '#8b5cf6' },
+              { key: 'syntactic', weight: 0.20, color: '#3b82f6' },
+              { key: 'coherence', weight: 0.25, color: '#06b6d4' },
+              { key: 'fluency', weight: 0.20, color: '#10b981' },
+              { key: 'memory', weight: 0.10, color: '#f59e0b' },
             ].map(d => (
-              <div key={d.domain} className="flex items-center gap-3">
+              <div key={d.key} className="flex items-center gap-3">
                 <div className="w-3 h-3 rounded-sm shrink-0" style={{ backgroundColor: d.color }} />
-                <span className="text-sm text-slate-300 w-40">{d.domain}</span>
+                <span className="text-sm text-slate-300 w-40">{t(`domains.${d.key}`)}</span>
                 <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
                   <div className="h-full rounded-full opacity-70" style={{ width: `${d.weight * 100 * 2}%`, backgroundColor: d.color }} />
                 </div>
@@ -90,18 +92,18 @@ export default function SettingsPage() {
 
         {/* Confounder Weights */}
         <Card>
-          <CardHeader title="Confounder Adjustments" subtitle="Weight reduction factors when confounders are present" />
+          <CardHeader title={t('settings.confounderAdj')} subtitle={t('settings.confounderAdjDesc')} />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { name: 'Illness', weight: '0.5x', desc: 'Session weight halved' },
-              { name: 'Poor Sleep', weight: '0.5x', desc: 'Session weight halved' },
-              { name: 'Medication Change', weight: '0.3x', desc: 'Session weight reduced 70%' },
-              { name: 'Emotional Distress', weight: 'Domain-specific', desc: 'Per-domain adjustment' },
+              { nameKey: 'settings.illness', weight: '0.5x', descKey: 'settings.illnessDesc' },
+              { nameKey: 'settings.poorSleep', weight: '0.5x', descKey: 'settings.poorSleepDesc' },
+              { nameKey: 'settings.medChange', weight: '0.3x', descKey: 'settings.medChangeDesc' },
+              { nameKey: 'settings.emotionalDistress', weight: t('settings.domainSpecific'), descKey: 'settings.emotionalDesc' },
             ].map(c => (
-              <div key={c.name} className="bg-slate-800/30 rounded-lg p-3">
-                <div className="text-xs font-medium text-slate-300">{c.name}</div>
+              <div key={c.nameKey} className="bg-slate-800/30 rounded-lg p-3">
+                <div className="text-xs font-medium text-slate-300">{t(c.nameKey)}</div>
                 <div className="text-sm font-semibold text-amber-400 mt-1">{c.weight}</div>
-                <div className="text-[10px] text-slate-500 mt-0.5">{c.desc}</div>
+                <div className="text-[10px] text-slate-500 mt-0.5">{t(c.descKey)}</div>
               </div>
             ))}
           </div>
@@ -110,24 +112,24 @@ export default function SettingsPage() {
         {/* User Management */}
         <Card>
           <CardHeader
-            title="User Management"
-            subtitle="Admin accounts and permissions"
-            action={<Button variant="primary" size="sm"><Icon name="plus" size={14} /> Add User</Button>}
+            title={t('settings.userMgmt')}
+            subtitle={t('settings.userMgmtDesc')}
+            action={<Button variant="primary" size="sm"><Icon name="plus" size={14} /> {t('settings.addUser')}</Button>}
           />
           <div className="border border-slate-800 rounded-lg overflow-hidden">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-slate-800/50">
-                  <th className="text-left py-2.5 px-4 text-xs font-medium text-slate-500">User</th>
-                  <th className="text-left py-2.5 px-4 text-xs font-medium text-slate-500">Role</th>
-                  <th className="text-left py-2.5 px-4 text-xs font-medium text-slate-500">Status</th>
-                  <th className="text-right py-2.5 px-4 text-xs font-medium text-slate-500">Actions</th>
+                  <th className="text-left py-2.5 px-4 text-xs font-medium text-slate-500">{t('settings.userCol')}</th>
+                  <th className="text-left py-2.5 px-4 text-xs font-medium text-slate-500">{t('settings.roleCol')}</th>
+                  <th className="text-left py-2.5 px-4 text-xs font-medium text-slate-500">{t('settings.statusCol')}</th>
+                  <th className="text-right py-2.5 px-4 text-xs font-medium text-slate-500">{t('settings.actionsCol')}</th>
                 </tr>
               </thead>
               <tbody>
-                <UserRow name="Dr. Remi Francois" email="remi@memovoice.ai" role="Admin" active />
-                <UserRow name="Dr. Sophie Martin" email="sophie@memovoice.ai" role="Clinician" active />
-                <UserRow name="Pierre Dupont" email="pierre@family.com" role="Family" active={false} />
+                <UserRow name="Dr. Remi Francois" email="remi@memovoice.ai" role="Admin" active t={t} />
+                <UserRow name="Dr. Sophie Martin" email="sophie@memovoice.ai" role="Clinician" active t={t} />
+                <UserRow name="Pierre Dupont" email="pierre@family.com" role="Family" active={false} t={t} />
               </tbody>
             </table>
           </div>
@@ -176,7 +178,7 @@ function ThresholdCard({ level, range, label }) {
   )
 }
 
-function UserRow({ name, email, role, active }) {
+function UserRow({ name, email, role, active, t }) {
   const roleColors = { Admin: 'brand', Clinician: 'success', Family: 'default' }
   return (
     <tr className="border-t border-slate-800/50">
@@ -195,11 +197,11 @@ function UserRow({ name, email, role, active }) {
       <td className="py-2.5 px-4">
         <div className="flex items-center gap-1.5">
           <div className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-emerald-400' : 'bg-slate-600'}`} />
-          <span className="text-xs text-slate-400">{active ? 'Active' : 'Inactive'}</span>
+          <span className="text-xs text-slate-400">{active ? t('settings.activeStatus') : t('settings.inactiveStatus')}</span>
         </div>
       </td>
       <td className="py-2.5 px-4 text-right">
-        <Button variant="ghost" size="sm">Edit</Button>
+        <Button variant="ghost" size="sm">{t('settings.edit')}</Button>
       </td>
     </tr>
   )

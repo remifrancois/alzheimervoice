@@ -5,8 +5,10 @@ import { AlertBadge, Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Icon } from '../components/ui/Icon'
 import { api } from '../lib/api'
+import { useT } from '../lib/i18n'
 
 export default function ReportsPage() {
+  const { t } = useT()
   const [patients, setPatients] = useState([])
   const [reports, setReports] = useState([])
 
@@ -31,17 +33,17 @@ export default function ReportsPage() {
 
   return (
     <>
-      <Topbar title="Reports" subtitle="Weekly clinical reports and export" />
+      <Topbar title={t('reports.title')} subtitle={t('reports.subtitle')} />
 
       <div className="p-6 space-y-6">
         {/* Actions */}
         <div className="flex items-center justify-between">
           <div className="text-sm text-slate-400">
-            {reports.length} weekly report{reports.length !== 1 ? 's' : ''} available
+            {t('reports.available', { count: reports.length })}
           </div>
           <Button variant="default" size="sm">
             <Icon name="file" size={14} />
-            Export All (PDF)
+            {t('reports.exportAll')}
           </Button>
         </div>
 
@@ -50,12 +52,12 @@ export default function ReportsPage() {
           {reports.length === 0 ? (
             <Card>
               <div className="text-center py-8 text-sm text-slate-500">
-                No weekly reports generated yet. Reports are created after 7 monitoring sessions.
+                {t('reports.noReports')}
               </div>
             </Card>
           ) : (
             reports.map(report => (
-              <ReportCard key={report.week_number} report={report} />
+              <ReportCard key={report.week_number} report={report} t={t} />
             ))
           )}
         </div>
@@ -64,7 +66,7 @@ export default function ReportsPage() {
   )
 }
 
-function ReportCard({ report }) {
+function ReportCard({ report, t }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -76,19 +78,19 @@ function ReportCard({ report }) {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-white">Week {report.week_number} Analysis</span>
+              <span className="text-sm font-semibold text-white">{t('reports.weekAnalysis', { week: report.week_number })}</span>
               <AlertBadge level={report.alert_level || report.computed_alert || 'green'} />
             </div>
             <div className="text-xs text-slate-500 mt-0.5">
-              {report.sessions_analyzed} sessions analyzed &middot; Composite: {report.composite_score?.toFixed(3)}
-              {report.confidence && <> &middot; Confidence: {(report.confidence * 100).toFixed(0)}%</>}
+              {report.sessions_analyzed} {t('reports.sessionsAnalyzed')} &middot; {t('reports.composite')}: {report.composite_score?.toFixed(3)}
+              {report.confidence && <> &middot; {t('reports.confidence')}: {(report.confidence * 100).toFixed(0)}%</>}
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           {report.cascade_patterns?.length > 0 && (
-            <Badge variant="danger">{report.cascade_patterns.length} patterns</Badge>
+            <Badge variant="danger">{report.cascade_patterns.length} {t('reports.patterns')}</Badge>
           )}
           <svg className={`w-4 h-4 text-slate-500 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -101,7 +103,7 @@ function ReportCard({ report }) {
           {/* Domain scores */}
           {report.domain_scores && (
             <div>
-              <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Domain Scores</div>
+              <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('reports.domainScores')}</div>
               <div className="grid grid-cols-5 gap-2">
                 {Object.entries(report.domain_scores).map(([d, z]) => (
                   <div key={d} className="bg-slate-800/50 rounded-lg px-3 py-2 text-center">
@@ -119,13 +121,13 @@ function ReportCard({ report }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {report.clinical_narrative_family && (
               <div className="bg-slate-800/30 rounded-lg p-4">
-                <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Family Narrative</div>
+                <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('reports.familyNarrative')}</div>
                 <p className="text-sm text-slate-300 leading-relaxed">{report.clinical_narrative_family}</p>
               </div>
             )}
             {report.clinical_narrative_medical && (
               <div className="bg-slate-800/30 rounded-lg p-4">
-                <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Clinical Narrative</div>
+                <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('reports.clinicalNarrative')}</div>
                 <p className="text-xs text-slate-400 leading-relaxed font-mono">{report.clinical_narrative_medical}</p>
               </div>
             )}
@@ -134,7 +136,7 @@ function ReportCard({ report }) {
           {/* Flags */}
           {report.flags?.length > 0 && (
             <div>
-              <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Flags</div>
+              <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('reports.flags')}</div>
               <div className="space-y-1">
                 {report.flags.map((f, i) => (
                   <div key={i} className="flex items-start gap-2 text-xs text-amber-400/80">

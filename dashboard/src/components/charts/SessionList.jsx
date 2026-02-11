@@ -1,33 +1,36 @@
 import { useState } from 'react'
 import { Card, CardHeader } from '../ui/Card'
 import { ALERT_LEVELS, DOMAIN_COLORS } from '../../lib/constants'
+import { useT } from '../../lib/i18n'
 
 export default function SessionList({ sessions }) {
+  const { t, lang } = useT()
   const [expanded, setExpanded] = useState(null)
 
   if (!sessions?.length) {
     return (
       <Card>
-        <CardHeader title="Session History" />
-        <div className="text-slate-500 text-sm text-center py-8">No monitoring sessions yet</div>
+        <CardHeader title={t('charts.sessionHistory')} />
+        <div className="text-slate-500 text-sm text-center py-8">{t('charts.noSessions')}</div>
       </Card>
     )
   }
 
   const sorted = [...sessions].reverse()
+  const dateFmt = new Intl.DateTimeFormat(lang, { day: '2-digit', month: '2-digit', year: '2-digit' })
 
   return (
     <Card padding={false}>
       <div className="p-6 pb-3">
         <CardHeader
-          title="Session History"
-          subtitle={`${sessions.length} monitoring sessions`}
+          title={t('charts.sessionHistory')}
+          subtitle={t('charts.monitoringSessions', { count: sessions.length })}
         />
       </div>
       <div className="max-h-[380px] overflow-y-auto px-3 pb-3">
         {sorted.map((session, i) => {
           const isOpen = expanded === i
-          const date = new Date(session.timestamp).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' })
+          const date = dateFmt.format(new Date(session.timestamp))
           const alert = ALERT_LEVELS[session.alert_level] || ALERT_LEVELS.green
           const confounders = session.confounders ? Object.keys(session.confounders) : []
 

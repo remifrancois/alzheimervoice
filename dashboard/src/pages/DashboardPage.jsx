@@ -10,8 +10,10 @@ import SessionList from '../components/charts/SessionList'
 import { EmptyState } from '../components/ui/EmptyState'
 import { api } from '../lib/api'
 import { ALERT_LEVELS } from '../lib/constants'
+import { useT } from '../lib/i18n'
 
 export default function DashboardPage() {
+  const { t, lang } = useT()
   const [patients, setPatients] = useState([])
   const [selected, setSelected] = useState(null)
   const [timeline, setTimeline] = useState(null)
@@ -31,8 +33,8 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <>
-        <Topbar title="Dashboard" subtitle="Loading..." />
-        <div className="p-6 text-slate-500">Loading patient data...</div>
+        <Topbar title={t('dashboard.title')} subtitle={t('dashboard.loading')} />
+        <div className="p-6 text-slate-500">{t('dashboard.loadingData')}</div>
       </>
     )
   }
@@ -40,11 +42,11 @@ export default function DashboardPage() {
   if (!selected || !timeline) {
     return (
       <>
-        <Topbar title="Dashboard" />
+        <Topbar title={t('dashboard.title')} />
         <div className="p-6">
           <EmptyState
-            title="No patient data"
-            description="Generate demo data to see the dashboard in action."
+            title={t('dashboard.noData')}
+            description={t('dashboard.noDataDesc')}
           />
         </div>
       </>
@@ -55,7 +57,6 @@ export default function DashboardPage() {
   const latest = monitoring[monitoring.length - 1]
   const alertConfig = ALERT_LEVELS[selected.alert_level] || ALERT_LEVELS.green
 
-  // Compute trend (last 3 sessions avg vs prior 3)
   let trend = null
   if (monitoring.length >= 6) {
     const recent = monitoring.slice(-3).reduce((s, e) => s + e.composite, 0) / 3
@@ -63,9 +64,11 @@ export default function DashboardPage() {
     trend = ((recent - prior) / Math.abs(prior || 1) * 100).toFixed(0)
   }
 
+  const dateFmt = new Intl.DateTimeFormat(lang, { day: '2-digit', month: '2-digit', year: '2-digit' })
+
   return (
     <>
-      <Topbar title="Dashboard" subtitle={`Monitoring ${selected.first_name}`} />
+      <Topbar title={t('dashboard.title')} subtitle={t('dashboard.monitoring', { name: selected.first_name })} />
 
       <div className="p-6 space-y-6">
         {/* Patient banner */}
@@ -81,17 +84,17 @@ export default function DashboardPage() {
                   <AlertBadge level={selected.alert_level} pulse />
                 </div>
                 <p className="text-sm text-slate-400 mt-0.5">
-                  {selected.language === 'fr' ? 'Francophone' : 'English'} &middot; {timeline.sessions_count} sessions &middot; {timeline.baseline_established ? 'Monitoring active' : 'Calibrating'}
+                  {selected.language === 'fr' ? t('dashboard.francophone') : t('dashboard.english')} &middot; {timeline.sessions_count} {t('dashboard.sessions')} &middot; {timeline.baseline_established ? t('dashboard.monitoringActive') : t('dashboard.calibrating')}
                 </p>
               </div>
             </div>
           </div>
 
           <StatGrid cols={4} className="mt-4">
-            <Stat label="Composite Score" value={latest?.composite?.toFixed(2) || '-'} unit="z" trend={trend ? parseInt(trend) : null} />
-            <Stat label="Sessions" value={timeline.sessions_count} unit="total" />
-            <Stat label="Baseline" value={selected.baseline_sessions} unit="sessions" />
-            <Stat label="Last Session" value={latest ? new Date(latest.timestamp).toLocaleDateString('fr-FR') : '-'} />
+            <Stat label={t('dashboard.compositeScore')} value={latest?.composite?.toFixed(2) || '-'} unit="z" trend={trend ? parseInt(trend) : null} />
+            <Stat label={t('dashboard.sessionsLabel')} value={timeline.sessions_count} unit={t('dashboard.total')} />
+            <Stat label={t('dashboard.baseline')} value={selected.baseline_sessions} unit={t('dashboard.sessions')} />
+            <Stat label={t('dashboard.lastSession')} value={latest ? dateFmt.format(new Date(latest.timestamp)) : '-'} />
           </StatGrid>
         </div>
 

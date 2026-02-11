@@ -1,13 +1,16 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from 'recharts'
 import { Card, CardHeader } from '../ui/Card'
-import { DOMAIN_COLORS, DOMAIN_LABELS } from '../../lib/constants'
+import { DOMAIN_COLORS } from '../../lib/constants'
+import { useT } from '../../lib/i18n'
 
 export default function DomainChart({ session }) {
+  const { t } = useT()
+
   if (!session?.domain_scores) {
     return (
       <Card>
-        <CardHeader title="Domain Breakdown" />
-        <div className="text-slate-500 text-sm text-center py-8">No data</div>
+        <CardHeader title={t('charts.domainBreakdown')} />
+        <div className="text-slate-500 text-sm text-center py-8">{t('charts.noData')}</div>
       </Card>
     )
   }
@@ -17,12 +20,12 @@ export default function DomainChart({ session }) {
     key: domain,
     score: parseFloat(score.toFixed(2)),
     color: DOMAIN_COLORS[domain],
-    fullLabel: DOMAIN_LABELS[domain],
+    fullLabel: t(`domains.${domain}`),
   }))
 
   return (
     <Card>
-      <CardHeader title="Domain Breakdown" subtitle="Latest session z-scores" />
+      <CardHeader title={t('charts.domainBreakdown')} subtitle={t('charts.domainBreakdownDesc')} />
       <ResponsiveContainer width="100%" height={240}>
         <BarChart data={data} layout="vertical" margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" horizontal={false} />

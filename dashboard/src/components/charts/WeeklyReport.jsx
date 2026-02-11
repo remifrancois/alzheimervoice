@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import { Card, CardHeader } from '../ui/Card'
 import { Button } from '../ui/Button'
 import { api } from '../../lib/api'
+import { useT } from '../../lib/i18n'
 
 export default function WeeklyReport({ patientId }) {
+  const { t } = useT()
   const [reports, setReports] = useState([])
   const [selected, setSelected] = useState(null)
 
@@ -22,7 +24,6 @@ export default function WeeklyReport({ patientId }) {
 
   const report = selected || reports[reports.length - 1]
 
-  // Fallback content when no reports loaded from API
   const familyNarrative = report?.clinical_narrative_family ||
     "Marie continue de bien participer à nos conversations quotidiennes. Nous avons noté quelques changements subtils dans la fluidité de son expression. Son vocabulaire reste riche mais elle cherche parfois ses mots un peu plus qu'au début. Nous continuons à suivre attentivement."
   const medicalNarrative = report?.clinical_narrative_medical ||
@@ -35,8 +36,8 @@ export default function WeeklyReport({ patientId }) {
   return (
     <Card>
       <CardHeader
-        title="Weekly Analysis"
-        subtitle="Clinical narrative and adaptations"
+        title={t('charts.weeklyAnalysis')}
+        subtitle={t('charts.weeklyAnalysisDesc')}
         action={
           reports.length > 0 && (
             <div className="flex gap-1">
@@ -56,15 +57,15 @@ export default function WeeklyReport({ patientId }) {
       />
 
       <div className="space-y-3">
-        <ReportSection label="Family Report" icon="F">
+        <ReportSection label={t('charts.familyReport')} icon="F">
           <p className="text-sm text-slate-300 leading-relaxed">{familyNarrative}</p>
         </ReportSection>
 
-        <ReportSection label="Clinical Report" icon="C">
+        <ReportSection label={t('charts.clinicalReport')} icon="C">
           <p className="text-xs text-slate-400 leading-relaxed font-mono">{medicalNarrative}</p>
         </ReportSection>
 
-        <ReportSection label="Adaptations" icon="A">
+        <ReportSection label={t('charts.adaptations')} icon="A">
           <ul className="space-y-1">
             {adaptations.map((a, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-slate-400">

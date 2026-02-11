@@ -1,10 +1,14 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, ResponsiveContainer, Area, ComposedChart } from 'recharts'
 import { Card, CardHeader } from '../ui/Card'
+import { useT } from '../../lib/i18n'
 
 export default function CompositeTimeline({ timeline }) {
+  const { t, lang } = useT()
+  const dateFmt = new Intl.DateTimeFormat(lang, { day: '2-digit', month: '2-digit' })
+
   const data = timeline.timeline.map((entry, i) => ({
     index: i + 1,
-    date: new Date(entry.timestamp).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }),
+    date: dateFmt.format(new Date(entry.timestamp)),
     composite: entry.composite ?? null,
     isBaseline: entry.composite === undefined,
     alert: entry.alert_level || 'green',
@@ -14,7 +18,7 @@ export default function CompositeTimeline({ timeline }) {
 
   return (
     <Card>
-      <CardHeader title="Composite Z-Score Timeline" subtitle="Drift from individual baseline across all domains" />
+      <CardHeader title={t('charts.compositeTimeline')} subtitle={t('charts.compositeTimelineDesc')} />
       <ResponsiveContainer width="100%" height={300}>
         <ComposedChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
           <defs>
@@ -26,7 +30,7 @@ export default function CompositeTimeline({ timeline }) {
           <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
           <XAxis dataKey="date" tick={{ fill: '#64748b', fontSize: 10 }} axisLine={{ stroke: '#334155' }} />
           <YAxis tick={{ fill: '#64748b', fontSize: 10 }} axisLine={{ stroke: '#334155' }} domain={[-2.5, 0.5]} />
-          <Tooltip content={<TimelineTooltip />} />
+          <Tooltip content={<TimelineTooltip t={t} />} />
 
           <ReferenceLine y={0} stroke="#334155" strokeDasharray="3 3" />
           <ReferenceLine y={-0.5} stroke="#eab30840" strokeDasharray="3 3" />
@@ -55,10 +59,10 @@ export default function CompositeTimeline({ timeline }) {
       {/* Zone legend */}
       <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-800">
         {[
-          { label: 'Green (> -0.5)', color: 'bg-emerald-400' },
-          { label: 'Yellow', color: 'bg-yellow-400' },
-          { label: 'Orange', color: 'bg-orange-400' },
-          { label: 'Red (< -1.5)', color: 'bg-red-400' },
+          { label: t('charts.green'), color: 'bg-emerald-400' },
+          { label: t('charts.yellow'), color: 'bg-yellow-400' },
+          { label: t('charts.orange'), color: 'bg-orange-400' },
+          { label: t('charts.red'), color: 'bg-red-400' },
         ].map(z => (
           <div key={z.label} className="flex items-center gap-1.5 text-[10px] text-slate-500">
             <div className={`w-2 h-2 rounded-full ${z.color}`} />
@@ -70,11 +74,11 @@ export default function CompositeTimeline({ timeline }) {
   )
 }
 
-function TimelineTooltip({ active, payload, label }) {
+function TimelineTooltip({ active, payload, label, t }) {
   if (!active || !payload?.length) return null
   const d = payload[0].payload
   if (d.isBaseline) {
-    return <div className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-400">{label} — Calibration</div>
+    return <div className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-400">{label} — {t('charts.calibration')}</div>
   }
   const alertColors = { green: 'text-emerald-400', yellow: 'text-yellow-400', orange: 'text-orange-400', red: 'text-red-400' }
   return (
