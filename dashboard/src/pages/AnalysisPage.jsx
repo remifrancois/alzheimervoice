@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import Topbar from '../components/layout/Topbar'
 import { Card, CardHeader } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
+import SemanticMap from '../components/charts/SemanticMap'
+import DifferentialDiagnosis from '../components/charts/DifferentialDiagnosis'
 import { DOMAIN_COLORS } from '../lib/constants'
 import { api } from '../lib/api'
 import { useT } from '../lib/i18n'
@@ -44,6 +46,12 @@ export default function AnalysisPage() {
           <CardHeader title={t('analysis.cascadeTracker')} subtitle={t('analysis.cascadeDesc')} />
           <CascadeTracker domainScores={latest?.domain_scores} t={t} />
         </Card>
+
+        {/* V2 — Deep Analysis */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <DifferentialDiagnosis patientId={patients[0]?.patient_id} />
+          <SemanticMap patientId={patients[0]?.patient_id} />
+        </div>
 
         {/* Domain deep dive */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">

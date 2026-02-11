@@ -7,6 +7,9 @@ import CompositeTimeline from '../components/charts/CompositeTimeline'
 import DomainChart from '../components/charts/DomainChart'
 import WeeklyReport from '../components/charts/WeeklyReport'
 import SessionList from '../components/charts/SessionList'
+import DifferentialDiagnosis from '../components/charts/DifferentialDiagnosis'
+import CognitiveTwinChart from '../components/charts/CognitiveTwinChart'
+import CohortMatching from '../components/charts/CohortMatching'
 import { EmptyState } from '../components/ui/EmptyState'
 import { api } from '../lib/api'
 import { ALERT_LEVELS } from '../lib/constants'
@@ -30,6 +33,13 @@ export default function DashboardPage() {
     }).finally(() => setLoading(false))
   }, [])
 
+  function switchPatient(patient) {
+    if (patient.patient_id === selected?.patient_id) return
+    setSelected(patient)
+    setTimeline(null)
+    api.getTimeline(patient.patient_id).then(setTimeline)
+  }
+
   if (loading) {
     return (
       <>
@@ -39,7 +49,7 @@ export default function DashboardPage() {
     )
   }
 
-  if (!selected || !timeline) {
+  if (!selected) {
     return (
       <>
         <Topbar title={t('dashboard.title')} />
@@ -53,7 +63,7 @@ export default function DashboardPage() {
     )
   }
 
-  const monitoring = timeline.timeline.filter(s => s.composite !== undefined)
+  const monitoring = timeline ? timeline.timeline.filter(s => s.composite !== undefined) : []
   const latest = monitoring[monitoring.length - 1]
   const alertConfig = ALERT_LEVELS[selected.alert_level] || ALERT_LEVELS.green
 
@@ -71,6 +81,36 @@ export default function DashboardPage() {
       <Topbar title={t('dashboard.title')} subtitle={t('dashboard.monitoring', { name: selected.first_name })} />
 
       <div className="p-6 space-y-6">
+        {/* Patient switcher */}
+        {patients.length > 1 && (
+          <div className="flex items-center gap-1.5">
+            {patients.map(p => {
+              const active = p.patient_id === selected.patient_id
+              const ac = ALERT_LEVELS[p.alert_level] || ALERT_LEVELS.green
+              return (
+                <button
+                  key={p.patient_id}
+                  onClick={() => switchPatient(p)}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    active
+                      ? 'bg-slate-800 text-white border border-slate-700 shadow-sm'
+                      : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800/50 border border-transparent'
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${ac.dot} ${active && p.alert_level === 'red' ? 'animate-pulse' : ''}`} />
+                  {p.first_name}
+                </button>
+              )
+            })}
+          </div>
+        )}
+
+        {/* Loading state when switching patients */}
+        {!timeline && (
+          <div className="text-sm text-slate-500 py-12 text-center">{t('dashboard.loadingData')}</div>
+        )}
+
+        {timeline && <>
         {/* Patient banner */}
         <div className={`rounded-xl border ${alertConfig.border} ${alertConfig.bg} p-5`}>
           <div className="flex items-start justify-between">
@@ -106,11 +146,20 @@ export default function DashboardPage() {
           <DomainChart session={latest} />
         </div>
 
-        {/* Reports + Sessions */}
+        {/* V2 — Deep Analysis */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          <WeeklyReport patientId={selected.patient_id} />
-          <SessionList sessions={monitoring} />
+          <DifferentialDiagnosis patientId={selected.patient_id} />
+          <CognitiveTwinChart patientId={selected.patient_id} timeline={timeline} />
         </div>
+
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <CohortMatching patientId={selected.patient_id} />
+          <WeeklyReport patientId={selected.patient_id} />
+        </div>
+
+        {/* Sessions */}
+        <SessionList sessions={monitoring} />
+        </>}
       </div>
     </>
   )

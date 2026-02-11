@@ -22,6 +22,9 @@ import {
   createBaseline, saveBaseline, saveWeeklyAnalysis
 } from '../models/cvf.js';
 import { detectCascadePattern } from '../services/drift-detector.js';
+import { computeDifferentialScores } from '../services/differential-diagnosis.js';
+import { generateTwinVector, computeDivergence } from '../services/cognitive-twin.js';
+import { generateCohort, matchTrajectory } from '../services/synthetic-cohort.js';
 
 // ═══════════════════════════════════════════════════════════════════
 //  AGE-APPROPRIATE HEALTHY PROFILES
@@ -374,7 +377,7 @@ function generateAdaptations(domains) {
 // ═══════════════════════════════════════════════════════════════════
 
 async function cleanData() {
-  const dirs = ['data/patients', 'data/sessions', 'data/cvf', 'data/reports'];
+  const dirs = ['data/patients', 'data/sessions', 'data/cvf', 'data/reports', 'data/cohort', 'data/twins', 'data/archaeology', 'data/hologram'];
   for (const dir of dirs) {
     const fullPath = path.resolve(dir);
     try { await fs.rm(fullPath, { recursive: true }); } catch {}
@@ -395,8 +398,13 @@ async function main() {
   await cleanData();
   console.log(`  Data directories cleaned.\n`);
 
+  // V2: Generate synthetic cohort
+  console.log(`  Generating synthetic cohort (100 trajectories)...`);
+  const cohort = await generateCohort();
+  console.log(`  Cohort generated: ${cohort.length} trajectories\n`);
+
   for (const config of PATIENT_CONFIGS) {
-    await generatePatient(config);
+    await generatePatient(config, cohort);
     console.log('');
   }
 
@@ -411,7 +419,7 @@ async function main() {
   console.log(`    GET http://localhost:3001/health\n`);
 }
 
-async function generatePatient(config) {
+async function generatePatient(config, cohort) {
   const {
     name, language, phone, callTime, timezone,
     totalSessions, baselineCount, pattern, maxDecline, initialDecline,
@@ -566,7 +574,168 @@ async function generatePatient(config) {
     console.log(`  Week ${weekNumber}: composite=${avgComposite.toFixed(3)} alert=${alert.toUpperCase()} patterns=${patterns.length}`);
   }
 
-  console.log(`\n  ${name}: ${patient.alert_level.toUpperCase()} | ${totalSessions} sessions | ${Object.keys(weeklyData).length} weekly reports`);
+  // ── V2 Data Generation ──
+
+  // 7. Generate differential diagnosis data
+  console.log(`\n  V2 — DIFFERENTIAL DIAGNOSIS:`);
+  const lastWeekData = Object.values(weeklyData).pop();
+  if (lastWeekData) {
+    const avgDomains = {};
+    for (const domain of Object.keys(CVF_FEATURES)) {
+      avgDomains[domain] = lastWeekData.reduce((s, d) => s + d.domains[domain], 0) / lastWeekData.length;
+    }
+    const lastConfounders = lastWeekData.map(s => ({ confounders: s.confounders }));
+
+    // Build trajectory for matching
+    const monitoringTimeline = [];
+    for (let i = baselineCount; i < totalSessions; i++) {
+      const delta = computeDelta(allVectors[i], baselineStats);
+      monitoringTimeline.push({
+        composite: computeComposite(delta),
+        domains: computeDomainScores(delta)
+      });
+    }
+
+    const differential = computeDifferentialScores(avgDomains, monitoringTimeline, lastConfounders);
+    console.log(`  Primary: ${differential.primary_hypothesis} (${Math.round(differential.confidence * 100)}% confidence)`);
+    console.log(`  Probabilities: ${Object.entries(differential.probabilities).map(([k, v]) => `${k}: ${Math.round(v * 100)}%`).join(', ')}`);
+
+    // Save differential as part of hologram data
+    const differentialPath = path.resolve('data/hologram');
+    await fs.mkdir(differentialPath, { recursive: true });
+    await fs.writeFile(
+      path.join(differentialPath, `differential_${patient.patient_id}.json`),
+      JSON.stringify({ patient_id: patient.patient_id, ...differential, created_at: new Date().toISOString() }, null, 2)
+    );
+
+    // 8. Generate cognitive twin analysis
+    console.log(`\n  V2 — COGNITIVE TWIN:`);
+    const weekCount = Object.keys(weeklyData).length;
+    const twinResult = generateTwinVector(baselineStats, weekCount, { education: 'average' });
+    const latestVector = allVectors[totalSessions - 1];
+    const divergence = computeDivergence(latestVector, twinResult);
+    console.log(`  Divergence: ${divergence.overall.toFixed(2)} (${divergence.interpretation})`);
+    console.log(`  Domain divergences: ${Object.entries(divergence.domains).map(([d, v]) => `${d}: ${v.toFixed(2)}`).join(', ')}`);
+
+    const twinsDir = path.resolve('data/twins');
+    await fs.mkdir(twinsDir, { recursive: true });
+    await fs.writeFile(
+      path.join(twinsDir, `twin_${patient.patient_id}.json`),
+      JSON.stringify({ patient_id: patient.patient_id, weekNumber: weekCount, ...divergence, created_at: new Date().toISOString() }, null, 2)
+    );
+
+    // 9. Cohort matching
+    if (cohort) {
+      console.log(`\n  V2 — COHORT MATCHING:`);
+      const cohortMatch = matchTrajectory(monitoringTimeline, cohort);
+      console.log(`  Primary prediction: ${cohortMatch.primary_prediction}`);
+      console.log(`  Outcome probabilities: ${Object.entries(cohortMatch.outcome_probabilities).map(([k, v]) => `${k}: ${Math.round(v * 100)}%`).join(', ')}`);
+      console.log(`  Top matches: ${cohortMatch.matches.slice(0, 3).map(m => `${m.id}(${m.diagnosis})`).join(', ')}`);
+    }
+
+    // 10. Generate synthetic semantic map
+    console.log(`\n  V2 — SEMANTIC MAP:`);
+    const semanticMap = generateSyntheticSemanticMap(name, monitoringTimeline.length, pattern);
+    const archDir = path.resolve('data/archaeology');
+    await fs.mkdir(archDir, { recursive: true });
+    await fs.writeFile(
+      path.join(archDir, `semantic_map_${patient.patient_id}.json`),
+      JSON.stringify({ patient_id: patient.patient_id, generated_at: new Date().toISOString(), ...semanticMap }, null, 2)
+    );
+    console.log(`  Clusters: ${semanticMap.semantic_clusters.length}, Network: ${semanticMap.network_health.overall}`);
+  }
+
+  console.log(`\n  ${name}: ${patient.alert_level.toUpperCase()} | ${totalSessions} sessions | ${Object.keys(weeklyData).length} weekly reports | V2 data generated`);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SYNTHETIC SEMANTIC MAP GENERATION
+// ═══════════════════════════════════════════════════════════════════
+
+function generateSyntheticSemanticMap(name, sessionCount, pattern) {
+  const isDecline = pattern === 'decline' || pattern === 'already_critical';
+  const networkHealth = isDecline
+    ? (pattern === 'already_critical' ? 'moderate_fragmentation' : 'early_fragmentation')
+    : 'healthy';
+
+  return {
+    semantic_clusters: [
+      {
+        name: 'family',
+        nodes: [
+          { label: name === 'Marie' ? 'André (mari)' : 'Spouse', mention_count: 47 + Math.floor(Math.random() * 20), first_mention: 'week 1', last_mention: `week ${Math.ceil(sessionCount / 7)}`, trend: 'stable', detail_trend: isDecline ? 'simplifying' : 'stable', flags: [] },
+          { label: name === 'Marie' ? 'Pierre (fils)' : 'Children', mention_count: 31 + Math.floor(Math.random() * 15), first_mention: 'week 1', last_mention: `week ${Math.ceil(sessionCount / 7)}`, trend: 'stable', detail_trend: 'stable', flags: [] },
+          { label: 'Grandchildren', mention_count: 18 + Math.floor(Math.random() * 10), first_mention: 'week 2', last_mention: `week ${Math.ceil(sessionCount / 7)}`, trend: isDecline ? 'decreasing' : 'stable', detail_trend: isDecline ? 'simplifying' : 'enriching', flags: isDecline ? ['decreasing detail richness'] : [] },
+        ],
+        cluster_health: isDecline ? 'weakening' : 'healthy',
+        connections_to: ['routines', 'food']
+      },
+      {
+        name: 'routines',
+        nodes: [
+          { label: 'Morning routine', mention_count: 22 + Math.floor(Math.random() * 10), first_mention: 'week 1', last_mention: `week ${Math.ceil(sessionCount / 7)}`, trend: 'stable', detail_trend: 'stable', flags: [] },
+          { label: name === 'Marie' ? 'Marché du samedi' : 'Weekly shopping', mention_count: 15 + Math.floor(Math.random() * 8), first_mention: 'week 2', last_mention: `week ${Math.ceil(sessionCount / 7)}`, trend: 'stable', detail_trend: 'stable', flags: [] },
+        ],
+        cluster_health: 'healthy',
+        connections_to: ['family', 'food']
+      },
+      {
+        name: 'food',
+        nodes: [
+          { label: name === 'Marie' ? 'Gratin dauphinois' : 'Favorite recipes', mention_count: 15 + Math.floor(Math.random() * 8), first_mention: 'week 3', last_mention: `week ${Math.ceil(sessionCount / 7)}`, trend: 'stable', detail_trend: isDecline ? 'simplifying' : 'stable', flags: isDecline ? ['steps reduced from 7 to 4'] : [] },
+          { label: name === 'Marie' ? 'Tarte aux pommes' : 'Cooking memories', mention_count: 8 + Math.floor(Math.random() * 5), first_mention: 'week 4', last_mention: `week ${Math.ceil(sessionCount / 7)}`, trend: isDecline ? 'decreasing' : 'stable', detail_trend: isDecline ? 'simplifying' : 'stable', flags: [] },
+        ],
+        cluster_health: isDecline ? 'weakening' : 'healthy',
+        connections_to: ['family']
+      },
+      {
+        name: 'work',
+        nodes: [
+          { label: name === 'Marie' ? 'École Jules Ferry' : 'Career', mention_count: 12 + Math.floor(Math.random() * 8), first_mention: 'week 2', last_mention: `week ${Math.max(1, Math.ceil(sessionCount / 7) - (isDecline ? 3 : 0))}`, trend: isDecline ? 'decreasing' : 'stable', detail_trend: isDecline ? 'simplifying' : 'stable', flags: isDecline ? ['colleagues named: 4 → 2 over 3 months'] : [] },
+        ],
+        cluster_health: isDecline ? 'fragmenting' : 'healthy',
+        connections_to: []
+      },
+    ],
+    procedural_checks: [
+      {
+        procedure: name === 'Marie' ? 'Recette gratin dauphinois' : 'Favorite recipe steps',
+        mentions: 8,
+        initial_steps: 7,
+        current_steps: isDecline ? 4 : 7,
+        omissions: isDecline ? ['preheat oven', 'grate nutmeg', 'layer sequence'] : [],
+        status: isDecline ? 'simplifying' : 'intact'
+      }
+    ],
+    repetition_patterns: isDecline ? [
+      { story: name === 'Marie' ? 'Marathon de Catherine à NYC' : 'Key life event', times_told: 5, type: 'verbatim', concern_level: 'moderate' },
+      { story: name === 'Marie' ? 'Premier jour à l\'école' : 'Childhood memory', times_told: 3, type: 'verbatim', concern_level: 'low' },
+    ] : [
+      { story: 'Vacation story', times_told: 2, type: 'elaborated', concern_level: 'none' },
+    ],
+    temporal_anchoring: {
+      precision_trend: isDecline ? 'declining' : 'stable',
+      past_vs_recent_ratio: isDecline ? 2.5 : 1.2,
+      temporal_vagueness_instances: isDecline ? 8 : 1,
+      flags: isDecline ? ['Increasing use of "sometime", "I think it was..."'] : []
+    },
+    lexical_evolution: {
+      generic_substitutions: isDecline ? 12 : 2,
+      proper_noun_failures: isDecline ? 6 : 0,
+      circumlocution_instances: isDecline ? 9 : 1,
+      trend: isDecline ? 'increasing' : 'stable'
+    },
+    network_health: {
+      total_clusters: 4,
+      active_clusters: isDecline ? 3 : 4,
+      weakening_bridges: isDecline ? 2 : 0,
+      isolated_nodes: isDecline ? 3 : 0,
+      overall: networkHealth
+    },
+    clinical_summary: isDecline
+      ? `Semantic network shows ${networkHealth.replace(/_/g, ' ')}. Family cluster weakening with decreasing detail in grandchildren references. Procedural memory for recipes showing step omissions. Repetition patterns emerging with ${pattern === 'already_critical' ? 'significant' : 'mild'} verbatim loops.`
+      : `Semantic network is healthy and well-connected. Topic clusters maintain stable activity with enriching detail over time. No concerning repetition patterns or procedural degradation.`
+  };
 }
 
 main().catch(err => {
