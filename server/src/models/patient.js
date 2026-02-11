@@ -45,3 +45,11 @@ export async function listPatients() {
   }
   return patients;
 }
+
+export async function deletePatient(patientId) {
+  const filePath = path.join(DATA_DIR, `${patientId}.json`);
+  try { await fs.unlink(filePath); } catch {}
+  // Also delete memory profile
+  const memPath = path.join(DATA_DIR, `memories_${patientId}.json`);
+  try { await fs.unlink(memPath); } catch {}
+}

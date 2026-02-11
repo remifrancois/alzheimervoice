@@ -17,6 +17,7 @@ import SubscriptionsPage from './pages/admin/SubscriptionsPage'
 import ApiKeysPage from './pages/admin/ApiKeysPage'
 import LogsPage from './pages/admin/LogsPage'
 import MonitoringPage from './pages/admin/MonitoringPage'
+import GdprPage from './pages/admin/GdprPage'
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/admin/subscriptions" element={<SuperAdminGuard><SubscriptionsPage /></SuperAdminGuard>} />
         <Route path="/admin/api-keys" element={<SuperAdminGuard><ApiKeysPage /></SuperAdminGuard>} />
         <Route path="/admin/monitoring" element={<SuperAdminGuard><MonitoringPage /></SuperAdminGuard>} />
+        <Route path="/admin/gdpr" element={<AdminGuard><GdprPage /></AdminGuard>} />
 
         {/* Shared routes — all roles */}
         <Route path="/settings" element={<SettingsPage />} />

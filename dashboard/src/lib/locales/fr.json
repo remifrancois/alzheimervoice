@@ -14,7 +14,8 @@
     "subscriptions": "Abonnements",
     "apiKeys": "Clés API",
     "logs": "Journaux",
-    "monitoring": "Surveillance"
+    "monitoring": "Surveillance",
+    "gdpr": "RGPD / Données"
   },
   "sidebar": {
     "brand": "MemoVoice",

@@ -16,6 +16,7 @@ const ADMIN_NAV = [
   { id: 'admin-api',     labelKey: 'nav.apiKeys',         icon: 'key',        path: '/admin/api-keys',      permission: 'admin.api' },
   { id: 'admin-logs',    labelKey: 'nav.logs',            icon: 'log',        path: '/admin/logs',          permission: 'admin.logs' },
   { id: 'admin-monitor', labelKey: 'nav.monitoring',      icon: 'monitor',    path: '/admin/monitoring',    permission: 'admin.monitoring' },
+  { id: 'admin-gdpr',    labelKey: 'nav.gdpr',            icon: 'trash',      path: '/admin/gdpr',          permission: 'admin.users' },
 ]
 
 const SETTINGS_NAV = [

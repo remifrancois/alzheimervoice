@@ -46,3 +46,20 @@ export async function loadPatientSessions(patientId) {
   }
   return sessions.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 }
+
+export async function deletePatientSessions(patientId) {
+  await fs.mkdir(DATA_DIR, { recursive: true });
+  const files = await fs.readdir(DATA_DIR);
+  let deleted = 0;
+  for (const file of files) {
+    if (file.endsWith('.json')) {
+      const data = await fs.readFile(path.join(DATA_DIR, file), 'utf-8');
+      const session = JSON.parse(data);
+      if (session.patient_id === patientId) {
+        await fs.unlink(path.join(DATA_DIR, file));
+        deleted++;
+      }
+    }
+  }
+  return deleted;
+}

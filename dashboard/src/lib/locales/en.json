@@ -14,7 +14,8 @@
     "subscriptions": "Subscriptions",
     "apiKeys": "API Keys",
     "logs": "Logs",
-    "monitoring": "Monitoring"
+    "monitoring": "Monitoring",
+    "gdpr": "GDPR / Data"
   },
   "sidebar": {
     "brand": "MemoVoice",

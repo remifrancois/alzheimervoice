@@ -152,3 +152,48 @@ export async function loadWeeklyAnalysis(patientId, weekNumber) {
     return null;
   }
 }
+
+// GDPR: Delete all CVF data for a patient (baseline + reports)
+export async function deletePatientCvfData(patientId) {
+  let deleted = 0;
+
+  // Delete baseline
+  const baselinePath = path.join(DATA_DIR, `baseline_${patientId}.json`);
+  try { await fs.unlink(baselinePath); deleted++; } catch {}
+
+  // Delete all weekly reports
+  const reportsDir = path.resolve('data/reports');
+  try {
+    const files = await fs.readdir(reportsDir);
+    for (const file of files) {
+      if (file.startsWith(`week_${patientId}_`) && file.endsWith('.json')) {
+        await fs.unlink(path.join(reportsDir, file));
+        deleted++;
+      }
+    }
+  } catch {}
+
+  return deleted;
+}
+
+// GDPR: Export all CVF data for a patient (data portability)
+export async function exportPatientCvfData(patientId) {
+  const result = { baseline: null, weeklyReports: [] };
+
+  // Baseline
+  result.baseline = await loadBaseline(patientId);
+
+  // Weekly reports
+  const reportsDir = path.resolve('data/reports');
+  try {
+    const files = await fs.readdir(reportsDir);
+    for (const file of files) {
+      if (file.startsWith(`week_${patientId}_`) && file.endsWith('.json')) {
+        const data = await fs.readFile(path.join(reportsDir, file), 'utf-8');
+        result.weeklyReports.push(JSON.parse(data));
+      }
+    }
+  } catch {}
+
+  return result;
+}
