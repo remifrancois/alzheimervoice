@@ -3,7 +3,7 @@ import { Icon, useT, useAuth, ROLES } from '@azh/shared-ui'
 
 export default function Topbar({ title, subtitle }) {
   const { t, lang, changeLang, languages } = useT()
-  const { currentUser } = useAuth()
+  const { currentUser, logout, mode } = useAuth()
   const [langOpen, setLangOpen] = useState(false)
   const dropRef = useRef(null)
 
@@ -84,6 +84,17 @@ export default function Topbar({ title, subtitle }) {
             )}
           </div>
         </div>
+
+        {/* Logout (Cognito mode only) */}
+        {mode === 'cognito' && (
+          <button
+            onClick={logout}
+            className="p-2 rounded-lg text-slate-500 hover:text-red-400 hover:bg-slate-800 transition-colors"
+            title="Sign out"
+          >
+            <Icon name="log-out" size={16} />
+          </button>
+        )}
       </div>
     </header>
   )

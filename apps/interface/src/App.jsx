@@ -1,6 +1,6 @@
-import { Routes, Route, Outlet } from 'react-router-dom'
+import { Routes, Route, Navigate, Outlet, useNavigate } from 'react-router-dom'
 import AppLayout from './components/layout/AppLayout'
-import { PatientDataGuard, useAuth } from '@azh/shared-ui'
+import { PatientDataGuard, useAuth, LoginPage, RegisterPage, ForgotPasswordPage } from '@azh/shared-ui'
 
 // Clinical pages
 import DashboardPage from './pages/DashboardPage'
@@ -28,20 +28,81 @@ function AuthLoadingGuard({ children }) {
   return children || <Outlet />
 }
 
+/** Redirects to /login if not authenticated (Cognito mode only) */
+function AuthGate({ children }) {
+  const { isAuthenticated, mode } = useAuth()
+  if (mode === 'demo') return children
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+  return children
+}
+
+/** Redirects to / if already authenticated */
+function GuestOnly({ children }) {
+  const { isAuthenticated, mode } = useAuth()
+  if (mode === 'demo') return <Navigate to="/" replace />
+  if (isAuthenticated) return <Navigate to="/" replace />
+  return children
+}
+
+function InterfaceLogin() {
+  const navigate = useNavigate()
+  return (
+    <LoginPage
+      appName="MemoVoice"
+      appColor="from-violet-500 to-blue-600"
+      logoLetter="M"
+      showRegister={true}
+      onNavigate={({ to }) => navigate(to)}
+    />
+  )
+}
+
+function InterfaceRegister() {
+  const navigate = useNavigate()
+  return (
+    <RegisterPage
+      appName="MemoVoice"
+      appColor="from-violet-500 to-blue-600"
+      logoLetter="M"
+      onNavigate={({ to }) => navigate(to)}
+    />
+  )
+}
+
+function InterfaceForgotPassword() {
+  const navigate = useNavigate()
+  return (
+    <ForgotPasswordPage
+      appName="MemoVoice"
+      appColor="from-violet-500 to-blue-600"
+      logoLetter="M"
+      onNavigate={({ to }) => navigate(to)}
+    />
+  )
+}
+
 function App() {
   return (
     <Routes>
-      <Route element={<AuthLoadingGuard><AppLayout /></AuthLoadingGuard>}>
-        {/* Patient data routes — family + clinician */}
-        <Route path="/" element={<PatientDataGuard><DashboardPage /></PatientDataGuard>} />
-        <Route path="/patients" element={<PatientDataGuard><PatientsPage /></PatientDataGuard>} />
-        <Route path="/analysis" element={<PatientDataGuard><AnalysisPage /></PatientDataGuard>} />
-        <Route path="/reports" element={<PatientDataGuard><ReportsPage /></PatientDataGuard>} />
+      {/* Public auth routes */}
+      <Route element={<AuthLoadingGuard />}>
+        <Route path="/login" element={<GuestOnly><InterfaceLogin /></GuestOnly>} />
+        <Route path="/register" element={<GuestOnly><InterfaceRegister /></GuestOnly>} />
+        <Route path="/forgot-password" element={<GuestOnly><InterfaceForgotPassword /></GuestOnly>} />
 
-        {/* Shared routes — all roles */}
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/changelog" element={<ChangelogPage />} />
-        <Route path="/privacy" element={<PrivacyPage />} />
+        {/* Protected routes */}
+        <Route element={<AuthGate><AppLayout /></AuthGate>}>
+          {/* Patient data routes — family + clinician */}
+          <Route path="/" element={<PatientDataGuard><DashboardPage /></PatientDataGuard>} />
+          <Route path="/patients" element={<PatientDataGuard><PatientsPage /></PatientDataGuard>} />
+          <Route path="/analysis" element={<PatientDataGuard><AnalysisPage /></PatientDataGuard>} />
+          <Route path="/reports" element={<PatientDataGuard><ReportsPage /></PatientDataGuard>} />
+
+          {/* Shared routes — all roles */}
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/changelog" element={<ChangelogPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+        </Route>
       </Route>
     </Routes>
   )

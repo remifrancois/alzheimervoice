@@ -16,6 +16,6 @@ export {
   deletePatientCvfData, exportPatientCvfData,
 } from './cvf.js';
 export { createMemory, loadMemoryProfile, saveMemoryProfile, selectMemoriesForSession } from './memory.js';
-export { loadUsers, clearUserCache, findUser, canUserAccessPatient, getUserPatientIds } from './users.js';
+export { loadUsers, saveUsers, clearUserCache, findUser, canUserAccessPatient, getUserPatientIds } from './users.js';
 export { encrypt, decrypt, isEncryptionEnabled } from './crypto.js';
 export { writeSecureJSON, readSecureJSON, readSecureJSONSafe } from './secure-fs.js';

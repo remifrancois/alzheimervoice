@@ -1,6 +1,6 @@
-import { Routes, Route, Outlet } from 'react-router-dom'
+import { Routes, Route, Navigate, Outlet, useNavigate } from 'react-router-dom'
 import AppLayout from './components/layout/AppLayout'
-import { AdminGuard, SuperAdminGuard, useAuth } from '@azh/shared-ui'
+import { AdminGuard, useAuth, LoginPage, ForgotPasswordPage } from '@azh/shared-ui'
 
 // Admin pages
 import UsersAdminPage from './pages/UsersAdminPage'
@@ -17,6 +17,7 @@ import ClinicalPage from './pages/ClinicalPage'
 import IncidentsPage from './pages/IncidentsPage'
 import CompliancePage from './pages/CompliancePage'
 import SettingsPage from './pages/SettingsPage'
+import AccountPage from './pages/AccountPage'
 
 function AuthLoadingGuard({ children }) {
   const { loading } = useAuth()
@@ -35,30 +36,74 @@ function AuthLoadingGuard({ children }) {
   return children || <Outlet />
 }
 
+/** Redirects to /login if not authenticated (Cognito mode only) */
+function AuthGate({ children }) {
+  const { isAuthenticated, mode } = useAuth()
+  if (mode === 'demo') return children
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+  return children
+}
+
+/** Redirects to / if already authenticated */
+function GuestOnly({ children }) {
+  const { isAuthenticated, mode } = useAuth()
+  if (mode === 'demo') return <Navigate to="/" replace />
+  if (isAuthenticated) return <Navigate to="/" replace />
+  return children
+}
+
+function AdminLogin() {
+  const navigate = useNavigate()
+  return (
+    <LoginPage
+      appName="MemoVoice Admin"
+      appColor="from-red-500 to-orange-600"
+      logoLetter="A"
+      showRegister={false}
+      onNavigate={({ to }) => navigate(to)}
+    />
+  )
+}
+
+function AdminForgotPassword() {
+  const navigate = useNavigate()
+  return (
+    <ForgotPasswordPage
+      appName="MemoVoice Admin"
+      appColor="from-red-500 to-orange-600"
+      logoLetter="A"
+      onNavigate={({ to }) => navigate(to)}
+    />
+  )
+}
+
 function App() {
   return (
     <Routes>
-      <Route element={<AuthLoadingGuard><AppLayout /></AuthLoadingGuard>}>
-        {/* Admin routes — superadmin + admin */}
-        <Route path="/" element={<AdminGuard><UsersAdminPage /></AdminGuard>} />
-        <Route path="/users" element={<AdminGuard><UsersAdminPage /></AdminGuard>} />
-        <Route path="/logs" element={<AdminGuard><LogsPage /></AdminGuard>} />
-        <Route path="/incidents" element={<AdminGuard><IncidentsPage /></AdminGuard>} />
-        <Route path="/compliance" element={<AdminGuard><CompliancePage /></AdminGuard>} />
-        <Route path="/gdpr" element={<AdminGuard><GdprPage /></AdminGuard>} />
+      {/* Public auth routes */}
+      <Route element={<AuthLoadingGuard />}>
+        <Route path="/login" element={<GuestOnly><AdminLogin /></GuestOnly>} />
+        <Route path="/forgot-password" element={<GuestOnly><AdminForgotPassword /></GuestOnly>} />
 
-        {/* Superadmin-only routes */}
-        <Route path="/subscriptions" element={<SuperAdminGuard><SubscriptionsPage /></SuperAdminGuard>} />
-        <Route path="/api-keys" element={<SuperAdminGuard><ApiKeysPage /></SuperAdminGuard>} />
-        <Route path="/monitoring" element={<SuperAdminGuard><MonitoringPage /></SuperAdminGuard>} />
-        <Route path="/organizations" element={<SuperAdminGuard><OrganizationsPage /></SuperAdminGuard>} />
-        <Route path="/audit" element={<SuperAdminGuard><AuditPage /></SuperAdminGuard>} />
-        <Route path="/security" element={<SuperAdminGuard><SecurityPage /></SuperAdminGuard>} />
-        <Route path="/billing" element={<SuperAdminGuard><BillingPage /></SuperAdminGuard>} />
-        <Route path="/clinical" element={<SuperAdminGuard><ClinicalPage /></SuperAdminGuard>} />
-
-        {/* Shared routes — all roles */}
-        <Route path="/settings" element={<SettingsPage />} />
+        {/* Protected routes — no /register for admin (admins are created by other admins) */}
+        <Route element={<AuthGate><AppLayout /></AuthGate>}>
+          <Route path="/" element={<AdminGuard><UsersAdminPage /></AdminGuard>} />
+          <Route path="/users" element={<AdminGuard><UsersAdminPage /></AdminGuard>} />
+          <Route path="/organizations" element={<AdminGuard><OrganizationsPage /></AdminGuard>} />
+          <Route path="/audit" element={<AdminGuard><AuditPage /></AdminGuard>} />
+          <Route path="/security" element={<AdminGuard><SecurityPage /></AdminGuard>} />
+          <Route path="/billing" element={<AdminGuard><BillingPage /></AdminGuard>} />
+          <Route path="/clinical" element={<AdminGuard><ClinicalPage /></AdminGuard>} />
+          <Route path="/incidents" element={<AdminGuard><IncidentsPage /></AdminGuard>} />
+          <Route path="/compliance" element={<AdminGuard><CompliancePage /></AdminGuard>} />
+          <Route path="/subscriptions" element={<AdminGuard><SubscriptionsPage /></AdminGuard>} />
+          <Route path="/api-keys" element={<AdminGuard><ApiKeysPage /></AdminGuard>} />
+          <Route path="/logs" element={<AdminGuard><LogsPage /></AdminGuard>} />
+          <Route path="/monitoring" element={<AdminGuard><MonitoringPage /></AdminGuard>} />
+          <Route path="/gdpr" element={<AdminGuard><GdprPage /></AdminGuard>} />
+          <Route path="/account" element={<AdminGuard><AccountPage /></AdminGuard>} />
+          <Route path="/settings" element={<AdminGuard><SettingsPage /></AdminGuard>} />
+        </Route>
       </Route>
     </Routes>
   )

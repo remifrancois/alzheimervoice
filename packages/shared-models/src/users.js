@@ -9,13 +9,22 @@ import path from 'path';
 
 const USERS_FILE = path.resolve(process.env.DATA_ROOT || './data', 'users.json');
 
+/**
+ * Plans:
+ *   free      — Dashboard view + 1 family member (default for self-registration)
+ *   pro       — Full analysis + multiple patients
+ *   clinical  — Clinical-grade tools for professionals
+ *   admin     — Platform management (no plan-based limits)
+ */
+
 const DEFAULT_USERS = [
-  { id: 'u1', name: 'Super Admin', email: 'admin@memovoice.ai', role: 'superadmin', avatar: 'SA', password: 'demo', assignedPatients: [] },
-  { id: 'u2', name: 'Dr. Remi Francois', email: 'remi@memovoice.ai', role: 'clinician', avatar: 'RF', password: 'demo', assignedPatients: [] },
-  { id: 'u3', name: 'Dr. Sophie Martin', email: 'sophie@memovoice.ai', role: 'clinician', avatar: 'SM', password: 'demo', assignedPatients: [] },
-  { id: 'u4', name: 'Pierre Dupont', email: 'pierre@famille.fr', role: 'family', avatar: 'PD', password: 'demo', patientId: null },
-  { id: 'u5', name: 'Marie-Claire Petit', email: 'mc@famille.fr', role: 'family', avatar: 'MP', password: 'demo', patientId: null },
-  { id: 'u6', name: 'Jean Administrateur', email: 'jean@memovoice.ai', role: 'admin', avatar: 'JA', password: 'demo', assignedPatients: [] },
+  { id: 'u1', name: 'Super Admin', email: 'admin@memovoice.ai', role: 'superadmin', avatar: 'SA', password: 'demo', plan: 'admin', assignedPatients: [] },
+  { id: 'u2', name: 'Dr. Remi Francois', email: 'remi@memovoice.ai', role: 'clinician', avatar: 'RF', password: 'demo', plan: 'clinical', assignedPatients: [] },
+  { id: 'u3', name: 'Dr. Sophie Martin', email: 'sophie@memovoice.ai', role: 'clinician', avatar: 'SM', password: 'demo', plan: 'clinical', assignedPatients: [] },
+  { id: 'u4', name: 'Pierre Dupont', email: 'pierre@famille.fr', role: 'family', avatar: 'PD', password: 'demo', plan: 'free', patientId: null },
+  { id: 'u5', name: 'Marie-Claire Petit', email: 'mc@famille.fr', role: 'family', avatar: 'MP', password: 'demo', plan: 'free', patientId: null },
+  { id: 'u6', name: 'Jean Administrateur', email: 'jean@memovoice.ai', role: 'admin', avatar: 'JA', password: 'demo', plan: 'admin', assignedPatients: [] },
+  { id: 'u-demo', name: 'Demo User', email: 'demo@memovoice.ai', role: 'clinician', avatar: 'DU', plan: 'clinical', assignedPatients: [] },
 ];
 
 let cachedUsers = null;
@@ -29,6 +38,11 @@ export async function loadUsers() {
     cachedUsers = DEFAULT_USERS;
   }
   return cachedUsers;
+}
+
+export async function saveUsers(users) {
+  await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
+  cachedUsers = users;
 }
 
 export function clearUserCache() {

@@ -21,6 +21,7 @@ import patientRoutes from './routes/patients.js';
 import memoryRoutes from './routes/memories.js';
 import gdprRoutes from './routes/gdpr.js';
 import adminRoutes from './routes/admin.js';
+import cognitoAdminRoutes from './routes/cognito-admin.js';
 import cvfProxyRoutes from './routes/cvf-proxy.js';
 
 const app = Fastify({ logger: true });
@@ -43,6 +44,7 @@ await app.register(patientRoutes);
 await app.register(memoryRoutes);
 await app.register(gdprRoutes);
 await app.register(adminRoutes);
+await app.register(cognitoAdminRoutes);
 await app.register(cvfProxyRoutes);
 
 // --- Health Check (public) ---

@@ -1,15 +1,24 @@
 import { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react'
-import { api } from './api.js'
-import { setTokenGetter } from './api.js'
+import { api, setTokenGetter } from './api.js'
+import {
+  initCognitoClient,
+  signIn as cognitoSignIn,
+  signUp as cognitoSignUp,
+  confirmSignUp as cognitoConfirmSignUp,
+  forgotPassword as cognitoForgotPassword,
+  confirmForgotPassword as cognitoConfirmForgotPassword,
+  signOut as cognitoSignOut,
+  getCurrentSession,
+  completeNewPassword as cognitoCompleteNewPassword,
+} from './cognito.js'
 
 /**
  * Role-Based Access Control (RBAC)
  *
  * ROLES:
- *   superadmin — Full platform management. CANNOT access patient clinical data.
- *   admin      — Organization management. CANNOT access patient clinical data.
- *   clinician  — Clinical access scoped to assigned patients.
- *   family     — Access ONLY to their own family member's data.
+ *   admin     — Platform + organization management. CANNOT access patient clinical data.
+ *   clinician — Clinical access scoped to assigned patients.
+ *   family    — Access ONLY to their own family member's data.
  */
 
 export const ROLES = {
@@ -37,16 +46,24 @@ export const ROLES = {
   },
   admin: {
     label: 'Admin',
-    description: 'Organization admin — no patient data access',
+    description: 'Platform & organization management — no patient data access',
     color: 'text-orange-400',
     bg: 'bg-orange-500/10',
     border: 'border-orange-500/30',
     permissions: [
-      'admin.users', 'admin.users.create',
+      'admin.users', 'admin.users.create', 'admin.users.delete',
+      'admin.subscriptions', 'admin.subscriptions.manage',
+      'admin.api', 'admin.api.keys', 'admin.api.rotate',
+      'admin.logs', 'admin.logs.export',
+      'admin.monitoring', 'admin.monitoring.alerts',
       'admin.settings',
-      'admin.logs',
-      'admin.incidents',
-      'admin.compliance',
+      'admin.audit', 'admin.audit.export',
+      'admin.billing', 'admin.billing.manage',
+      'admin.clinical', 'admin.clinical.manage',
+      'admin.security', 'admin.security.manage',
+      'admin.incidents', 'admin.incidents.manage',
+      'admin.compliance', 'admin.compliance.manage',
+      'admin.organizations', 'admin.organizations.manage',
     ],
   },
   clinician: {
@@ -86,33 +103,69 @@ export const DEMO_USERS = [
 const AuthContext = createContext(null)
 
 /**
- * AuthProvider — Configurable authentication context.
- * @param {string} defaultUserId — Auto-login user ID on mount (null = no auto-login)
- * @param {Array} users — Override demo user list
+ * AuthProvider — Dual-mode authentication context.
+ *
+ * Cognito mode: set cognitoConfig.userPoolId + cognitoConfig.clientId
+ * Demo mode:    set defaultUserId (or leave cognitoConfig empty)
  */
-export function AuthProvider({ children, defaultUserId = null, users }) {
+export function AuthProvider({
+  children,
+  cognitoConfig: cognitoConfigProp,
+  defaultUserId = null,
+  users,
+}) {
+  const cognitoConfig = cognitoConfigProp || {
+    userPoolId: typeof import.meta !== 'undefined' ? import.meta.env?.VITE_COGNITO_USER_POOL_ID : undefined,
+    clientId: typeof import.meta !== 'undefined' ? import.meta.env?.VITE_COGNITO_CLIENT_ID : undefined,
+  }
+  const mode = cognitoConfig?.userPoolId ? 'cognito' : 'demo'
+
   const [currentUser, setCurrentUser] = useState(null)
   const [allUsers] = useState(users || DEMO_USERS)
   const [token, setToken] = useState(null)
-  const [loading, setLoading] = useState(!!defaultUserId)
+  const [loading, setLoading] = useState(true)
+  const [authError, setAuthError] = useState(null)
   const tokenRef = useRef(null)
+  const cognitoInitRef = useRef(false)
 
-  // Keep tokenRef in sync and wire up api.js token getter
+  // Init Cognito SDK once
+  useEffect(() => {
+    if (mode === 'cognito' && !cognitoInitRef.current && cognitoConfig.userPoolId && cognitoConfig.clientId) {
+      initCognitoClient(cognitoConfig)
+      cognitoInitRef.current = true
+    }
+  }, [mode, cognitoConfig])
+
+  // Keep tokenRef in sync
   useEffect(() => {
     tokenRef.current = token
     setTokenGetter(() => tokenRef.current)
   }, [token])
 
-  // Login function — calls backend /api/auth/login
-  const login = useCallback(async (userId) => {
+  // ── Auto-logout on session expiry (401 from API) ──
+  useEffect(() => {
+    function handleExpired() {
+      if (mode === 'cognito') {
+        cognitoSignOut()
+        setToken(null)
+        setCurrentUser(null)
+        tokenRef.current = null
+      }
+    }
+    window.addEventListener('azh:auth-expired', handleExpired)
+    return () => window.removeEventListener('azh:auth-expired', handleExpired)
+  }, [mode])
+
+  // ── Demo mode login ──
+  const demoLogin = useCallback(async (userId) => {
     try {
       const result = await api.login(userId)
       setToken(result.token)
       setCurrentUser(result.user)
+      setAuthError(null)
       return result.user
     } catch (err) {
       console.error('[auth] Login failed:', err)
-      // Fallback to local-only mode if server is down
       const localUser = (users || DEMO_USERS).find(u => u.id === userId)
       if (localUser) {
         setToken(null)
@@ -123,28 +176,136 @@ export function AuthProvider({ children, defaultUserId = null, users }) {
     }
   }, [users])
 
-  // Switch user — async login with new userId
-  const switchUser = useCallback(async (userId) => {
-    setLoading(true)
-    try {
-      await login(userId)
-    } finally {
-      setLoading(false)
-    }
-  }, [login])
-
-  // Auto-login on mount if defaultUserId is provided
+  // ── Restore session on mount ──
   useEffect(() => {
-    if (defaultUserId) {
-      login(defaultUserId).finally(() => setLoading(false))
+    if (mode !== 'cognito') {
+      if (defaultUserId) {
+        demoLogin(defaultUserId).finally(() => setLoading(false))
+      } else {
+        setLoading(false)
+      }
+      return
     }
-  }, [login, defaultUserId])
 
+    // Cognito: try to restore session from localStorage
+    getCurrentSession().then(async (session) => {
+      if (session) {
+        setToken(session.idToken)
+        tokenRef.current = session.idToken
+        setTokenGetter(() => tokenRef.current)
+        try {
+          const { user } = await api.getMe()
+          setCurrentUser(user)
+        } catch {
+          cognitoSignOut()
+        }
+      }
+      setLoading(false)
+    }).catch(() => setLoading(false))
+  }, [mode]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Login ──
+  const login = useCallback(async (emailOrUserId, password) => {
+    setAuthError(null)
+    if (mode === 'demo') return demoLogin(emailOrUserId)
+
+    try {
+      const result = await cognitoSignIn(emailOrUserId, password)
+
+      if (result.newPasswordRequired) {
+        return { newPasswordRequired: true, cognitoUser: result.user, userAttributes: result.userAttributes }
+      }
+
+      setToken(result.idToken)
+      tokenRef.current = result.idToken
+      setTokenGetter(() => tokenRef.current)
+      const { user } = await api.getMe()
+      setCurrentUser(user)
+      return user
+    } catch (err) {
+      setAuthError(err.message || 'Login failed')
+      throw err
+    }
+  }, [mode, demoLogin])
+
+  // ── Complete new password challenge ──
+  const setNewPassword = useCallback(async (cognitoUser, newPassword, userAttributes) => {
+    try {
+      const result = await cognitoCompleteNewPassword(cognitoUser, newPassword, userAttributes)
+      setToken(result.idToken)
+      tokenRef.current = result.idToken
+      setTokenGetter(() => tokenRef.current)
+      const { user } = await api.getMe()
+      setCurrentUser(user)
+      return user
+    } catch (err) {
+      setAuthError(err.message)
+      throw err
+    }
+  }, [])
+
+  // ── Register ──
+  const register = useCallback(async (email, password, name) => {
+    setAuthError(null)
+    try {
+      return await cognitoSignUp(email, password, name)
+    } catch (err) {
+      setAuthError(err.message)
+      throw err
+    }
+  }, [])
+
+  // ── Confirm registration ──
+  const confirmRegistration = useCallback(async (email, code) => {
+    try {
+      await cognitoConfirmSignUp(email, code)
+    } catch (err) {
+      setAuthError(err.message)
+      throw err
+    }
+  }, [])
+
+  // ── Forgot password ──
+  const resetPassword = useCallback(async (email) => {
+    setAuthError(null)
+    try {
+      await cognitoForgotPassword(email)
+    } catch (err) {
+      setAuthError(err.message)
+      throw err
+    }
+  }, [])
+
+  // ── Confirm forgot password ──
+  const confirmResetPassword = useCallback(async (email, code, newPassword) => {
+    try {
+      await cognitoConfirmForgotPassword(email, code, newPassword)
+    } catch (err) {
+      setAuthError(err.message)
+      throw err
+    }
+  }, [])
+
+  // ── Logout ──
+  const logout = useCallback(() => {
+    if (mode === 'cognito') cognitoSignOut()
+    setToken(null)
+    setCurrentUser(null)
+    tokenRef.current = null
+  }, [mode])
+
+  // ── Switch user (demo mode only) ──
+  const switchUser = useCallback(async (userId) => {
+    if (mode !== 'demo') return
+    setLoading(true)
+    try { await demoLogin(userId) } finally { setLoading(false) }
+  }, [demoLogin, mode])
+
+  // ── Permission helpers (unchanged) ──
   const hasPermission = useCallback((permission) => {
     if (!currentUser) return false
     const role = ROLES[currentUser.role]
-    if (!role) return false
-    return role.permissions.includes(permission)
+    return role ? role.permissions.includes(permission) : false
   }, [currentUser])
 
   const hasRole = useCallback((...roles) => {
@@ -152,26 +313,17 @@ export function AuthProvider({ children, defaultUserId = null, users }) {
     return roles.includes(currentUser.role)
   }, [currentUser])
 
-  const canAccessPatientData = useCallback(() => {
-    return hasRole('family', 'clinician')
-  }, [hasRole])
+  const canAccessPatientData = useCallback(() => hasRole('family', 'clinician'), [hasRole])
+  const canAccessAdmin = useCallback(() => hasRole('superadmin', 'admin'), [hasRole])
 
-  const canAccessAdmin = useCallback(() => {
-    return hasRole('superadmin', 'admin')
-  }, [hasRole])
+  const isAuthenticated = !!currentUser
 
   return (
     <AuthContext.Provider value={{
-      currentUser,
-      allUsers,
-      login,
-      switchUser,
-      hasPermission,
-      hasRole,
-      canAccessPatientData,
-      canAccessAdmin,
-      loading,
-      token,
+      currentUser, allUsers, loading, token, authError, isAuthenticated, mode,
+      login, logout, register, confirmRegistration,
+      resetPassword, confirmResetPassword, setNewPassword, switchUser,
+      hasPermission, hasRole, canAccessPatientData, canAccessAdmin,
     }}>
       {children}
     </AuthContext.Provider>
