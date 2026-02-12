@@ -1,0 +1,6 @@
+Paper: Speech Disorders in PD - Early Diagnostics and Effects of Medication
+Authors: Brabenec et al.
+Year: 2017
+Status: Not available for open-access download
+Reason: S2 API: HTTP Error 429: 
+Action: Search on PubMed, Google Scholar, or institution library

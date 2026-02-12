@@ -1,0 +1,6 @@
+Paper: AVEC 2019 Workshop and Challenge - Depression Detection with AI
+Authors: Ringeval et al.
+Year: 2019
+Status: Not available for open-access download
+Reason: S2 API: HTTP Error 429: 
+Action: Search on PubMed, Google Scholar, or institution library

@@ -1,0 +1,6 @@
+Paper: Automatic Detection of PD in Running Speech in Three Languages
+Authors: Orozco-Arroyave et al.
+Year: 2016
+Status: Not available for open-access download
+Reason: S2 API: HTTP Error 429: 
+Action: Search on PubMed, Google Scholar, or institution library

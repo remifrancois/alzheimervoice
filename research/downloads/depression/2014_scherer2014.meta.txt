@@ -1,0 +1,6 @@
+Paper: Voice Quality as Speaker-Independent Indicator of Depression and PTSD
+Authors: Scherer et al.
+Year: 2014
+Status: Not available for open-access download
+Reason: S2 API: HTTP Error 429: 
+Action: Search on PubMed, Google Scholar, or institution library

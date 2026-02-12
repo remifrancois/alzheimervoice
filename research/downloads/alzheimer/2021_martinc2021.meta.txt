@@ -1,0 +1,6 @@
+Paper: Temporal Integration for ADReSS - 93.8 Percent Accuracy
+Authors: Martinc et al.
+Year: 2021
+Status: Not available for open-access download
+Reason: S2 API: HTTP Error 429: 
+Action: Search on PubMed, Google Scholar, or institution library

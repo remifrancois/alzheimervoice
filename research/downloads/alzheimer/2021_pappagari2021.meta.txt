@@ -1,0 +1,6 @@
+Paper: Automatic Detection and Assessment of AD Using Speech and Language
+Authors: Pappagari et al.
+Year: 2021
+Status: Not available for open-access download
+Reason: S2 API: HTTP Error 429: 
+Action: Search on PubMed, Google Scholar, or institution library

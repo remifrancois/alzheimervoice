@@ -1,5 +1,10 @@
 node_modules/
 .env
+.env.development
+.env.production
 *.log
 .DS_Store
 dist/
+data/
+research/downloads/*.pdf
+research/downloads/**/*.pdf

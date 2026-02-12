@@ -1,0 +1,6 @@
+Paper: GPT-Based Detection of AD from Clinical Conversations
+Authors: Li et al.
+Year: 2023
+Status: Not available for open-access download
+Reason: S2 API: HTTP Error 429: 
+Action: Search on PubMed, Google Scholar, or institution library
