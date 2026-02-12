@@ -18,6 +18,9 @@ import OpenSourcePage from './pages/OpenSourcePage'
 import DemoPage from './pages/DemoPage'
 import PrivacyPage from './pages/PrivacyPage'
 import LegalPage from './pages/LegalPage'
+import CompliancePage from './pages/CompliancePage'
+import CreatorsPage from './pages/CreatorsPage'
+import CoreVoiceFrameworkPage from './pages/CoreVoiceFrameworkPage'
 
 const pages = {
   scientific: ScientificPage,
@@ -26,6 +29,9 @@ const pages = {
   demo: DemoPage,
   privacy: PrivacyPage,
   legal: LegalPage,
+  compliance: CompliancePage,
+  creators: CreatorsPage,
+  corevoiceframework: CoreVoiceFrameworkPage,
 }
 
 function HomePage() {

@@ -48,7 +48,7 @@ export default function Navbar() {
               <path d="M12 2v20M8 6v12M4 10v4M16 6v12M20 10v4" />
             </svg>
           </div>
-          <span className="text-lg font-bold text-white">MemoVoice</span>
+          <span className="text-lg font-bold text-white">AlzheimerVoice.org</span>
         </a>
         <div className="hidden md:flex items-center gap-6">
           {pageLinks.map(link => (
@@ -80,8 +80,8 @@ export default function Navbar() {
               </div>
             )}
           </div>
-          <a href="https://interface.alzheimervoice.org" className="text-sm text-slate-400 hover:text-white transition-colors">Login</a>
-          <a href={buildPath(lang, 'demo')} onClick={(e) => handleNav(e, 'demo')} className="px-5 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors">{t('nav.cta')}</a>
+          <a href="https://interface.alzheimervoice.org" className="text-sm text-slate-400 hover:text-white transition-colors">{t('nav.cta')}</a>
+          <a href={buildPath(lang, 'demo')} onClick={(e) => handleNav(e, 'demo')} className="px-5 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors">{t('nav.demo')}</a>
         </div>
         <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 text-slate-400">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -104,8 +104,8 @@ export default function Navbar() {
               ))}
             </div>
           </div>
-          <a href="https://interface.alzheimervoice.org" className="block text-sm text-slate-400 hover:text-white">Login</a>
-          <a href={buildPath(lang, 'demo')} onClick={(e) => handleNav(e, 'demo')} className="block px-4 py-2 rounded-lg bg-violet-600 text-sm font-medium text-white text-center">{t('nav.cta')}</a>
+          <a href="https://interface.alzheimervoice.org" className="block text-sm text-slate-400 hover:text-white">{t('nav.cta')}</a>
+          <a href={buildPath(lang, 'demo')} onClick={(e) => handleNav(e, 'demo')} className="block px-4 py-2 rounded-lg bg-violet-600 text-sm font-medium text-white text-center">{t('nav.demo')}</a>
         </div>
       )}
     </nav>

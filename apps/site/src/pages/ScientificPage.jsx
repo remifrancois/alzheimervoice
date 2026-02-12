@@ -15,7 +15,7 @@ function SectionHeader({ label, title, highlight, desc }) {
   )
 }
 
-function DimensionCard({ title, name, desc }) {
+function DimensionCard({ name, desc }) {
   return (
     <div className="p-4 rounded-lg bg-white/[0.02] border border-white/5">
       <p className="text-sm font-semibold text-violet-300 mb-1">{name}</p>
@@ -24,17 +24,21 @@ function DimensionCard({ title, name, desc }) {
   )
 }
 
+const DOMAINS = [
+  { label: 'domainLexical', prefix: 'lexical', count: 8 },
+  { label: 'domainSyntactic', prefix: 'syntactic', count: 5 },
+  { label: 'domainCoherence', prefix: 'coherence', count: 7 },
+  { label: 'domainFluency', prefix: 'fluency', count: 8 },
+  { label: 'domainMemory', prefix: 'memory', count: 6 },
+  { label: 'domainDiscourse', prefix: 'discourse', count: 5 },
+  { label: 'domainAffective', prefix: 'affective', count: 6 },
+  { label: 'domainAcoustic', prefix: 'acoustic', count: 3 },
+  { label: 'domainPdMotor', prefix: 'pdMotor', count: 3 },
+]
+
 export default function ScientificPage() {
   const { t } = useT()
   const { navigate } = useRouter()
-
-  const domains = [
-    { key: 'Lexical', label: t('scientific.domainLexical'), prefix: 'lexical', count: 5 },
-    { key: 'Syntactic', label: t('scientific.domainSyntactic'), prefix: 'syntactic', count: 5 },
-    { key: 'Coherence', label: t('scientific.domainCoherence'), prefix: 'coherence', count: 5 },
-    { key: 'Fluency', label: t('scientific.domainFluency'), prefix: 'fluency', count: 5 },
-    { key: 'Memory', label: t('scientific.domainMemory'), prefix: 'memory', count: 5 },
-  ]
 
   const pipes = [1, 2, 3, 4, 5]
 
@@ -71,15 +75,15 @@ export default function ScientificPage() {
         </div>
       </Section>
 
-      {/* 25 Dimensions */}
+      {/* 47 Indicators across 7 Domains */}
       <Section className="bg-white/[0.01]">
         <SectionHeader label={t('scientific.dimensionsLabel')} title={t('scientific.dimensionsTitle')} highlight={t('scientific.dimensionsHighlight')} desc={t('scientific.dimensionsDesc')} />
         <div className="space-y-10">
-          {domains.map(({ key, label, prefix, count }) => (
-            <div key={key}>
+          {DOMAINS.map(({ label, prefix, count }) => (
+            <div key={prefix}>
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-violet-500" />
-                {label}
+                {t(`scientific.${label}`)}
               </h3>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {Array.from({ length: count }, (_, i) => (
@@ -112,7 +116,7 @@ export default function ScientificPage() {
         <div className="max-w-3xl mx-auto">
           <h3 className="text-lg font-semibold text-white mb-6">{t('scientific.validationStudies')}</h3>
           <div className="space-y-4">
-            {[1, 2, 3, 4, 5].map(i => (
+            {[1, 2, 3, 4, 5, 6, 7].map(i => (
               <div key={i} className="p-4 rounded-lg bg-white/[0.02] border border-white/5">
                 <p className="text-sm text-slate-300 leading-relaxed">{t(`scientific.study${i}`)}</p>
               </div>
@@ -124,9 +128,14 @@ export default function ScientificPage() {
       {/* Back */}
       <Section>
         <div className="text-center">
-          <button onClick={() => navigate('home')} className="px-6 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors">
-            {t('scientific.backToHome')}
-          </button>
+          <div className="flex items-center justify-center gap-4">
+            <button onClick={() => navigate('corevoiceframework')} className="px-6 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors">
+              {t('nav.cvf')}
+            </button>
+            <button onClick={() => navigate('home')} className="px-6 py-3 rounded-lg border border-white/10 hover:border-white/20 text-sm font-medium text-slate-300 transition-colors">
+              {t('scientific.backToHome')}
+            </button>
+          </div>
         </div>
       </Section>
     </div>
