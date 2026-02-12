@@ -3,7 +3,6 @@ import en from './locales/en.json'
 
 export const LANGUAGES = [
   { code: 'en', name: 'English', native: 'English' },
-  { code: 'zh', name: 'Chinese', native: '中文' },
   { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
   { code: 'es', name: 'Spanish', native: 'Español' },
   { code: 'fr', name: 'French', native: 'Français' },
@@ -17,7 +16,6 @@ export const LANGUAGES = [
 const LANG_CODES = new Set(LANGUAGES.map(l => l.code))
 
 const loaders = {
-  zh: () => import('./locales/zh.json'),
   hi: () => import('./locales/hi.json'),
   es: () => import('./locales/es.json'),
   fr: () => import('./locales/fr.json'),
