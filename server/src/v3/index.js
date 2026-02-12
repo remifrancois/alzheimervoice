@@ -1,15 +1,11 @@
 /**
  * V3 CVF ENGINE — Public API
  *
- * The evidence-based cognitive voice fingerprint engine.
- * 47 indicators, 6-condition differential, cascade detection,
- * trajectory prediction — all without 1M token inference.
+ * Two-tier architecture:
+ *   DAILY  → Sonnet extraction + deterministic scoring ($0.05/session)
+ *   WEEKLY → Opus 4.6 deep clinical reasoning ($0.30-0.50/week)
  *
- * Usage:
- *   import { v3 } from './v3/index.js';
- *   const result = v3.analyzeSession(vector, baseline, confounders);
- *   const diff = v3.differential(result.domain_scores, result.z_scores, context);
- *   const trajectory = v3.predict(weeklyHistory, diff, result.cascade);
+ * Platform-ready: register v3ApiPlugin with your Fastify instance.
  */
 
 // Core algorithm
@@ -27,22 +23,28 @@ export {
 } from './algorithm.js';
 
 // Differential diagnosis
-export {
-  runDifferential,
-} from './differential.js';
+export { runDifferential } from './differential.js';
 
 // Trajectory prediction
-export {
-  predictTrajectory,
-} from './trajectory.js';
+export { predictTrajectory } from './trajectory.js';
 
-// Feature extraction (the only LLM call)
+// Feature extraction (Sonnet daily, Opus weekly)
 export {
   extractFeatures as extractV3Features,
   extractEarlyDetection,
 } from './feature-extractor.js';
 
-// Indicator definitions (the knowledge graph in code)
+// Weekly deep analysis (Opus 4.6)
+export {
+  runWeeklyDeepAnalysis,
+  loadWeeklyReport,
+  listWeeklyReports,
+} from './weekly-deep.js';
+
+// API plugin (Fastify)
+export { default as v3ApiPlugin } from './api.js';
+
+// Indicator definitions
 export {
   INDICATORS,
   ALL_INDICATOR_IDS,
@@ -63,9 +65,11 @@ export const V3_META = {
   domains: 7,
   conditions: 6,
   studies_referenced: 60,
-  extraction_model: 'claude-sonnet-4-5-20250929',
-  extraction_cost_per_session: '$0.05-0.08',
-  inference_requires_llm: false,
-  paradigm: 'evidence_compiled_algorithm',
-  description: 'Research IS the algorithm. 60+ studies compiled into deterministic scoring, differential, and prediction. LLM used only for feature extraction.'
+  architecture: {
+    daily: { model: 'claude-sonnet-4-5-20250929', cost: '$0.05/session', purpose: 'Feature extraction + algorithmic drift scoring' },
+    weekly: { model: 'claude-opus-4-6', cost: '$0.30-0.50/analysis', purpose: 'Deep clinical reasoning, narrative generation, probe design' },
+  },
+  total_weekly_cost: '$0.65-0.85/patient (7 daily + 1 weekly)',
+  paradigm: 'evidence_compiled + deep_validation',
+  description: 'Daily Sonnet extracts 47 features → deterministic scoring. Weekly Opus validates differential, generates narratives, designs probes.'
 };

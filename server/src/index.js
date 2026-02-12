@@ -17,6 +17,9 @@ import { loadTwinAnalysis, generateTwinVector, computeDivergence } from './servi
 import { loadCohort, matchTrajectory, generateCohort } from './services/synthetic-cohort.js';
 import { getLibraryStatus } from './services/living-library.js';
 
+// V3 — Evidence-compiled engine
+import { v3ApiPlugin } from './v3/index.js';
+
 // Security plugins
 import authPlugin from './plugins/auth.js';
 import auditPlugin from './plugins/audit.js';
@@ -370,6 +373,12 @@ app.get('/api/admin/compliance', {
 });
 
 // ============================================================
+// V3 — Evidence-Compiled Engine API
+// ============================================================
+
+await app.register(v3ApiPlugin);
+
+// ============================================================
 // Health Check (public)
 // ============================================================
 
@@ -377,10 +386,15 @@ app.get('/health', async () => {
   return {
     status: 'ok',
     service: 'memovoice-cvf-engine',
-    version: '2.0.0',
+    version: '3.0.0',
     features: {
       v1: ['cvf_extraction', 'baseline_calibration', 'drift_detection', 'weekly_analysis'],
-      v2: ['living_library', 'differential_diagnosis', 'cognitive_archaeology', 'cognitive_twin', 'synthetic_cohort', 'temporal_hologram']
+      v2: ['living_library', 'differential_diagnosis', 'cognitive_archaeology', 'cognitive_twin', 'synthetic_cohort', 'temporal_hologram'],
+      v3: ['47_indicators', '6_condition_differential', 'cascade_detection', 'trajectory_prediction', 'daily_sonnet_drift', 'weekly_opus_deep']
+    },
+    architecture: {
+      daily: 'Sonnet → 47 features → algorithmic scoring ($0.05/session)',
+      weekly: 'Opus 4.6 Extended Thinking → deep clinical reasoning ($0.30-0.50)',
     },
     security: ['jwt_auth', 'rbac', 'encryption_at_rest', 'audit_logging', 'rate_limiting', 'helmet']
   };
@@ -391,9 +405,9 @@ const start = async () => {
   try {
     const port = process.env.PORT || 3001;
     await app.listen({ port, host: '0.0.0.0' });
-    console.log(`\n  MemoVoice CVF Engine V2 running on http://localhost:${port}`);
-    console.log(`  6-Layer Architecture: Library | Differential | Archaeology | Twin | Cohort | Hologram`);
-    console.log(`  Security: JWT Auth | RBAC | AES-256-GCM | Audit Log | Rate Limit | Helmet`);
+    console.log(`\n  MemoVoice CVF Engine V3 running on http://localhost:${port}`);
+    console.log(`  V3: Daily Sonnet ($0.05) + Weekly Opus ($0.30) | 47 indicators | 6-condition differential`);
+    console.log(`  API: /api/v3/process | /api/v3/weekly | /api/v3/drift | /api/v3/differential`);
     console.log(`  "La voix se souvient de ce que l'esprit oublie."\n`);
   } catch (err) {
     app.log.error(err);
