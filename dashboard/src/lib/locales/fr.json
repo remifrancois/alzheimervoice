@@ -15,7 +15,14 @@
     "apiKeys": "Clés API",
     "logs": "Journaux",
     "monitoring": "Surveillance",
-    "gdpr": "RGPD / Données"
+    "gdpr": "RGPD / Données",
+    "organizations": "Organisations",
+    "audit": "Piste d'audit",
+    "security": "Sécurité",
+    "billing": "Facturation",
+    "clinicalGov": "Gouv. clinique",
+    "incidents": "Incidents",
+    "compliance": "Conformité"
   },
   "sidebar": {
     "brand": "MemoVoice",

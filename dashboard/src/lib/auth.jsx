@@ -29,6 +29,13 @@ export const ROLES = {
       'admin.logs', 'admin.logs.export',
       'admin.monitoring', 'admin.monitoring.alerts',
       'admin.settings',
+      'admin.audit', 'admin.audit.export',
+      'admin.billing', 'admin.billing.manage',
+      'admin.clinical', 'admin.clinical.manage',
+      'admin.security', 'admin.security.manage',
+      'admin.incidents', 'admin.incidents.manage',
+      'admin.compliance', 'admin.compliance.manage',
+      'admin.organizations', 'admin.organizations.manage',
     ],
   },
   admin: {
@@ -41,6 +48,8 @@ export const ROLES = {
       'admin.users', 'admin.users.create',
       'admin.settings',
       'admin.logs',
+      'admin.incidents',
+      'admin.compliance',
     ],
   },
   clinician: {

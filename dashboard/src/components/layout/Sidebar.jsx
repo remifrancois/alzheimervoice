@@ -11,12 +11,18 @@ const PATIENT_NAV = [
 ]
 
 const ADMIN_NAV = [
-  { id: 'admin-users',   labelKey: 'nav.userMgmt',       icon: 'users',      path: '/admin/users',         permission: 'admin.users' },
-  { id: 'admin-subs',    labelKey: 'nav.subscriptions',   icon: 'creditCard', path: '/admin/subscriptions', permission: 'admin.subscriptions' },
-  { id: 'admin-api',     labelKey: 'nav.apiKeys',         icon: 'key',        path: '/admin/api-keys',      permission: 'admin.api' },
-  { id: 'admin-logs',    labelKey: 'nav.logs',            icon: 'log',        path: '/admin/logs',          permission: 'admin.logs' },
-  { id: 'admin-monitor', labelKey: 'nav.monitoring',      icon: 'monitor',    path: '/admin/monitoring',    permission: 'admin.monitoring' },
-  { id: 'admin-gdpr',    labelKey: 'nav.gdpr',            icon: 'trash',      path: '/admin/gdpr',          permission: 'admin.users' },
+  { id: 'admin-users',      labelKey: 'nav.userMgmt',      icon: 'users',       path: '/admin/users',         permission: 'admin.users' },
+  { id: 'admin-orgs',       labelKey: 'nav.organizations', icon: 'building',    path: '/admin/organizations', permission: 'admin.organizations' },
+  { id: 'admin-audit',      labelKey: 'nav.audit',         icon: 'clipboard',   path: '/admin/audit',         permission: 'admin.audit' },
+  { id: 'admin-security',   labelKey: 'nav.security',      icon: 'shield',      path: '/admin/security',      permission: 'admin.security' },
+  { id: 'admin-billing',    labelKey: 'nav.billing',       icon: 'dollar',      path: '/admin/billing',       permission: 'admin.billing' },
+  { id: 'admin-clinical',   labelKey: 'nav.clinicalGov',   icon: 'stethoscope', path: '/admin/clinical',      permission: 'admin.clinical' },
+  { id: 'admin-incidents',  labelKey: 'nav.incidents',     icon: 'siren',       path: '/admin/incidents',     permission: 'admin.incidents' },
+  { id: 'admin-compliance', labelKey: 'nav.compliance',    icon: 'gavel',       path: '/admin/compliance',    permission: 'admin.compliance' },
+  { id: 'admin-subs',       labelKey: 'nav.subscriptions', icon: 'creditCard',  path: '/admin/subscriptions', permission: 'admin.subscriptions' },
+  { id: 'admin-api',        labelKey: 'nav.apiKeys',       icon: 'key',         path: '/admin/api-keys',      permission: 'admin.api' },
+  { id: 'admin-logs',       labelKey: 'nav.logs',          icon: 'log',         path: '/admin/logs',          permission: 'admin.logs' },
+  { id: 'admin-monitor',    labelKey: 'nav.monitoring',    icon: 'monitor',     path: '/admin/monitoring',    permission: 'admin.monitoring' },
 ]
 
 const SETTINGS_NAV = [

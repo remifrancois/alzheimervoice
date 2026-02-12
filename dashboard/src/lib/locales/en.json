@@ -15,7 +15,14 @@
     "apiKeys": "API Keys",
     "logs": "Logs",
     "monitoring": "Monitoring",
-    "gdpr": "GDPR / Data"
+    "gdpr": "GDPR / Data",
+    "organizations": "Organizations",
+    "audit": "Audit Trail",
+    "security": "Security",
+    "billing": "Billing",
+    "clinicalGov": "Clinical Gov.",
+    "incidents": "Incidents",
+    "compliance": "Compliance"
   },
   "sidebar": {
     "brand": "MemoVoice",

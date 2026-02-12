@@ -132,6 +132,107 @@ export default function MonitoringPage() {
           </div>
         </Card>
 
+        {/* AI Token Budget Dashboard */}
+        <Card>
+          <CardHeader title="AI Token Budget" subtitle="Daily/weekly/monthly Claude API spend vs. allocated budget" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            {[
+              { period: 'Daily Budget', used: 48200, budget: 100000, cost: 0.72, budgetCost: 1.50 },
+              { period: 'Weekly Budget', used: 340000, budget: 500000, cost: 5.10, budgetCost: 7.50 },
+              { period: 'Monthly Budget', used: 1240000, budget: 2000000, cost: 18.60, budgetCost: 30.00 },
+            ].map(b => {
+              const pct = Math.round((b.used / b.budget) * 100)
+              const barColor = pct >= 90 ? 'bg-red-500' : pct >= 75 ? 'bg-amber-500' : 'bg-emerald-500'
+              return (
+                <div key={b.period} className="rounded-lg border border-slate-800 p-4 bg-slate-800/20">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs text-slate-400">{b.period}</span>
+                    <span className={`text-xs font-bold tabular-nums ${pct >= 90 ? 'text-red-400' : pct >= 75 ? 'text-amber-400' : 'text-emerald-400'}`}>{pct}%</span>
+                  </div>
+                  <div className="text-lg font-bold text-white tabular-nums">{(b.used / 1000).toFixed(0)}K <span className="text-xs text-slate-600 font-normal">/ {(b.budget / 1000).toFixed(0)}K tokens</span></div>
+                  <div className="h-2 bg-slate-700 rounded-full overflow-hidden mt-2">
+                    <div className={`h-full rounded-full transition-all ${barColor}`} style={{ width: `${Math.min(pct, 100)}%` }} />
+                  </div>
+                  <div className="text-[10px] text-slate-600 mt-1">${b.cost.toFixed(2)} / ${b.budgetCost.toFixed(2)} budget</div>
+                </div>
+              )
+            })}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+            <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
+              <div className="text-[10px] text-amber-400 font-medium">50% Alert</div>
+              <div className="text-xs text-slate-400 mt-0.5">Triggered at 1M tokens</div>
+              <Badge variant="success" className="mt-1">Passed</Badge>
+            </div>
+            <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
+              <div className="text-[10px] text-amber-400 font-medium">75% Alert</div>
+              <div className="text-xs text-slate-400 mt-0.5">Triggered at 1.5M tokens</div>
+              <Badge variant="default" className="mt-1">Pending</Badge>
+            </div>
+            <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-3">
+              <div className="text-[10px] text-red-400 font-medium">90% Alert</div>
+              <div className="text-xs text-slate-400 mt-0.5">Triggered at 1.8M tokens</div>
+              <Badge variant="default" className="mt-1">Pending</Badge>
+            </div>
+            <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-3">
+              <div className="text-[10px] text-red-400 font-medium">100% Hard Limit</div>
+              <div className="text-xs text-slate-400 mt-0.5">Analysis queue paused</div>
+              <Badge variant="default" className="mt-1">Pending</Badge>
+            </div>
+          </div>
+        </Card>
+
+        {/* Per-Org Token Quotas */}
+        <Card>
+          <CardHeader title="Per-Organization Token Quotas" subtitle="Token budgets and usage per organization for the current billing period" />
+          <div className="border border-slate-800 rounded-lg overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-slate-800/50 text-xs text-slate-500 font-medium">
+                  <th className="text-left py-2.5 px-4">Organization</th>
+                  <th className="text-right py-2.5 px-4">Tokens Used</th>
+                  <th className="text-right py-2.5 px-4">Quota</th>
+                  <th className="text-right py-2.5 px-4">Usage</th>
+                  <th className="text-right py-2.5 px-4">Est. Cost</th>
+                  <th className="text-left py-2.5 px-4">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { org: 'CHU Bordeaux', used: 620000, quota: 800000, cost: 9.30 },
+                  { org: 'Clinique Montpellier', used: 180000, quota: 300000, cost: 2.70 },
+                  { org: 'London Memory Clinic', used: 290000, quota: 400000, cost: 4.35 },
+                  { org: 'EHPAD Les Mimosas', used: 85000, quota: 150000, cost: 1.28 },
+                  { org: 'Demo Clinic', used: 12000, quota: 50000, cost: 0.18 },
+                ].map(q => {
+                  const pct = Math.round((q.used / q.quota) * 100)
+                  return (
+                    <tr key={q.org} className="border-t border-slate-800/50 hover:bg-slate-800/20 transition-colors">
+                      <td className="py-2.5 px-4 text-sm text-slate-300">{q.org}</td>
+                      <td className="py-2.5 px-4 text-right text-xs text-slate-400 tabular-nums">{(q.used / 1000).toFixed(0)}K</td>
+                      <td className="py-2.5 px-4 text-right text-xs text-slate-500 tabular-nums">{(q.quota / 1000).toFixed(0)}K</td>
+                      <td className="py-2.5 px-4 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <div className="w-16 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                            <div className={`h-full rounded-full ${pct >= 90 ? 'bg-red-500' : pct >= 75 ? 'bg-amber-500' : 'bg-emerald-500'}`} style={{ width: `${Math.min(pct, 100)}%` }} />
+                          </div>
+                          <span className="text-[10px] text-slate-500 tabular-nums w-8 text-right">{pct}%</span>
+                        </div>
+                      </td>
+                      <td className="py-2.5 px-4 text-right text-xs text-amber-400 tabular-nums">${q.cost.toFixed(2)}</td>
+                      <td className="py-2.5 px-4">
+                        <Badge variant={pct >= 90 ? 'danger' : pct >= 75 ? 'warning' : 'success'}>
+                          {pct >= 90 ? 'Over Limit' : pct >= 75 ? 'Warning' : 'OK'}
+                        </Badge>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+
         {/* Recent Alerts */}
         <Card>
           <CardHeader title="Recent Alerts" subtitle="System and clinical notifications" />
