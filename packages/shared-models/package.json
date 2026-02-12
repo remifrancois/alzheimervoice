@@ -1,0 +1,17 @@
+{
+  "name": "@azh/shared-models",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./patient": "./src/patient.js",
+    "./session": "./src/session.js",
+    "./cvf": "./src/cvf.js",
+    "./memory": "./src/memory.js",
+    "./crypto": "./src/crypto.js",
+    "./secure-fs": "./src/secure-fs.js",
+    "./users": "./src/users.js"
+  }
+}

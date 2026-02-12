@@ -1,0 +1,14 @@
+{
+  "name": "alzheimervoice",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n api,cvf,interface,admin,site -c blue,magenta,green,red,yellow \"pnpm --filter @azh/api dev\" \"pnpm --filter @azh/cvf dev\" \"pnpm --filter @azh/interface dev\" \"pnpm --filter @azh/admin dev\" \"pnpm --filter @azh/site dev\"",
+    "dev:backend": "concurrently -n api,cvf -c blue,magenta \"pnpm --filter @azh/api dev\" \"pnpm --filter @azh/cvf dev\"",
+    "dev:frontend": "concurrently -n interface,admin,site -c green,red,yellow \"pnpm --filter @azh/interface dev\" \"pnpm --filter @azh/admin dev\" \"pnpm --filter @azh/site dev\"",
+    "build": "pnpm -r build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
