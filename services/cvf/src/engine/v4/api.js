@@ -49,6 +49,18 @@ import {
   V4_META,
 } from './index.js';
 
+import crypto from 'crypto';
+
+const PATIENT_ID_REGEX = /^[a-zA-Z0-9_-]{1,64}$/;
+const MAX_PATIENTS = 10000;
+const MAX_SESSIONS_PER_PATIENT = 1000;
+
+function validatePatientId(patientId) {
+  if (!patientId || !PATIENT_ID_REGEX.test(patientId)) {
+    throw { statusCode: 400, message: 'Invalid patientId: must be 1-64 alphanumeric/dash/underscore characters' };
+  }
+}
+
 // ════════════════════════════════════════════════
 // IN-MEMORY STORAGE (demo purposes)
 // ════════════════════════════════════════════════
@@ -58,12 +70,21 @@ const sessions = new Map();    // patientId -> [session, ...]
 const baselines = new Map();   // patientId -> baseline
 
 function getPatient(patientId) { return patients.get(patientId) || null; }
-function savePatientLocal(patient) { patients.set(patient.patient_id, patient); }
+function savePatientLocal(patient) {
+  if (!patients.has(patient.patient_id) && patients.size >= MAX_PATIENTS) {
+    throw { statusCode: 503, message: 'Maximum patient capacity reached' };
+  }
+  patients.set(patient.patient_id, patient);
+}
 
 function getPatientSessions(patientId) { return sessions.get(patientId) || []; }
 function pushSession(patientId, session) {
   if (!sessions.has(patientId)) sessions.set(patientId, []);
-  sessions.get(patientId).push(session);
+  const patientSessions = sessions.get(patientId);
+  if (patientSessions.length >= MAX_SESSIONS_PER_PATIENT) {
+    throw { statusCode: 503, message: 'Maximum sessions per patient reached' };
+  }
+  patientSessions.push(session);
 }
 
 function getBaseline(patientId) { return baselines.get(patientId) || null; }
@@ -84,13 +105,24 @@ export default async function v4Routes(app) {
         type: 'object',
         required: ['patientId', 'transcript'],
         properties: {
-          patientId: { type: 'string' },
-          transcript: { type: 'array' },
-          audioBase64: { type: 'string' },
-          audioFormat: { type: 'string', default: 'wav' },
-          language: { type: 'string', default: 'fr' },
-          confounders: { type: 'object' },
-          durationSeconds: { type: 'number' },
+          patientId: { type: 'string', minLength: 1, maxLength: 64, pattern: '^[a-zA-Z0-9_-]+$' },
+          transcript: {
+            type: 'array',
+            items: {
+              type: 'object',
+              required: ['role', 'text'],
+              properties: {
+                role: { type: 'string', enum: ['patient', 'assistant'] },
+                text: { type: 'string', minLength: 1, maxLength: 10000 },
+              },
+              additionalProperties: false,
+            },
+          },
+          audioBase64: { type: 'string', maxLength: 10485760 },
+          audioFormat: { type: 'string', default: 'wav', enum: ['wav', 'mp3', 'ogg', 'webm', 'flac'] },
+          language: { type: 'string', default: 'fr', enum: ['fr', 'en'] },
+          confounders: { type: 'object', additionalProperties: { type: 'boolean' } },
+          durationSeconds: { type: 'number', minimum: 0, maximum: 3600 },
           mode: { type: 'string', enum: ['full', 'early_detection'], default: 'full' },
         }
       }
@@ -105,7 +137,7 @@ export default async function v4Routes(app) {
       savePatientLocal(patient);
     }
 
-    console.log(`[V4] Processing session for ${patient.first_name} (mode=${mode}, audio=${audioBase64 ? 'yes' : 'no'})...`);
+    console.log(`[V4] Processing session for patient_${crypto.createHash('sha256').update(patientId).digest('hex').slice(0, 8)} (mode=${mode}, audio=${audioBase64 ? 'yes' : 'no'})...`);
 
     // Run text extraction and audio pipeline in parallel
     const textPromise = mode === 'early_detection'
@@ -130,11 +162,12 @@ export default async function v4Routes(app) {
       audioPromise || Promise.resolve({}),
     ]);
 
-    // Merge text + audio vectors
+    // Merge text + audio vectors (only allow known AUDIO_INDICATORS)
     const mergedVector = { ...textVector };
     if (audioVector && typeof audioVector === 'object') {
+      const audioOnlyIds = new Set(AUDIO_INDICATORS);
       for (const [key, value] of Object.entries(audioVector)) {
-        if (value !== null && value !== undefined) {
+        if (audioOnlyIds.has(key) && value !== null && value !== undefined) {
           mergedVector[key] = value;
         }
       }
@@ -142,7 +175,7 @@ export default async function v4Routes(app) {
 
     // Create session record
     const session = {
-      session_id: `s_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      session_id: `s_${Date.now()}_${crypto.randomUUID()}`,
       patient_id: patientId,
       language: language || patient.language,
       timestamp: new Date().toISOString(),
@@ -168,7 +201,7 @@ export default async function v4Routes(app) {
         patient.baseline_established = true;
         patient.baseline_sessions = baselineResult.sessions;
         savePatientLocal(patient);
-        console.log(`[V4] Baseline established for ${patient.first_name} (${baselineResult.sessions} sessions)`);
+        console.log(`[V4] Baseline established for patient_${crypto.createHash('sha256').update(patientId).digest('hex').slice(0, 8)} (${baselineResult.sessions} sessions)`);
       }
       return {
         status: 'calibrating',
@@ -233,7 +266,7 @@ export default async function v4Routes(app) {
     const patient = getPatient(patientId);
     if (!patient) return reply.code(404).send({ error: 'Patient not found' });
 
-    console.log(`[V4] Processing ${taskType} micro-task audio for ${patient.first_name}...`);
+    console.log(`[V4] Processing ${taskType} micro-task audio for patient_${crypto.createHash('sha256').update(patientId).digest('hex').slice(0, 8)}...`);
 
     const audioBuffer = Buffer.from(audioBase64, 'base64');
     const features = await extractMicroTaskAudio(audioBuffer, taskType, {

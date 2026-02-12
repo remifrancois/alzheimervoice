@@ -18,6 +18,19 @@ import {
 } from './indicators.js';
 
 // ════════════════════════════════════════════════
+// NUMERIC SAFETY HELPERS
+// ════════════════════════════════════════════════
+
+function safeNum(v, fallback = 0) {
+  return (v != null && Number.isFinite(v)) ? v : fallback;
+}
+function safeDiv(a, b, fallback = 0) {
+  if (!Number.isFinite(a) || !Number.isFinite(b) || b === 0) return fallback;
+  const result = a / b;
+  return Number.isFinite(result) ? result : fallback;
+}
+
+// ════════════════════════════════════════════════
 // CONSTANTS
 // ════════════════════════════════════════════════
 
@@ -101,7 +114,7 @@ export function computeZScores(sessionVector, baseline) {
     const base = bv[id];
     if (value == null || !base) { zScores[id] = null; continue; }
 
-    const z = (value - base.mean) / (base.std || 0.05);
+    const z = safeDiv(value - base.mean, base.std || 0.05, 0);
     const dirs = INDICATORS[id].directions;
     const adDir = dirs.alzheimer || 0;
     const depDir = dirs.depression || 0;
@@ -134,7 +147,8 @@ export function computeDomainScores(zScores) {
     }
     if (valid.length === 0) { scores[domain] = null; continue; }
     const tw = valid.reduce((s, v) => s + v.weight, 0);
-    scores[domain] = valid.reduce((s, v) => s + v.z * v.weight, 0) / tw;
+    const score = safeDiv(valid.reduce((s, v) => s + v.z * v.weight, 0), tw, 0);
+    scores[domain] = Number.isFinite(score) ? score : null;
   }
   return scores;
 }
@@ -158,7 +172,9 @@ export function computeComposite(domainScores) {
   for (const { weight, score } of available) composite += score * weight * factor;
 
   const adjustedTotal = totalWeight + nullWeight;
-  return adjustedTotal > 0 ? composite / adjustedTotal * Object.keys(DOMAIN_WEIGHTS).length * 0.2 : 0;
+  const availableCount = Object.keys(DOMAIN_WEIGHTS).length;
+  const result = totalWeight > 0 ? safeDiv(composite, adjustedTotal, 0) * availableCount * 0.2 : 0;
+  return Number.isFinite(result) ? result : 0;
 }
 
 // ════════════════════════════════════════════════
@@ -203,14 +219,14 @@ function detectADCascade(domainScores) {
     patterns.push({
       stage: 0, name: 'pre_symptomatic_fluency', cascade: 'alzheimer',
       description: 'Subtle fluency changes with preserved language — possible pre-symptomatic tau (Young 2024)',
-      confidence: Math.min(Math.abs(tmp) / 0.5, 1), severity: Math.abs(tmp)
+      confidence: Math.min(safeNum(Math.abs(tmp)) / 0.5, 1), severity: Math.abs(tmp)
     });
   }
   if ((lex < -0.5 || sem < -0.5) && (lex < -0.3 && sem < -0.3)) {
     patterns.push({
       stage: 1, name: 'semantic_memory_involvement', cascade: 'alzheimer',
       description: 'Lexical and semantic decline — core AD Stage 1 pattern (Fraser 2015)',
-      confidence: Math.min((Math.abs(lex) + Math.abs(sem)) / 2, 1),
+      confidence: Math.min(safeNum(Math.abs(lex) + Math.abs(sem)) / 2, 1),
       severity: (Math.abs(lex) + Math.abs(sem)) / 2
     });
   }
@@ -218,14 +234,14 @@ function detectADCascade(domainScores) {
     patterns.push({
       stage: 2, name: 'syntactic_simplification', cascade: 'alzheimer',
       description: 'Syntactic decline on top of semantic — AD Stage 2 (Mueller 2018)',
-      confidence: Math.min(Math.abs(syn) / 1.0, 1), severity: Math.abs(syn)
+      confidence: Math.min(safeNum(Math.abs(syn)) / 1.0, 1), severity: Math.abs(syn)
     });
   }
   if (sem < -1.0 && tmp < -0.5) {
     patterns.push({
       stage: 3, name: 'discourse_collapse', cascade: 'alzheimer',
       description: 'Coherence and fluency breakdown — AD Stage 3 (Fraser 2015)',
-      confidence: Math.min((Math.abs(sem) + Math.abs(tmp)) / 3, 1),
+      confidence: Math.min(safeNum(Math.abs(sem) + Math.abs(tmp)) / 3, 1),
       severity: (Math.abs(sem) + Math.abs(tmp)) / 2
     });
   }
@@ -234,7 +250,7 @@ function detectADCascade(domainScores) {
       stage: patterns[patterns.length - 1].stage,
       name: 'memory_cascade', cascade: 'alzheimer',
       description: 'Memory decline accelerating alongside language cascade',
-      confidence: Math.min(Math.abs(mem) / 1.0, 1), severity: Math.abs(mem)
+      confidence: Math.min(safeNum(Math.abs(mem)) / 1.0, 1), severity: Math.abs(mem)
     });
   }
   return patterns.sort((a, b) => a.stage - b.stage);
@@ -253,28 +269,28 @@ function detectPDCascade(domainScores) {
     patterns.push({
       stage: 0, name: 'monopitch_only', cascade: 'parkinson',
       description: 'Reduced pitch variation with preserved voice quality — possible prodromal PD (Rusz 2021)',
-      confidence: Math.min(Math.abs(acuVal) / 0.5, 1), severity: Math.abs(acuVal)
+      confidence: Math.min(safeNum(Math.abs(acuVal)) / 0.5, 1), severity: Math.abs(acuVal)
     });
   }
   if (acuVal < -0.5 && (pdmVal < -0.2 || acuVal < -0.7)) {
     patterns.push({
       stage: 1, name: 'phonatory_degradation', cascade: 'parkinson',
       description: 'Phonatory instability (HNR, jitter) — PD Stage 1 vocal fold dysfunction (Little 2009)',
-      confidence: Math.min(Math.abs(acuVal) / 1.0, 1), severity: Math.abs(acuVal)
+      confidence: Math.min(safeNum(Math.abs(acuVal)) / 1.0, 1), severity: Math.abs(acuVal)
     });
   }
   if (pdmVal < -0.5 && patterns.some(p => p.stage >= 1)) {
     patterns.push({
       stage: 2, name: 'articulatory_breakdown', cascade: 'parkinson',
       description: 'Articulatory decline (VSA, DDK) on top of phonatory — PD Stage 2 (Rusz 2013)',
-      confidence: Math.min(Math.abs(pdmVal) / 1.0, 1), severity: Math.abs(pdmVal)
+      confidence: Math.min(safeNum(Math.abs(pdmVal)) / 1.0, 1), severity: Math.abs(pdmVal)
     });
   }
   if (pdmVal < -1.0 && tmp < -0.5) {
     patterns.push({
       stage: 3, name: 'prosodic_fluency_collapse', cascade: 'parkinson',
       description: 'Full prosodic and fluency breakdown — PD Stage 3 hypokinetic dysarthria (Cao 2025)',
-      confidence: Math.min((Math.abs(pdmVal) + Math.abs(tmp)) / 3, 1),
+      confidence: Math.min(safeNum(Math.abs(pdmVal) + Math.abs(tmp)) / 3, 1),
       severity: (Math.abs(pdmVal) + Math.abs(tmp)) / 2
     });
   }
@@ -292,14 +308,14 @@ function detectDepressionCascade(domainScores) {
     patterns.push({
       stage: 0, name: 'affective_shift', cascade: 'depression',
       description: 'Affective language shift (self-focus, negative valence) — early depression signal (Zhang 2022)',
-      confidence: Math.min(Math.abs(aff) / 0.5, 1), severity: Math.abs(aff)
+      confidence: Math.min(safeNum(Math.abs(aff)) / 0.5, 1), severity: Math.abs(aff)
     });
   }
   if (tmp < -0.4 && patterns.some(p => p.stage === 0)) {
     patterns.push({
       stage: 1, name: 'temporal_retardation', cascade: 'depression',
       description: 'Speech rate and latency changes — psychomotor retardation (Yamamoto 2020)',
-      confidence: Math.min((Math.abs(aff) + Math.abs(tmp)) / 2, 1),
+      confidence: Math.min(safeNum(Math.abs(aff) + Math.abs(tmp)) / 2, 1),
       severity: (Math.abs(aff) + Math.abs(tmp)) / 2
     });
   }
@@ -310,7 +326,7 @@ function detectDepressionCascade(domainScores) {
     patterns.push({
       stage: 2, name: 'engagement_withdrawal', cascade: 'depression',
       description: 'Engagement withdrawal — reduced output, topic narrowing, flat prosody (Cohn 2009)',
-      confidence: Math.min(combined / 1.0, 1), severity: combined
+      confidence: Math.min(safeNum(combined) / 1.0, 1), severity: combined
     });
   }
   return patterns.sort((a, b) => a.stage - b.stage);

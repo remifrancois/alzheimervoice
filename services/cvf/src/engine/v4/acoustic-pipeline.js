@@ -19,6 +19,9 @@ import { AUDIO_INDICATORS, ACOUSTIC_NORMS, INDICATORS } from './indicators.js';
 
 const execFileAsync = promisify(execFile);
 
+const VALID_TASK_TYPES = new Set(['conversation', 'sustained_vowel', 'ddk', 'fluency']);
+const VALID_GENDERS = new Set(['male', 'female']);
+
 const PYTHON_SCRIPT = path.resolve(
   path.dirname(new URL(import.meta.url).pathname),
   '../../audio/extract_features.py'
@@ -97,6 +100,7 @@ export async function convertToWav(inputBuffer, inputFormat = 'wav') {
   const outputPath = tempPath('wav');
 
   await fs.writeFile(inputPath, inputBuffer);
+  await fs.chmod(inputPath, 0o600);
 
   try {
     await execFileAsync('ffmpeg', [
@@ -195,6 +199,11 @@ export async function extractAcousticFeatures(audioBuffer, {
   taskType = 'conversation',
   gender = 'unknown',
 } = {}) {
+  if (!VALID_TASK_TYPES.has(taskType)) {
+    throw new Error(`Invalid taskType: must be one of ${[...VALID_TASK_TYPES].join(', ')}`);
+  }
+  const safeGender = VALID_GENDERS.has(gender) ? gender : 'female';
+
   const tempFiles = [];
 
   try {
@@ -203,6 +212,7 @@ export async function extractAcousticFeatures(audioBuffer, {
     if (format === 'wav') {
       wavPath = tempPath('wav');
       await fs.writeFile(wavPath, audioBuffer);
+      await fs.chmod(wavPath, 0o600);
       tempFiles.push(wavPath);
     } else {
       wavPath = await convertToWav(audioBuffer, format);
@@ -214,7 +224,7 @@ export async function extractAcousticFeatures(audioBuffer, {
       PYTHON_SCRIPT,
       '--audio-path', wavPath,
       '--task-type', taskType,
-      '--gender', gender === 'unknown' ? 'female' : gender,
+      '--gender', safeGender,
     ], { timeout: 60_000 });
 
     // Parse Python output
@@ -255,7 +265,7 @@ export async function extractAcousticFeatures(audioBuffer, {
         continue;
       }
 
-      vector[id] = normalizeAcousticValue(id, rawFeatures[pythonKey], gender);
+      vector[id] = normalizeAcousticValue(id, rawFeatures[pythonKey], safeGender);
     }
 
     return vector;
@@ -291,6 +301,9 @@ export async function extractMicroTaskAudio(audioBuffer, taskType, {
   format = 'wav',
   gender = 'unknown',
 } = {}) {
+  if (!VALID_TASK_TYPES.has(taskType)) {
+    throw new Error(`Invalid taskType: must be one of ${[...VALID_TASK_TYPES].join(', ')}`);
+  }
   return extractAcousticFeatures(audioBuffer, {
     format,
     taskType,

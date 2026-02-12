@@ -13,8 +13,24 @@ References:
     Tsanas et al. (2011) - Nonlinear speech signal features for PD classification.
 """
 
-import argparse, json, sys, math
+import argparse, json, sys, math, os
 import numpy as np
+
+
+def sanitize_features(features):
+    """Replace NaN/Infinity with None, validate all values are numeric."""
+    sanitized = {}
+    for key, value in features.items():
+        if value is None:
+            sanitized[key] = None
+        elif isinstance(value, (int, float)):
+            if math.isfinite(value):
+                sanitized[key] = round(value, 6)
+            else:
+                sanitized[key] = None
+        else:
+            sanitized[key] = None
+    return sanitized
 
 # ---------------------------------------------------------------------------
 # Tier 1: Core acoustic features (F0, jitter, shimmer, HNR, MFCC)
@@ -412,11 +428,23 @@ def main():
         help="Speaker gender for F0 normalization")
     args = parser.parse_args()
 
+    # Validate audio_path
+    audio_path = os.path.realpath(args.audio_path)
+    if not os.path.isfile(audio_path):
+        print(json.dumps({"status": "error", "error": "Audio file not found", "features": None}))
+        sys.exit(1)
+
+    # Validate task_type
+    valid_tasks = {'conversation', 'sustained_vowel', 'ddk', 'fluency'}
+    if args.task_type not in valid_tasks:
+        print(json.dumps({"status": "error", "error": "Invalid task type", "features": None}))
+        sys.exit(1)
+
     try:
         import librosa, parselmouth
 
-        y, sr = librosa.load(args.audio_path, sr=16000, mono=True)
-        sound = parselmouth.Sound(args.audio_path)
+        y, sr = librosa.load(audio_path, sr=16000, mono=True)
+        sound = parselmouth.Sound(audio_path)
 
         f0_norms = {"male": {"mean": 120, "sd": 20}, "female": {"mean": 210, "sd": 30}}
         result = {
@@ -436,11 +464,17 @@ def main():
         else:
             result["features"] = {}
 
+        if "features" in result and isinstance(result["features"], dict):
+            result["features"] = sanitize_features(result["features"])
         result["status"] = "ok"
         print(json.dumps(result))
 
     except Exception as exc:
-        print(json.dumps({"status": "error", "error": str(exc), "task_type": getattr(args, "task_type", None)}))
+        print(json.dumps({
+            "status": "error",
+            "error": "Feature extraction failed",
+            "features": None
+        }))
         sys.exit(1)
 
 

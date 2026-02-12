@@ -91,7 +91,9 @@ function meanZ(zScores, ids) {
     const val = z(zScores, id);
     if (val !== null) { sum += val; n++; }
   }
-  return n > 0 ? sum / n : null;
+  if (n === 0) return null;
+  const result = sum / n;
+  return Number.isFinite(result) ? result : null;
 }
 
 // ════════════════════════════════════════════════════════
@@ -148,7 +150,8 @@ export function detectPDSignature(zScores) {
   let confidence = 0;
   if (detected) {
     const countFactor = quartetImpaired === 4 ? 0.80 : 0.60;
-    const magnitudeFactor = clamp(magnitudeSum / (quartetImpaired * 2.0), 0, 0.20);
+    const magnitudeDenom = quartetImpaired * 2.0;
+    const magnitudeFactor = magnitudeDenom > 0 ? clamp(magnitudeSum / magnitudeDenom, 0, 0.20) : 0;
     confidence = countFactor + magnitudeFactor;
   } else {
     // Partial: some impairment but not enough for detection
@@ -501,18 +504,16 @@ export function differentiateParkinsonism(zScores, domainScores) {
   // --- Normalize to probabilities ---
   const totalScore = pdScore + msaScore + pspScore + etScore;
 
-  let probabilities;
-  if (totalScore === 0) {
+  if (!Number.isFinite(totalScore) || totalScore <= 0) {
     return {
       probabilities: { pd: 0.25, msa: 0.25, psp: 0.25, et: 0.25 },
-      primary: null,
-      evidence,
+      primary: 'indeterminate',
       confidence: 0,
-      note: 'No discriminating features available',
+      evidence,
     };
   }
 
-  probabilities = {
+  let probabilities = {
     pd:  Math.round((pdScore / totalScore) * 1000) / 1000,
     msa: Math.round((msaScore / totalScore) * 1000) / 1000,
     psp: Math.round((pspScore / totalScore) * 1000) / 1000,
@@ -628,9 +629,9 @@ export function stagePD(zScores, domainScores, history) {
     if (pdMotorScores.length >= 3) {
       const first = pdMotorScores.slice(0, Math.ceil(pdMotorScores.length / 2));
       const second = pdMotorScores.slice(Math.ceil(pdMotorScores.length / 2));
-      const firstMean = first.reduce((a, b) => a + b, 0) / first.length;
-      const secondMean = second.reduce((a, b) => a + b, 0) / second.length;
-      const delta = secondMean - firstMean;
+      const firstMean = first.length > 0 ? first.reduce((a, b) => a + b, 0) / first.length : 0;
+      const secondMean = second.length > 0 ? second.reduce((a, b) => a + b, 0) / second.length : 0;
+      const delta = Number.isFinite(secondMean - firstMean) ? secondMean - firstMean : 0;
       if (delta < -0.15) progressionVelocity = 'rapid_decline';
       else if (delta < -0.05) progressionVelocity = 'gradual_decline';
       else if (delta > 0.05) progressionVelocity = 'improving';
@@ -686,14 +687,15 @@ export function predictUPDRS(zScores) {
   }
 
   // Clamp to valid UPDRS motor range (0-108)
-  const estimatedUPDRS = clamp(Math.round(sum * 10) / 10, 0, 108);
+  const estimate = Math.max(0, Math.min(108, Math.round(sum * 10) / 10));
+  if (!Number.isFinite(estimate)) return { estimated_updrs: null, confidence: 0, features_used: 0 };
 
   // Confidence scales with number of features available
-  const featureCoverage = availableCount / featureIds.length;
+  const featureCoverage = featureIds.length > 0 ? availableCount / featureIds.length : 0;
   const confidence = clamp(0.30 + featureCoverage * 0.45, 0.30, 0.75);
 
   return {
-    estimated_updrs: estimatedUPDRS,
+    estimated_updrs: estimate,
     confidence: Math.round(confidence * 1000) / 1000,
     features_used: featuresUsed,
   };
@@ -830,9 +832,10 @@ export function runPDAnalysis(zScores, domainScores, baseline, history) {
     stage?.confidence ?? 0,
     updrsEstimate?.confidence ?? 0,
   ];
-  const nonZero = confidences.filter(c => c > 0);
-  const overallConfidence = nonZero.length > 0
-    ? Math.round((nonZero.reduce((a, b) => a + b, 0) / nonZero.length) * 1000) / 1000
+  const nonZero = confidences.filter(c => c > 0 && Number.isFinite(c));
+  const overallSum = nonZero.reduce((a, b) => a + b, 0);
+  const overallConfidence = nonZero.length > 0 && Number.isFinite(overallSum)
+    ? Math.round((overallSum / nonZero.length) * 1000) / 1000
     : 0;
 
   return {

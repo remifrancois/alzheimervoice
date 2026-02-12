@@ -154,6 +154,10 @@ export function getScheduledTasks(patientProfile, weekNumber, completedTasks = [
 export function scoreMicroTask(taskId, results) {
   const timestamp = new Date().toISOString();
 
+  if (!MICRO_TASKS[taskId.toUpperCase()] && !Object.values(MICRO_TASKS).some(t => t.id === taskId)) {
+    return { taskId, scores: {}, timestamp: new Date().toISOString(), error: 'Unknown task' };
+  }
+
   switch (taskId) {
     case 'sustained_vowel':
     case 'ddk': {
@@ -202,12 +206,14 @@ export function scoreMicroTask(taskId, results) {
  * @returns {Object} { item_count, unique_items, estimated_clusters, score }
  */
 export function analyzeCategoryFluency(transcript, language = 'en') {
+  const MAX_TRANSCRIPT_LENGTH = 100000;
   if (!transcript || typeof transcript !== 'string') {
-    return { item_count: 0, unique_items: 0, estimated_clusters: 0, switching_rate: 0, score: 0 };
+    return { item_count: 0, unique_items: 0, estimated_clusters: 0, switching_rate: 0, score: 0.5 };
   }
+  const safeTranscript = transcript.slice(0, MAX_TRANSCRIPT_LENGTH);
 
-  const normalized = transcript.toLowerCase().replace(/[.,!?;:()]/g, ' ').replace(/\s+/g, ' ').trim();
-  const words = normalized.split(' ').filter(w => w.length > 1);
+  const normalized = safeTranscript.toLowerCase().replace(/[.,!?;:()]/g, ' ').replace(/\s+/g, ' ').trim();
+  const words = normalized.split(' ').filter(w => w.length > 1).slice(0, 10000);
 
   // Build flat lookup of all known animals and their cluster membership
   const allAnimals = new Set();

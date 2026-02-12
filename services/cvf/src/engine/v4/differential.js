@@ -65,7 +65,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
   // ════════════════════════════════════════════════
   const hasCascade = detectADCascade(domainScores);
   if (hasCascade.detected) {
-    scores.alzheimer += 0.25 * hasCascade.confidence;
+    { const value = 0.25 * hasCascade.confidence; if (Number.isFinite(value)) scores.alzheimer += value; }
     evidence.alzheimer.push(`AD cascade pattern detected (stage ${hasCascade.stage}, confidence ${(hasCascade.confidence * 100).toFixed(0)}%)`);
   }
 
@@ -76,11 +76,11 @@ export function runDifferential(domainScores, zScores, context = {}) {
   const refCoherence = zScores.SEM_REF_COHERENCE;
   if (refCoherence != null) {
     if (refCoherence < -0.5) {
-      scores.alzheimer += 0.20;
+      if (Number.isFinite(0.20)) scores.alzheimer += 0.20;
       evidence.alzheimer.push(`Referential coherence degraded (z=${refCoherence.toFixed(2)}) — AD signature`);
     } else if (refCoherence > -0.2) {
-      scores.depression += 0.15;
-      scores.normal_aging += 0.10;
+      if (Number.isFinite(0.15)) scores.depression += 0.15;
+      if (Number.isFinite(0.10)) scores.normal_aging += 0.10;
       evidence.depression.push(`Referential coherence preserved (z=${refCoherence.toFixed(2)}) — rules against AD`);
     }
   }
@@ -95,11 +95,11 @@ export function runDifferential(domainScores, zScores, context = {}) {
     const cueBenefit = cuedRecall - freeRecall;
     if (freeRecall < -0.5 && cueBenefit > 0.3) {
       // Poor free recall but cues help -> retrieval deficit -> depression
-      scores.depression += 0.20;
+      if (Number.isFinite(0.20)) scores.depression += 0.20;
       evidence.depression.push(`Cued recall responsive (benefit=${cueBenefit.toFixed(2)}) — retrieval deficit, not storage`);
     } else if (freeRecall < -0.5 && cueBenefit < 0.15) {
       // Poor free recall and cues DON'T help -> storage deficit -> AD
-      scores.alzheimer += 0.20;
+      if (Number.isFinite(0.20)) scores.alzheimer += 0.20;
       evidence.alzheimer.push(`Cued recall NON-responsive (benefit=${cueBenefit.toFixed(2)}) — storage deficit, AD pattern`);
     }
   }
@@ -112,7 +112,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
     if (selfPronoun < -0.5) {
       // Note: z-score is inverted for "UP" direction indicators
       // For depression where UP = bad, a very negative z actually means elevated
-      scores.depression += 0.15;
+      if (Number.isFinite(0.15)) scores.depression += 0.15;
       evidence.depression.push(`Self-referential pronouns elevated (z=${selfPronoun.toFixed(2)}) — depression marker`);
     }
   }
@@ -122,7 +122,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
   // ════════════════════════════════════════════════
   const negValence = zScores.AFF_NEG_VALENCE;
   if (negValence != null && negValence < -0.4) {
-    scores.depression += 0.15;
+    if (Number.isFinite(0.15)) scores.depression += 0.15;
     evidence.depression.push(`Negative valence language elevated — depression marker`);
   }
 
@@ -136,17 +136,17 @@ export function runDifferential(domainScores, zScores, context = {}) {
     const pattern = detectTemporalPattern(context.timeline);
 
     if (pattern.type === 'monotonic_decline') {
-      scores.alzheimer += 0.15;
+      if (Number.isFinite(0.15)) scores.alzheimer += 0.15;
       evidence.alzheimer.push(`Monotonic decline pattern over ${pattern.weeks} weeks — AD trajectory`);
     } else if (pattern.type === 'episodic') {
       // V4: increased from 0.15 to 0.20 (Yamamoto 2020: r=0.458 response latency-HAMD)
-      scores.depression += 0.20;
+      if (Number.isFinite(0.20)) scores.depression += 0.20;
       evidence.depression.push(`Episodic fluctuation pattern — depression trajectory (r=0.458, Yamamoto 2020)`);
     } else if (pattern.type === 'acute_drop') {
-      scores.medication += 0.25;
+      if (Number.isFinite(0.25)) scores.medication += 0.25;
       evidence.medication.push(`Acute onset correlated with timeline — medication effect pattern`);
     } else if (pattern.type === 'stable') {
-      scores.normal_aging += 0.25;
+      if (Number.isFinite(0.25)) scores.normal_aging += 0.25;
       evidence.normal_aging.push(`Stable pattern — within normal aging variance`);
     }
   }
@@ -156,7 +156,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
   // ════════════════════════════════════════════════
   const ideaDensity = zScores.SEM_IDEA_DENSITY;
   if (ideaDensity != null && ideaDensity < -0.5) {
-    scores.alzheimer += 0.15;
+    if (Number.isFinite(0.15)) scores.alzheimer += 0.15;
     evidence.alzheimer.push(`Idea density declining (z=${ideaDensity.toFixed(2)}) — Snowdon: strongest AD predictor`);
   }
 
@@ -166,7 +166,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
   const withinClause = zScores.TMP_WITHIN_CLAUSE;
   if (withinClause != null) {
     if (withinClause < -0.5) {
-      scores.alzheimer += 0.10;
+      if (Number.isFinite(0.10)) scores.alzheimer += 0.10;
       evidence.alzheimer.push(`Within-clause pauses elevated — word-finding difficulty (Pistono 2019)`);
     }
   }
@@ -180,12 +180,12 @@ export function runDifferential(domainScores, zScores, context = {}) {
   const lex = domainScores.lexical ?? 0;
 
   if (tmp < -0.5 && sem > -0.2 && lex > -0.2) {
-    scores.parkinson += 0.20;
+    if (Number.isFinite(0.20)) scores.parkinson += 0.20;
     evidence.parkinson.push(`Fluency-dominant decline (temporal=${tmp.toFixed(2)}) with preserved language — PD pattern`);
   }
 
   if (sem < -0.5 && lex < -0.5 && tmp > -0.3) {
-    scores.alzheimer += 0.10;
+    if (Number.isFinite(0.10)) scores.alzheimer += 0.10;
     evidence.alzheimer.push(`Semantic+lexical decline with preserved fluency — early AD pattern`);
   }
 
@@ -195,11 +195,11 @@ export function runDifferential(domainScores, zScores, context = {}) {
   const hedonic = zScores.AFF_HEDONIC;
   const engagement = zScores.AFF_ENGAGEMENT;
   if (hedonic != null && hedonic < -0.4) {
-    scores.depression += 0.10;
+    if (Number.isFinite(0.10)) scores.depression += 0.10;
     evidence.depression.push(`Reduced hedonic language — anhedonia marker`);
   }
   if (engagement != null && engagement < -0.4) {
-    scores.depression += 0.10;
+    if (Number.isFinite(0.10)) scores.depression += 0.10;
     evidence.depression.push(`Reduced conversational engagement — withdrawal marker`);
   }
 
@@ -207,7 +207,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
   // RULE 11: Confounder check — medication change
   // ════════════════════════════════════════════════
   if (context.confounders?.some?.(c => c?.confounders?.medication_change)) {
-    scores.medication += 0.20;
+    if (Number.isFinite(0.20)) scores.medication += 0.20;
     evidence.medication.push(`Medication change reported in recent sessions`);
   }
 
@@ -215,7 +215,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
   // RULE 12: Emotional distress -> grief
   // ════════════════════════════════════════════════
   if (context.confounders?.some?.(c => c?.confounders?.emotional_distress)) {
-    scores.grief += 0.15;
+    if (Number.isFinite(0.15)) scores.grief += 0.15;
     evidence.grief.push(`Emotional distress reported`);
   }
 
@@ -224,7 +224,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
   // ════════════════════════════════════════════════
   const allAboveThreshold = Object.values(domainScores).every(v => v == null || v > -0.3);
   if (allAboveThreshold) {
-    scores.normal_aging += 0.30;
+    if (Number.isFinite(0.30)) scores.normal_aging += 0.30;
     evidence.normal_aging.push(`All domains within normal range (>-0.3) — consistent with healthy aging`);
   }
 
@@ -234,11 +234,11 @@ export function runDifferential(domainScores, zScores, context = {}) {
   const selfCorrection = zScores.DIS_SELF_CORRECTION;
   if (selfCorrection != null) {
     if (selfCorrection < -0.5) {
-      scores.alzheimer += 0.10;
+      if (Number.isFinite(0.10)) scores.alzheimer += 0.10;
       evidence.alzheimer.push(`Self-correction declining — loss of metacognitive monitoring`);
     } else {
-      scores.depression += 0.05;
-      scores.normal_aging += 0.05;
+      if (Number.isFinite(0.05)) scores.depression += 0.05;
+      if (Number.isFinite(0.05)) scores.normal_aging += 0.05;
       evidence.normal_aging.push(`Self-correction preserved — metacognition intact`);
     }
   }
@@ -264,7 +264,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
   );
 
   if (pdAcousticPositive) {
-    scores.parkinson += 0.30;
+    if (Number.isFinite(0.30)) scores.parkinson += 0.30;
     evidence.parkinson.push(
       `PD acoustic quartet detected (PPE z=${pdmPpe.toFixed(2)}, RPDE z=${pdmRpde.toFixed(2)}, HNR z=${acuHnr.toFixed(2)}) — Little 2009`
     );
@@ -283,7 +283,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
   );
 
   if (articulatoryInvolved) {
-    scores.parkinson += 0.15;
+    if (Number.isFinite(0.15)) scores.parkinson += 0.15;
     const parts = [];
     if (pdmVsa != null && pdmVsa < -0.5) parts.push(`VSA z=${pdmVsa.toFixed(2)}`);
     if (pdmDdkRate != null && pdmDdkRate < -0.5) parts.push(`DDK rate z=${pdmDdkRate.toFixed(2)}`);
@@ -307,8 +307,8 @@ export function runDifferential(domainScores, zScores, context = {}) {
   const ddkRegSevere = pdmDdkReg != null && pdmDdkReg < -0.8;
 
   if (pdAcousticPositive && f0SdIncreased && shimmerElevated && ddkRegSevere) {
-    scores.msa += 0.20;
-    scores.parkinson -= 0.10;
+    if (Number.isFinite(0.20)) scores.msa += 0.20;
+    if (Number.isFinite(-0.10)) scores.parkinson -= 0.10;
     evidence.msa.push(
       `Excessive pitch fluctuation + vocal tremor — MSA pattern ` +
       `(F0_SD z=${acuF0Sd.toFixed(2)} INCREASED, shimmer z=${acuShimmer.toFixed(2)}, DDK_REG z=${pdmDdkReg.toFixed(2)})`
@@ -332,7 +332,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
     ddkRegSevere &&
     articulatoryInvolved
   ) {
-    scores.psp += 0.15;
+    if (Number.isFinite(0.15)) scores.psp += 0.15;
     evidence.psp.push(
       `Stuttering-like behavior + severe articulatory decay — PSP pattern ` +
       `(repetition z=${tmpRepetition.toFixed(2)}, DDK_REG z=${pdmDdkReg.toFixed(2)})`
@@ -361,7 +361,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
   const acuMfcc2 = zScores.ACU_MFCC2;
   const acuSpectralHarm = zScores.ACU_SPECTRAL_HARM;
   if (acuMfcc2 != null && acuMfcc2 < -0.5 && acuSpectralHarm != null && acuSpectralHarm < -0.5) {
-    scores.depression += 0.15;
+    if (Number.isFinite(0.15)) scores.depression += 0.15;
     evidence.depression.push(
       `Acoustic depression markers (MFCC-2 z=${acuMfcc2.toFixed(2)} + spectral harmonicity z=${acuSpectralHarm.toFixed(2)}) — Le 2026`
     );
@@ -374,7 +374,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
   const lexDeathWords = zScores.LEX_DEATH_WORDS;
   const lexRuminative = zScores.LEX_RUMINATIVE;
   if (lexDeathWords != null && lexDeathWords < -0.4 && lexRuminative != null && lexRuminative < -0.4) {
-    scores.depression += 0.10;
+    if (Number.isFinite(0.10)) scores.depression += 0.10;
     evidence.depression.push(
       `Death-related and ruminative language elevated ` +
       `(death z=${lexDeathWords.toFixed(2)}, ruminative z=${lexRuminative.toFixed(2)})`
@@ -389,8 +389,8 @@ export function runDifferential(domainScores, zScores, context = {}) {
   // ════════════════════════════════════════════════
   const lexVerbalOutput = zScores.LEX_VERBAL_OUTPUT;
   if (lexVerbalOutput != null && lexVerbalOutput < -0.5) {
-    scores.depression += 0.05;
-    scores.parkinson += 0.05;
+    if (Number.isFinite(0.05)) scores.depression += 0.05;
+    if (Number.isFinite(0.05)) scores.parkinson += 0.05;
     evidence.depression.push(
       `Verbal output reduced (z=${lexVerbalOutput.toFixed(2)}) — shared psychomotor marker`
     );
@@ -409,7 +409,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
   const pdMotorDomain = domainScores.pd_motor ?? 0;
 
   if (pdmMonopitch != null && pdmMonopitch < -0.4 && pdMotorDomain > -0.2) {
-    scores.parkinson += 0.10;
+    if (Number.isFinite(0.10)) scores.parkinson += 0.10;
     evidence.parkinson.push(
       `Monopitch detected (z=${pdmMonopitch.toFixed(2)}) with near-normal PD motor domain (${pdMotorDomain.toFixed(2)}) — ` +
       `possible prodromal PD/RBD (Rusz 2021: AUC 0.65 for RBD)`
@@ -420,10 +420,24 @@ export function runDifferential(domainScores, zScores, context = {}) {
   // ════════════════════════════════════════════════
   // NORMALIZE TO PROBABILITIES
   // ════════════════════════════════════════════════
-  const total = Object.values(scores).reduce((a, b) => a + b, 0) || 1;
+  const total = Object.values(scores).reduce((a, b) => a + b, 0);
   const probabilities = {};
-  for (const [condition, score] of Object.entries(scores)) {
-    probabilities[condition] = Math.round((score / total) * 1000) / 1000;
+  if (!Number.isFinite(total) || total <= 0) {
+    // Equal probability fallback
+    const n = Object.keys(scores).length;
+    for (const key of Object.keys(scores)) {
+      probabilities[key] = Math.round((1 / n) * 1000) / 1000;
+    }
+  } else {
+    for (const [condition, score] of Object.entries(scores)) {
+      probabilities[condition] = Math.round((score / total) * 1000) / 1000;
+    }
+    // Ensure probabilities sum to exactly 1.0
+    const probSum = Object.values(probabilities).reduce((a, b) => a + b, 0);
+    if (probSum !== 1.0 && probSum > 0) {
+      const largest = Object.entries(probabilities).sort((a, b) => b[1] - a[1])[0][0];
+      probabilities[largest] = Math.round((probabilities[largest] + (1.0 - probSum)) * 1000) / 1000;
+    }
   }
 
   // Primary hypothesis
