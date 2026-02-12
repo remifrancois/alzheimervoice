@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "version": "3.0.0",
+    "description": "MemoVoice V3 — Condition profiles for voice-based detection",
+    "last_updated": "2026-02-11",
+    "target_conditions": 6,
+    "detection_horizon": "years to decades before clinical diagnosis"
+  },
+  "conditions": {
+    "alzheimer": {
+      "id": "AD",
+      "label": "Alzheimer's Disease",
+      "icd10": "G30",
+      "prevalence": "55 million worldwide (2023 WHO estimate)",
+      "detection_horizon": "2-10 years before clinical diagnosis",
+      "progression_model": "cascade",
+      "cascade_order": ["semantic", "lexical", "syntactic", "discourse", "pragmatic"],
+      "primary_voice_domains": ["lexical", "semantic", "memory"],
+      "secondary_voice_domains": ["fluency", "prosodic"],
+      "onset_pattern": "gradual_monotonic",
+      "key_differentiators": [
+        "Progressive cascade (semantic first, then syntactic)",
+        "Empty speech — grammatically correct but content-poor",
+        "Free recall fails before cued recall",
+        "Self-correction decreases over time",
+        "Topic drift increases progressively",
+        "Specific → generic word substitution"
+      ],
+      "stages": {
+        "preclinical": {
+          "years_before_dx": "5-10",
+          "detectable_changes": ["subtle pause increases", "micro-fluency changes"],
+          "evidence": "Young 2024, Eyigoz Framingham"
+        },
+        "prodromal_mci": {
+          "years_before_dx": "2-5",
+          "detectable_changes": ["TTR decline", "idea density drop", "word-finding pauses"],
+          "evidence": "Fraser 2015, Snowdon Nun Study"
+        },
+        "mild_ad": {
+          "years_before_dx": "0-2",
+          "detectable_changes": ["syntactic simplification", "coherence breakdown", "repetition loops"],
+          "evidence": "ADReSS 2020, Robin 2023"
+        },
+        "moderate_ad": {
+          "years_before_dx": "post-diagnosis",
+          "detectable_changes": ["discourse collapse", "pragmatic failure"],
+          "evidence": "Fraser 2015 Stage 3-4"
+        }
+      }
+    },
+    "depression": {
+      "id": "MDD",
+      "label": "Major Depressive Disorder",
+      "icd10": "F32",
+      "prevalence": "280 million worldwide (2023 WHO)",
+      "detection_horizon": "weeks to months",
+      "progression_model": "episodic",
+      "cascade_order": null,
+      "primary_voice_domains": ["prosodic", "temporal", "acoustic"],
+      "secondary_voice_domains": ["linguistic", "semantic"],
+      "onset_pattern": "episodic_fluctuating",
+      "key_differentiators": [
+        "Episodic pattern — bad periods cluster, then recovery",
+        "All domains suppressed simultaneously (no cascade)",
+        "Coherence PRESERVED",
+        "Cued recall responsive (unlike AD)",
+        "Self-referential language increases (I/me/my)",
+        "Negative valence words increase",
+        "Psychomotor retardation → response latency at turn boundaries",
+        "Good days show near-baseline performance"
+      ]
+    },
+    "parkinson": {
+      "id": "PD",
+      "label": "Parkinson's Disease",
+      "icd10": "G20",
+      "prevalence": "8.5 million worldwide (2023 WHO)",
+      "detection_horizon": "5-10 years before motor symptoms",
+      "progression_model": "motor_dominant",
+      "cascade_order": null,
+      "primary_voice_domains": ["acoustic", "motor_speech", "prosodic"],
+      "secondary_voice_domains": ["temporal"],
+      "onset_pattern": "gradual_motor",
+      "key_differentiators": [
+        "Hypophonia — reduced volume over conversation",
+        "Monotone pitch (reduced F0 variation)",
+        "Articulatory imprecision, NOT semantic emptiness",
+        "Preserved vocabulary richness despite reduced output",
+        "Jitter/shimmer abnormalities (vocal fold dysfunction)",
+        "Festination in speech (accelerating rate)",
+        "Voice onset time abnormalities",
+        "Vowel space area reduction"
+      ]
+    },
+    "normal_aging": {
+      "id": "NA",
+      "label": "Normal Aging",
+      "detection_horizon": "N/A — this is the control condition",
+      "progression_model": "stable",
+      "onset_pattern": "stable_with_noise",
+      "key_differentiators": [
+        "STABLE month-to-month — variation is noise, not signal",
+        "Self-correction PRESERVED",
+        "Tip-of-tongue compensated by circumlocution",
+        "Slight vocal changes (presbyphonia) but no cognitive signal",
+        "TTR may drop 5-8% per DECADE — not per month",
+        "Free recall slows but accuracy maintained"
+      ]
+    },
+    "medication_effects": {
+      "id": "MED",
+      "label": "Medication Effects",
+      "onset_pattern": "acute",
+      "key_differentiators": [
+        "Acute onset correlated with prescription change",
+        "All domains affected simultaneously",
+        "Recovery expected within 1-3 weeks of adjustment",
+        "Anticholinergics: confusion, incoherence",
+        "Benzodiazepines: slowed speech, word-finding",
+        "No cascade pattern"
+      ]
+    },
+    "grief": {
+      "id": "GRF",
+      "label": "Grief / Emotional Distress",
+      "onset_pattern": "event_linked",
+      "key_differentiators": [
+        "Topic-dependent — neutral conversation is normal",
+        "Emotional topics trigger fragmentation",
+        "Temporal — worst first 6 months, gradual recovery",
+        "Cognitive infrastructure intact on neutral topics",
+        "No progressive cascade"
+      ]
+    }
+  }
+}

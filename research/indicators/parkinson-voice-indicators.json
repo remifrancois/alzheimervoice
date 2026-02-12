@@ -1,0 +1,584 @@
+{
+  "condition": "Parkinson's Disease",
+  "dysarthria_type": "Hypokinetic",
+  "core_pathology": "Basal ganglia dopamine depletion → motor execution deficit",
+  "prevalence_of_speech_disorder": "70-90% of PD patients across disease course",
+  "prodromal_detection_window": "5-10 years before clinical motor diagnosis",
+
+  "cardinal_voice_features": [
+    "hypophonia",
+    "monopitch",
+    "monoloudness",
+    "breathy_hoarse_quality",
+    "imprecise_consonants",
+    "vowel_centralization",
+    "vocal_tremor_4_7Hz",
+    "abnormal_pausing",
+    "reduced_speech_rate_or_festination",
+    "reduced_DDK_rate_and_regularity"
+  ],
+
+  "indicators": {
+    "acoustic_phonatory": [
+      {
+        "id": "A1", "name": "Jitter (local, %)",
+        "definition": "Cycle-to-cycle variation in fundamental frequency period",
+        "normal_range": "< 1.04%",
+        "pd_abnormality": "INCREASED (1.5-3.0%)",
+        "effect_size_d": "0.8-1.2",
+        "extraction": "sustained vowel /a/, Praat or MDVP"
+      },
+      {
+        "id": "A2", "name": "Jitter (absolute, us)",
+        "definition": "Absolute period-to-period F0 variation in microseconds",
+        "normal_range": "< 83.2 us",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "0.7-1.0",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A3", "name": "Jitter (RAP)",
+        "definition": "Relative Average Perturbation — 3-point period perturbation",
+        "normal_range": "< 0.68%",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "0.7-0.9",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A4", "name": "Jitter (PPQ5)",
+        "definition": "5-point Period Perturbation Quotient",
+        "normal_range": "< 0.84%",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "0.7-0.9",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A5", "name": "Jitter (DDP)",
+        "definition": "Average absolute difference of differences of consecutive periods / average period",
+        "normal_range": "= RAP x 3",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "0.7-0.9",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A6", "name": "Shimmer (local, %)",
+        "definition": "Cycle-to-cycle variation in amplitude",
+        "normal_range": "< 3.81%",
+        "pd_abnormality": "INCREASED (4-8%)",
+        "effect_size_d": "1.0-1.5",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A7", "name": "Shimmer (local, dB)",
+        "definition": "Shimmer in decibels",
+        "normal_range": "< 0.35 dB",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "1.0-1.4",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A8", "name": "Shimmer (APQ3)",
+        "definition": "3-point Amplitude Perturbation Quotient",
+        "normal_range": "< 3.07%",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "0.9-1.2",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A9", "name": "Shimmer (APQ5)",
+        "definition": "5-point Amplitude Perturbation Quotient",
+        "normal_range": "< 3.07%",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "0.9-1.2",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A10", "name": "Shimmer (APQ11)",
+        "definition": "11-point Amplitude Perturbation Quotient",
+        "normal_range": "< 4.23%",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "0.8-1.1",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A11", "name": "Shimmer (DDA)",
+        "definition": "Average absolute difference of differences of consecutive amplitudes / average amplitude",
+        "normal_range": "= APQ3 x 3",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "0.9-1.2",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A12", "name": "HNR (Harmonics-to-Noise Ratio, dB)",
+        "definition": "Ratio of harmonic energy to noise energy",
+        "normal_range": "> 20 dB",
+        "pd_abnormality": "DECREASED (12-18 dB)",
+        "effect_size_d": "1.0-1.6",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A13", "name": "NHR (Noise-to-Harmonics Ratio)",
+        "definition": "Inverse of HNR — proportion of noise",
+        "normal_range": "< 0.19",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "1.0-1.5",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A14", "name": "F0 Mean (Hz)",
+        "definition": "Average fundamental frequency",
+        "normal_range": "M: 85-155 Hz; F: 165-255 Hz",
+        "pd_abnormality": "Variable — slightly decreased (rigidity) or increased (tension)",
+        "effect_size_d": "0.3-0.6",
+        "extraction": "sustained vowel or connected speech"
+      },
+      {
+        "id": "A15", "name": "F0 Standard Deviation (Hz)",
+        "definition": "Variation in F0 across utterance",
+        "normal_range": "> 15 Hz in connected speech",
+        "pd_abnormality": "DECREASED — monopitch",
+        "effect_size_d": "0.8-1.3",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "A16", "name": "F0 Range (semitones)",
+        "definition": "Distance between F0 max and min",
+        "normal_range": "> 10 semitones",
+        "pd_abnormality": "DECREASED (< 5 semitones)",
+        "effect_size_d": "0.9-1.4",
+        "extraction": "connected speech, read passage"
+      },
+      {
+        "id": "A17", "name": "PPE (Pitch Period Entropy)",
+        "definition": "Entropy of F0 period distribution — measures pitch regularity",
+        "normal_range": "varies",
+        "pd_abnormality": "INCREASED (more irregular)",
+        "effect_size_d": "1.2-1.8",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A18", "name": "RPDE (Recurrence Period Density Entropy)",
+        "definition": "Nonlinear measure of signal periodicity",
+        "normal_range": "varies",
+        "pd_abnormality": "INCREASED (more aperiodic)",
+        "effect_size_d": "1.0-1.5",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A19", "name": "DFA (Detrended Fluctuation Analysis)",
+        "definition": "Fractal scaling exponent of F0 signal",
+        "normal_range": "varies",
+        "pd_abnormality": "ALTERED (toward randomness)",
+        "effect_size_d": "0.8-1.2",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A20", "name": "D2 (Correlation Dimension)",
+        "definition": "Complexity measure from attractor reconstruction",
+        "normal_range": "varies",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "0.6-0.9",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A21", "name": "CPP (Cepstral Peak Prominence, dB)",
+        "definition": "Prominence of cepstral peak — measures voice clarity",
+        "normal_range": "> 10 dB",
+        "pd_abnormality": "DECREASED",
+        "effect_size_d": "1.0-1.4",
+        "extraction": "sustained vowel or connected speech"
+      },
+      {
+        "id": "A22", "name": "GNE (Glottal-to-Noise Excitation Ratio)",
+        "definition": "Ratio of glottal excitation energy to noise",
+        "normal_range": "> 0.5",
+        "pd_abnormality": "DECREASED",
+        "effect_size_d": "0.7-1.0",
+        "extraction": "sustained vowel /a/"
+      },
+      {
+        "id": "A23", "name": "H1-H2 (dB)",
+        "definition": "Difference between first and second harmonic amplitudes — breathiness index",
+        "normal_range": "varies",
+        "pd_abnormality": "INCREASED (breathier)",
+        "effect_size_d": "0.5-0.8",
+        "extraction": "sustained vowel"
+      },
+      {
+        "id": "A24", "name": "OQ (Open Quotient)",
+        "definition": "Proportion of glottal cycle where folds are open",
+        "normal_range": "0.4-0.6",
+        "pd_abnormality": "INCREASED (0.6-0.8) — incomplete closure",
+        "effect_size_d": "0.8-1.2",
+        "extraction": "inverse filtering of sustained vowel"
+      },
+      {
+        "id": "A25", "name": "Vocal Tremor Frequency (Hz)",
+        "definition": "Dominant frequency of amplitude/frequency modulation",
+        "normal_range": "absent or minimal",
+        "pd_abnormality": "PRESENT: 4-7 Hz (PD-specific range)",
+        "effect_size_d": "1.0-1.5",
+        "extraction": "sustained vowel, long duration (>5 sec)"
+      },
+      {
+        "id": "A26", "name": "Vocal Tremor Amplitude",
+        "definition": "Depth of modulation of vocal tremor",
+        "normal_range": "absent or minimal",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "0.8-1.3",
+        "extraction": "sustained vowel, long duration"
+      },
+      {
+        "id": "A27", "name": "Voice Breaks (count/duration)",
+        "definition": "Number and duration of F0 breaks",
+        "normal_range": "0-1 per passage",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "0.5-0.8",
+        "extraction": "sustained vowel or reading"
+      },
+      {
+        "id": "A28", "name": "Degree of Voicelessness (%)",
+        "definition": "Percentage of unvoiced frames in sustained phonation",
+        "normal_range": "< 1%",
+        "pd_abnormality": "INCREASED (3-15%)",
+        "effect_size_d": "0.8-1.2",
+        "extraction": "sustained vowel /a/"
+      }
+    ],
+
+    "articulatory": [
+      {
+        "id": "AR1", "name": "Vowel Space Area (VSA, Hz^2)",
+        "definition": "Triangular area in F1-F2 space for corner vowels /a/, /i/, /u/",
+        "normal": "large triangle",
+        "pd_abnormality": "REDUCED 25-40% (centralized vowels)",
+        "effect_size_d": "1.0-1.5",
+        "extraction": "corner vowels in words or isolated"
+      },
+      {
+        "id": "AR2", "name": "Formant Centralization Ratio (FCR)",
+        "definition": "(F2u+F2a+F1i+F1u)/(F2i+F1a)",
+        "normal": "~1.0",
+        "pd_abnormality": "INCREASED (>1.1)",
+        "effect_size_d": "1.2-1.6",
+        "extraction": "corner vowels"
+      },
+      {
+        "id": "AR3", "name": "Vowel Articulation Index (VAI)",
+        "definition": "Inverse of FCR",
+        "normal": "~1.0",
+        "pd_abnormality": "DECREASED (<0.9)",
+        "effect_size_d": "1.2-1.6",
+        "extraction": "corner vowels"
+      },
+      {
+        "id": "AR4", "name": "F2 Range (Hz)",
+        "definition": "Total range of F2 across connected speech",
+        "normal": "large",
+        "pd_abnormality": "REDUCED (restricted tongue movement)",
+        "effect_size_d": "0.9-1.3",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "AR5", "name": "F2 Slope (Hz/ms)",
+        "definition": "Rate of formant transition between vowels and consonants",
+        "normal": "> 20 Hz/ms",
+        "pd_abnormality": "REDUCED (slower transitions)",
+        "effect_size_d": "0.8-1.1",
+        "extraction": "connected speech, CV transitions"
+      },
+      {
+        "id": "AR6", "name": "Voice Onset Time (VOT, ms)",
+        "definition": "Time between plosive release and voicing onset",
+        "normal": "20-80 ms (varies by consonant)",
+        "pd_abnormality": "Variable: may be shortened or show higher variability",
+        "effect_size_d": "0.5-0.9",
+        "extraction": "words with initial plosives"
+      },
+      {
+        "id": "AR7", "name": "Spirantization Index",
+        "definition": "Degree to which stop consonants become fricative-like",
+        "normal": "low",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "0.8-1.2",
+        "extraction": "connected speech, DDK"
+      },
+      {
+        "id": "AR8", "name": "Consonant Precision (%)",
+        "definition": "Acoustic accuracy of consonant production",
+        "normal": "> 95%",
+        "pd_abnormality": "DECREASED (70-85%)",
+        "effect_size_d": "1.0-1.5",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "AR9", "name": "Imprecise Consonant Ratio",
+        "definition": "Proportion of consonants with reduced closure or frication",
+        "normal": "low",
+        "pd_abnormality": "INCREASED",
+        "effect_size_d": "1.0-1.4",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "AR10", "name": "DDK Rate (syllables/sec)",
+        "definition": "Speed of alternating motion rate (/pa-ta-ka/)",
+        "normal": "> 5.5 syll/sec",
+        "pd_abnormality": "DECREASED (3.5-5.0 syll/sec)",
+        "effect_size_d": "0.9-1.4",
+        "extraction": "/pa-ta-ka/ rapid repetition"
+      },
+      {
+        "id": "AR11", "name": "DDK Regularity (CV)",
+        "definition": "Coefficient of variation of DDK intervals",
+        "normal": "< 5%",
+        "pd_abnormality": "INCREASED (> 8%)",
+        "effect_size_d": "0.8-1.2",
+        "extraction": "/pa-ta-ka/ rapid repetition"
+      },
+      {
+        "id": "AR12", "name": "Plosive Gap Duration (ms)",
+        "definition": "Duration of silence during stop consonant closure",
+        "normal": "50-100 ms",
+        "pd_abnormality": "Often SHORTENED (incomplete closure)",
+        "effect_size_d": "0.6-0.9",
+        "extraction": "words with plosive consonants"
+      },
+      {
+        "id": "AR13", "name": "MFCC (1-13)",
+        "definition": "Mel-Frequency Cepstral Coefficients — spectral envelope of vocal tract",
+        "normal": "normal range",
+        "pd_abnormality": "ALTERED pattern",
+        "effect_size_d": "0.5-1.0",
+        "extraction": "any speech segment, openSMILE or librosa"
+      }
+    ],
+
+    "prosodic": [
+      {
+        "id": "P1", "name": "Monopitch (F0 SD reduction)",
+        "definition": "Reduced variation in fundamental frequency",
+        "normal": "F0 SD > 15 Hz",
+        "pd_abnormality": "F0 SD < 10 Hz — flat intonation",
+        "effect_size_d": "0.9-1.4",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "P2", "name": "Monoloudness (Intensity SD reduction)",
+        "definition": "Reduced variation in vocal intensity",
+        "normal": "Intensity SD > 5 dB",
+        "pd_abnormality": "Intensity SD < 3 dB",
+        "effect_size_d": "0.8-1.3",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "P3", "name": "Hypophonia (reduced SPL)",
+        "definition": "Globally reduced sound pressure level",
+        "normal": "72-76 dB SPL",
+        "pd_abnormality": "65-68 dB SPL",
+        "effect_size_d": "1.2-1.8",
+        "extraction": "sustained vowel + connected speech, calibrated mic"
+      },
+      {
+        "id": "P4", "name": "Intensity Range (dB)",
+        "definition": "Dynamic range of speech loudness",
+        "normal": "> 20 dB",
+        "pd_abnormality": "REDUCED (< 12 dB)",
+        "effect_size_d": "0.9-1.3",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "P5", "name": "Pitch Declination Slope",
+        "definition": "Rate of F0 decline across an utterance",
+        "normal": "moderate declination",
+        "pd_abnormality": "REDUCED or ABSENT",
+        "effect_size_d": "0.5-0.8",
+        "extraction": "read passage"
+      },
+      {
+        "id": "P6", "name": "Stress Pattern Regularity",
+        "definition": "Acoustic marking of stressed vs unstressed syllables",
+        "normal": "clear contrast",
+        "pd_abnormality": "REDUCED contrast (stress equalization)",
+        "effect_size_d": "0.7-1.0",
+        "extraction": "read passage"
+      },
+      {
+        "id": "P7", "name": "Phrase-Final Lengthening",
+        "definition": "Duration increase of final syllable in phrase",
+        "normal": "present (20-30% longer)",
+        "pd_abnormality": "REDUCED or ABSENT",
+        "effect_size_d": "0.6-0.9",
+        "extraction": "read passage, connected speech"
+      },
+      {
+        "id": "P8", "name": "Spectral Slope (dB/octave)",
+        "definition": "Rate of spectral energy decrease with frequency",
+        "normal": "moderate",
+        "pd_abnormality": "STEEPER (breathier)",
+        "effect_size_d": "0.5-0.7",
+        "extraction": "any speech segment"
+      }
+    ],
+
+    "temporal_fluency": [
+      {
+        "id": "T1", "name": "Speech Rate (syllables/sec)",
+        "definition": "Number of syllables per second including pauses",
+        "normal": "3.5-5.5 syll/sec",
+        "pd_abnormality": "VARIABLE: decreased OR festinating (accelerated)",
+        "effect_size_d": "0.5-1.0",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "T2", "name": "Articulation Rate (syllables/sec)",
+        "definition": "Speech rate excluding pauses",
+        "normal": "4.5-6.5 syll/sec",
+        "pd_abnormality": "DECREASED",
+        "effect_size_d": "0.6-0.9",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "T3", "name": "Pause Frequency",
+        "definition": "Number of pauses per minute",
+        "normal": "4-6 pauses/min",
+        "pd_abnormality": "INCREASED (8-15 pauses/min)",
+        "effect_size_d": "0.8-1.2",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "T4", "name": "Pause Duration (ms)",
+        "definition": "Average length of silent pauses",
+        "normal": "300-600 ms",
+        "pd_abnormality": "INCREASED (600-1500 ms)",
+        "effect_size_d": "0.7-1.1",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "T5", "name": "Percent Pause Time (%)",
+        "definition": "Proportion of total time spent in pauses",
+        "normal": "20-30%",
+        "pd_abnormality": "INCREASED (35-55%)",
+        "effect_size_d": "0.8-1.2",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "T6", "name": "Within-Word Pauses",
+        "definition": "Inappropriate pauses WITHIN words",
+        "normal": "rare/absent",
+        "pd_abnormality": "PRESENT — hallmark of PD",
+        "effect_size_d": "1.0-1.5",
+        "extraction": "connected speech, reading"
+      },
+      {
+        "id": "T7", "name": "Festination",
+        "definition": "Progressive acceleration within an utterance ending in mumbling or freeze",
+        "normal": "absent",
+        "pd_abnormality": "PRESENT in 20-30% of PD patients",
+        "effect_size_d": "categorical",
+        "extraction": "connected speech, spontaneous"
+      },
+      {
+        "id": "T8", "name": "Palilalia",
+        "definition": "Involuntary repetition of words/phrases with increasing rate and decreasing loudness",
+        "normal": "absent",
+        "pd_abnormality": "PRESENT in 10-15% of PD (later stage)",
+        "effect_size_d": "categorical",
+        "extraction": "spontaneous speech"
+      },
+      {
+        "id": "T9", "name": "PVI (Pairwise Variability Index)",
+        "definition": "Variability of successive vowel/consonant durations",
+        "normal": "moderate variability",
+        "pd_abnormality": "REDUCED (metronomic rhythm)",
+        "effect_size_d": "0.7-1.0",
+        "extraction": "connected speech"
+      },
+      {
+        "id": "T10", "name": "nPVI (normalized)",
+        "definition": "Normalized PVI — controls for rate",
+        "normal": "moderate",
+        "pd_abnormality": "REDUCED",
+        "effect_size_d": "0.7-1.0",
+        "extraction": "connected speech"
+      }
+    ],
+
+    "motor_speech_control": [
+      {
+        "id": "M1", "name": "Laryngeal Timing Deficits",
+        "definition": "Coordination between respiratory, phonatory, and articulatory systems",
+        "normal": "synchronized",
+        "pd_abnormality": "DESYNCHRONIZED",
+        "mechanism": "Impaired inter-subsystem coordination via basal ganglia"
+      },
+      {
+        "id": "M2", "name": "Respiratory Support Deficits",
+        "definition": "Subglottal pressure and airflow management during speech",
+        "normal": "adequate (5-10 cmH2O)",
+        "pd_abnormality": "REDUCED subglottal pressure",
+        "mechanism": "Chest wall rigidity + reduced respiratory drive"
+      },
+      {
+        "id": "M3", "name": "Vocal Fold Bowing",
+        "definition": "Shape of vocal folds during phonation",
+        "normal": "straight medial edge",
+        "pd_abnormality": "BOWED — incomplete closure",
+        "mechanism": "Thyroarytenoid muscle atrophy/rigidity"
+      },
+      {
+        "id": "M4", "name": "Glottal Incompetence",
+        "definition": "Failure of vocal folds to fully close during phonation",
+        "normal": "full closure",
+        "pd_abnormality": "INCOMPLETE closure — air leakage",
+        "mechanism": "Combination of rigidity and bowing"
+      },
+      {
+        "id": "M5", "name": "Hypernasality",
+        "definition": "Excessive nasal resonance from incomplete velopharyngeal closure",
+        "normal": "absent/minimal",
+        "pd_abnormality": "MILD-MODERATE in 25-40%",
+        "mechanism": "Velopharyngeal incompetence from reduced velum elevation"
+      }
+    ]
+  },
+
+  "differential_diagnosis": {
+    "pd_vs_alzheimers": {
+      "key_principle": "PD degrades the ACOUSTIC SIGNAL (motor output) while preserving LANGUAGE CONTENT. AD degrades LANGUAGE CONTENT while preserving the ACOUSTIC SIGNAL.",
+      "pd_markers_absent_in_ad": ["jitter_increase", "shimmer_increase", "HNR_decrease", "VSA_reduction", "consonant_imprecision", "vocal_tremor", "spirantization", "DDK_impairment"],
+      "ad_markers_absent_in_pd": ["TTR_decrease", "idea_density_decrease", "semantic_coherence_loss", "syntactic_simplification", "word_finding_difficulty", "topic_drift", "confabulation"]
+    },
+    "pd_vs_depression": {
+      "key_principle": "Both show reduced prosody, but PD has MOTOR markers absent in depression.",
+      "shared_features": ["reduced_F0_range", "reduced_intensity", "slowed_speech_rate"],
+      "pd_unique": ["jitter", "shimmer", "HNR_decrease", "VSA_reduction", "consonant_imprecision", "vocal_tremor", "DDK_impairment"],
+      "depression_unique": ["sad_prosody_quality", "psychomotor_retardation_pattern", "increased_response_latency_without_motor_markers"]
+    },
+    "pd_vs_essential_tremor": {
+      "key_principle": "Both produce vocal tremor but with different characteristics.",
+      "pd_tremor": "4-7 Hz, amplitude modulation, irregular",
+      "et_tremor": "5-12 Hz, frequency modulation, more regular",
+      "pd_unique": "Full hypokinetic dysarthria profile (hypophonia, imprecise consonants, reduced VSA)"
+    }
+  },
+
+  "recommended_recording_protocol": [
+    {"task": "Sustained vowel /a/ at comfortable pitch/loudness", "duration": "5 sec x 3", "features": "jitter, shimmer, HNR, NHR, PPE, RPDE, DFA, CPP, GNE, vocal tremor"},
+    {"task": "Sustained vowel /a/ at maximum loudness", "duration": "3 sec x 2", "features": "maximum SPL, dynamic range"},
+    {"task": "Corner vowels /a/, /i/, /u/", "duration": "3 sec each x 2", "features": "VSA, FCR, VAI, F1/F2"},
+    {"task": "DDK: /pa-ta-ka/ rapid repetition", "duration": "10 sec", "features": "DDK rate, regularity, spirantization, VOT"},
+    {"task": "Read passage", "duration": "60 sec", "features": "all prosodic, connected speech articulation, pause patterns, speech rate"},
+    {"task": "Picture description", "duration": "60 sec", "features": "spontaneous speech, language + motor simultaneously"},
+    {"task": "Spontaneous narrative", "duration": "60-90 sec", "features": "most natural speech, all features"}
+  ],
+
+  "key_datasets": [
+    {"name": "UCI Parkinson's Dataset", "size": "195 recordings, 31 subjects", "language": "English", "access": "public"},
+    {"name": "UCI Parkinson's Telemonitoring", "size": "5875 recordings, 42 patients", "language": "English", "access": "public"},
+    {"name": "mPower", "size": "65000+ recordings, 10000+ participants", "language": "English", "access": "public (DUA)"},
+    {"name": "PC-GITA", "size": "100 subjects", "language": "Colombian Spanish", "access": "restricted"},
+    {"name": "Italian PD Speech", "size": "68 subjects", "language": "Italian", "access": "by request"},
+    {"name": "Czech PD Dataset", "size": "~100 subjects", "language": "Czech", "access": "by request"},
+    {"name": "Istanbul PD Dataset", "size": "40 subjects", "language": "Turkish", "access": "public"}
+  ]
+}
