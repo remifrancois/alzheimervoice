@@ -1,6 +1,0 @@
-Paper: Connected Speech as a Marker of Disease Progression in Autopsy-Proven AD
-Authors: Ahmed et al.
-Year: 2013
-Status: Not available for open-access download
-Reason: S2 API: HTTP Error 429: 
-Action: Search on PubMed, Google Scholar, or institution library
