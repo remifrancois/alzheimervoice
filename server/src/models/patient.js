@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import fs from 'fs/promises';
 import path from 'path';
+import { readSecureJSON, writeSecureJSON } from '../lib/secure-fs.js';
 
 const DATA_DIR = path.resolve('data/patients');
 
@@ -21,16 +22,14 @@ export function createPatient({ firstName, language, phoneNumber, callTime, time
 }
 
 export async function savePatient(patient) {
-  await fs.mkdir(DATA_DIR, { recursive: true });
   const filePath = path.join(DATA_DIR, `${patient.patient_id}.json`);
-  await fs.writeFile(filePath, JSON.stringify(patient, null, 2));
+  await writeSecureJSON(filePath, patient);
   return patient;
 }
 
 export async function loadPatient(patientId) {
   const filePath = path.join(DATA_DIR, `${patientId}.json`);
-  const data = await fs.readFile(filePath, 'utf-8');
-  return JSON.parse(data);
+  return await readSecureJSON(filePath);
 }
 
 export async function listPatients() {
@@ -39,8 +38,8 @@ export async function listPatients() {
   const patients = [];
   for (const file of files) {
     if (file.endsWith('.json')) {
-      const data = await fs.readFile(path.join(DATA_DIR, file), 'utf-8');
-      patients.push(JSON.parse(data));
+      const patient = await readSecureJSON(path.join(DATA_DIR, file));
+      patients.push(patient);
     }
   }
   return patients;

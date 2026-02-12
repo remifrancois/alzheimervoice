@@ -15,6 +15,7 @@
 
 import fs from 'fs/promises';
 import path from 'path';
+import { readSecureJSONSafe, writeSecureJSON } from '../lib/secure-fs.js';
 import { loadPatientSessions } from '../models/session.js';
 
 const DATA_DIR = path.resolve('data/archaeology');
@@ -190,13 +191,12 @@ OUTPUT FORMAT (JSON):
  * Save a semantic map analysis result.
  */
 export async function saveSemanticMap(patientId, semanticMap) {
-  await fs.mkdir(DATA_DIR, { recursive: true });
   const filePath = path.join(DATA_DIR, `semantic_map_${patientId}.json`);
-  await fs.writeFile(filePath, JSON.stringify({
+  await writeSecureJSON(filePath, {
     patient_id: patientId,
     generated_at: new Date().toISOString(),
     ...semanticMap
-  }, null, 2));
+  });
   return semanticMap;
 }
 
@@ -205,12 +205,7 @@ export async function saveSemanticMap(patientId, semanticMap) {
  */
 export async function loadSemanticMap(patientId) {
   const filePath = path.join(DATA_DIR, `semantic_map_${patientId}.json`);
-  try {
-    const data = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return null;
-  }
+  return await readSecureJSONSafe(filePath, null);
 }
 
 // Helper: compute time span between first and last session

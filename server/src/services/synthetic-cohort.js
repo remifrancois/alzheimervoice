@@ -16,6 +16,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { CVF_FEATURES, ALL_FEATURES, DOMAIN_WEIGHTS } from '../models/cvf.js';
+import { readSecureJSONSafe, writeSecureJSON } from '../lib/secure-fs.js';
 
 const DATA_DIR = path.resolve('data/cohort');
 const COHORT_FILE = path.join(DATA_DIR, 'trajectories.json');
@@ -65,7 +66,7 @@ export async function generateCohort() {
   }
 
   await fs.mkdir(DATA_DIR, { recursive: true });
-  await fs.writeFile(COHORT_FILE, JSON.stringify(cohort, null, 2));
+  await writeSecureJSON(COHORT_FILE, cohort);
 
   return cohort;
 }
@@ -74,13 +75,9 @@ export async function generateCohort() {
  * Load the pre-generated cohort.
  */
 export async function loadCohort() {
-  try {
-    const data = await fs.readFile(COHORT_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    // Generate if not found
-    return await generateCohort();
-  }
+  const data = await readSecureJSONSafe(COHORT_FILE, null);
+  if (data) return data;
+  return await generateCohort();
 }
 
 /**

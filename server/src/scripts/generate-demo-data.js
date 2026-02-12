@@ -25,6 +25,8 @@ import { detectCascadePattern } from '../services/drift-detector.js';
 import { computeDifferentialScores } from '../services/differential-diagnosis.js';
 import { generateTwinVector, computeDivergence } from '../services/cognitive-twin.js';
 import { generateCohort, matchTrajectory } from '../services/synthetic-cohort.js';
+import { clearUserCache } from '../lib/users.js';
+import { writeSecureJSON } from '../lib/secure-fs.js';
 
 // ═══════════════════════════════════════════════════════════════════
 //  AGE-APPROPRIATE HEALTHY PROFILES
@@ -377,7 +379,7 @@ function generateAdaptations(domains) {
 // ═══════════════════════════════════════════════════════════════════
 
 async function cleanData() {
-  const dirs = ['data/patients', 'data/sessions', 'data/cvf', 'data/reports', 'data/cohort', 'data/twins', 'data/archaeology', 'data/hologram'];
+  const dirs = ['data/patients', 'data/sessions', 'data/cvf', 'data/reports', 'data/cohort', 'data/twins', 'data/archaeology', 'data/hologram', 'data/audit'];
   for (const dir of dirs) {
     const fullPath = path.resolve(dir);
     try { await fs.rm(fullPath, { recursive: true }); } catch {}
@@ -403,20 +405,44 @@ async function main() {
   const cohort = await generateCohort();
   console.log(`  Cohort generated: ${cohort.length} trajectories\n`);
 
+  const patientIds = [];
   for (const config of PATIENT_CONFIGS) {
-    await generatePatient(config, cohort);
+    const patient = await generatePatient(config, cohort);
+    patientIds.push(patient.patient_id);
     console.log('');
   }
 
-  console.log(`  ═══════════════════════════════════════`);
+  // Generate users.json with patient assignments
+  // Marie (index 0) + Thomas (index 1) → Dr. Remi (u2)
+  // Mike (index 2) + Jenny (index 3) → Dr. Sophie (u3)
+  // Pierre (u4, family) → Marie (index 0)
+  // Marie-Claire (u5, family) → Jenny (index 3)
+  console.log(`  Generating users.json with patient assignments...`);
+  const users = [
+    { id: 'u1', name: 'Super Admin', email: 'admin@memovoice.ai', role: 'superadmin', avatar: 'SA', password: 'demo', assignedPatients: [] },
+    { id: 'u2', name: 'Dr. Remi Francois', email: 'remi@memovoice.ai', role: 'clinician', avatar: 'RF', password: 'demo', assignedPatients: [patientIds[0], patientIds[1]] },
+    { id: 'u3', name: 'Dr. Sophie Martin', email: 'sophie@memovoice.ai', role: 'clinician', avatar: 'SM', password: 'demo', assignedPatients: [patientIds[2], patientIds[3]] },
+    { id: 'u4', name: 'Pierre Dupont', email: 'pierre@famille.fr', role: 'family', avatar: 'PD', password: 'demo', patientId: patientIds[0] },
+    { id: 'u5', name: 'Marie-Claire Petit', email: 'mc@famille.fr', role: 'family', avatar: 'MP', password: 'demo', patientId: patientIds[3] },
+    { id: 'u6', name: 'Jean Administrateur', email: 'jean@memovoice.ai', role: 'admin', avatar: 'JA', password: 'demo', assignedPatients: [] },
+  ];
+  await fs.writeFile(path.resolve('data/users.json'), JSON.stringify(users, null, 2));
+  clearUserCache();
+  console.log(`  Users: Dr. Remi → ${patientIds[0]}, ${patientIds[1]}`);
+  console.log(`  Users: Dr. Sophie → ${patientIds[2]}, ${patientIds[3]}`);
+  console.log(`  Users: Pierre (family) → ${patientIds[0]}`);
+  console.log(`  Users: Marie-Claire (family) → ${patientIds[3]}`);
+
+  console.log(`\n  ═══════════════════════════════════════`);
   console.log(`  ALL DEMO DATA GENERATED SUCCESSFULLY`);
   console.log(`  ═══════════════════════════════════════`);
   console.log(`  Data dir: ./data/`);
   console.log(`\n  Start the server:`);
   console.log(`    npm run dev`);
   console.log(`\n  Then check:`);
-  console.log(`    GET http://localhost:3001/api/patients`);
-  console.log(`    GET http://localhost:3001/health\n`);
+  console.log(`    POST http://localhost:3001/api/auth/login  (body: {"userId":"u2"})`);
+  console.log(`    GET  http://localhost:3001/api/patients    (with Bearer token)`);
+  console.log(`    GET  http://localhost:3001/health\n`);
 }
 
 async function generatePatient(config, cohort) {
@@ -603,9 +629,9 @@ async function generatePatient(config, cohort) {
     // Save differential as part of hologram data
     const differentialPath = path.resolve('data/hologram');
     await fs.mkdir(differentialPath, { recursive: true });
-    await fs.writeFile(
+    await writeSecureJSON(
       path.join(differentialPath, `differential_${patient.patient_id}.json`),
-      JSON.stringify({ patient_id: patient.patient_id, ...differential, created_at: new Date().toISOString() }, null, 2)
+      { patient_id: patient.patient_id, ...differential, created_at: new Date().toISOString() }
     );
 
     // 8. Generate cognitive twin analysis
@@ -619,9 +645,9 @@ async function generatePatient(config, cohort) {
 
     const twinsDir = path.resolve('data/twins');
     await fs.mkdir(twinsDir, { recursive: true });
-    await fs.writeFile(
+    await writeSecureJSON(
       path.join(twinsDir, `twin_${patient.patient_id}.json`),
-      JSON.stringify({ patient_id: patient.patient_id, weekNumber: weekCount, ...divergence, created_at: new Date().toISOString() }, null, 2)
+      { patient_id: patient.patient_id, weekNumber: weekCount, ...divergence, created_at: new Date().toISOString() }
     );
 
     // 9. Cohort matching
@@ -638,14 +664,16 @@ async function generatePatient(config, cohort) {
     const semanticMap = generateSyntheticSemanticMap(name, monitoringTimeline.length, pattern);
     const archDir = path.resolve('data/archaeology');
     await fs.mkdir(archDir, { recursive: true });
-    await fs.writeFile(
+    await writeSecureJSON(
       path.join(archDir, `semantic_map_${patient.patient_id}.json`),
-      JSON.stringify({ patient_id: patient.patient_id, generated_at: new Date().toISOString(), ...semanticMap }, null, 2)
+      { patient_id: patient.patient_id, generated_at: new Date().toISOString(), ...semanticMap }
     );
     console.log(`  Clusters: ${semanticMap.semantic_clusters.length}, Network: ${semanticMap.network_health.overall}`);
   }
 
   console.log(`\n  ${name}: ${patient.alert_level.toUpperCase()} | ${totalSessions} sessions | ${Object.keys(weeklyData).length} weekly reports | V2 data generated`);
+
+  return patient;
 }
 
 // ═══════════════════════════════════════════════════════════════════

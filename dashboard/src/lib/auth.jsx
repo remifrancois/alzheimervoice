@@ -1,4 +1,6 @@
-import { createContext, useContext, useState, useCallback } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react'
+import { api } from './api'
+import { setTokenGetter } from './api'
 
 /**
  * Role-Based Access Control (RBAC)
@@ -89,13 +91,52 @@ const DEMO_USERS = [
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(DEMO_USERS[0]) // Default: superadmin for demo
+  const [currentUser, setCurrentUser] = useState(null)
   const [allUsers] = useState(DEMO_USERS)
+  const [token, setToken] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const tokenRef = useRef(null)
 
-  const switchUser = useCallback((userId) => {
-    const user = allUsers.find(u => u.id === userId)
-    if (user) setCurrentUser(user)
-  }, [allUsers])
+  // Keep tokenRef in sync and wire up api.js token getter
+  useEffect(() => {
+    tokenRef.current = token
+    setTokenGetter(() => tokenRef.current)
+  }, [token])
+
+  // Login function — calls backend /api/auth/login
+  const login = useCallback(async (userId) => {
+    try {
+      const result = await api.login(userId)
+      setToken(result.token)
+      setCurrentUser(result.user)
+      return result.user
+    } catch (err) {
+      console.error('[auth] Login failed:', err)
+      // Fallback to local-only mode if server is down
+      const localUser = DEMO_USERS.find(u => u.id === userId)
+      if (localUser) {
+        setToken(null)
+        setCurrentUser(localUser)
+        return localUser
+      }
+      throw err
+    }
+  }, [])
+
+  // Switch user — async login with new userId
+  const switchUser = useCallback(async (userId) => {
+    setLoading(true)
+    try {
+      await login(userId)
+    } finally {
+      setLoading(false)
+    }
+  }, [login])
+
+  // Auto-login on mount (default: superadmin for demo)
+  useEffect(() => {
+    login('u1').finally(() => setLoading(false))
+  }, [login])
 
   const hasPermission = useCallback((permission) => {
     if (!currentUser) return false
@@ -126,6 +167,8 @@ export function AuthProvider({ children }) {
       hasRole,
       canAccessPatientData,
       canAccessAdmin,
+      loading,
+      token,
     }}>
       {children}
     </AuthContext.Provider>

@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { readSecureJSON, readSecureJSONSafe, writeSecureJSON } from '../lib/secure-fs.js';
 
 const DATA_DIR = path.resolve('data/cvf');
 
@@ -117,40 +118,27 @@ export function computeDomainScores(deltas) {
 
 // Persistence
 export async function saveBaseline(baseline) {
-  await fs.mkdir(DATA_DIR, { recursive: true });
   const filePath = path.join(DATA_DIR, `baseline_${baseline.patient_id}.json`);
-  await fs.writeFile(filePath, JSON.stringify(baseline, null, 2));
+  await writeSecureJSON(filePath, baseline);
   return baseline;
 }
 
 export async function loadBaseline(patientId) {
   const filePath = path.join(DATA_DIR, `baseline_${patientId}.json`);
-  try {
-    const data = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return null;
-  }
+  return await readSecureJSONSafe(filePath, null);
 }
 
 // Save weekly analysis
 export async function saveWeeklyAnalysis(analysis) {
-  const dir = path.resolve('data/reports');
-  await fs.mkdir(dir, { recursive: true });
-  const filePath = path.join(dir, `week_${analysis.patient_id}_${analysis.week_number}.json`);
-  await fs.writeFile(filePath, JSON.stringify(analysis, null, 2));
+  const filePath = path.resolve('data/reports', `week_${analysis.patient_id}_${analysis.week_number}.json`);
+  await writeSecureJSON(filePath, analysis);
   return analysis;
 }
 
 // Load weekly analysis
 export async function loadWeeklyAnalysis(patientId, weekNumber) {
   const filePath = path.resolve('data/reports', `week_${patientId}_${weekNumber}.json`);
-  try {
-    const data = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return null;
-  }
+  return await readSecureJSONSafe(filePath, null);
 }
 
 // GDPR: Delete all CVF data for a patient (baseline + reports)
@@ -189,8 +177,8 @@ export async function exportPatientCvfData(patientId) {
     const files = await fs.readdir(reportsDir);
     for (const file of files) {
       if (file.startsWith(`week_${patientId}_`) && file.endsWith('.json')) {
-        const data = await fs.readFile(path.join(reportsDir, file), 'utf-8');
-        result.weeklyReports.push(JSON.parse(data));
+        const report = await readSecureJSON(path.join(reportsDir, file));
+        result.weeklyReports.push(report);
       }
     }
   } catch {}

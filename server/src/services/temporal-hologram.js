@@ -19,6 +19,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import fs from 'fs/promises';
 import path from 'path';
+import { readSecureJSON, readSecureJSONSafe, writeSecureJSON } from '../lib/secure-fs.js';
 
 import { buildLivingLibraryContext } from './living-library.js';
 import { buildDifferentialContext, computeDifferentialScores } from './differential-diagnosis.js';
@@ -372,25 +373,19 @@ export function estimateCost(archive) {
 // ========================================
 
 async function saveHologramAnalysis(patientId, weekNumber, analysis) {
-  await fs.mkdir(DATA_DIR, { recursive: true });
   const filePath = path.join(DATA_DIR, `hologram_${patientId}_week${weekNumber}.json`);
-  await fs.writeFile(filePath, JSON.stringify({
+  await writeSecureJSON(filePath, {
     patient_id: patientId,
     week_number: weekNumber,
     analysis_version: 'v2_hologram',
     created_at: new Date().toISOString(),
     ...analysis
-  }, null, 2));
+  });
 }
 
 export async function loadHologramAnalysis(patientId, weekNumber) {
   const filePath = path.join(DATA_DIR, `hologram_${patientId}_week${weekNumber}.json`);
-  try {
-    const data = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return null;
-  }
+  return await readSecureJSONSafe(filePath, null);
 }
 
 export async function listHologramAnalyses(patientId) {
@@ -399,8 +394,8 @@ export async function listHologramAnalyses(patientId) {
   const analyses = [];
   for (const file of files) {
     if (file.startsWith(`hologram_${patientId}_`) && file.endsWith('.json')) {
-      const data = await fs.readFile(path.join(DATA_DIR, file), 'utf-8');
-      analyses.push(JSON.parse(data));
+      const analysis = await readSecureJSON(path.join(DATA_DIR, file));
+      analyses.push(analysis);
     }
   }
   return analyses.sort((a, b) => (a.week_number || 0) - (b.week_number || 0));

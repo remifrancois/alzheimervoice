@@ -1,9 +1,31 @@
+let _tokenGetter = null
+
+/**
+ * Set a function that returns the current JWT token.
+ * Called by AuthProvider to wire up token injection.
+ */
+export function setTokenGetter(fn) {
+  _tokenGetter = fn
+}
+
 const BASE = ''
 
-export async function fetchJSON(path, options) {
-  const res = await fetch(`${BASE}${path}`, options)
+export async function fetchJSON(path, options = {}) {
+  const headers = { ...options.headers }
+
+  // Inject JWT token if available
+  const token = _tokenGetter?.()
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`
+  }
+
+  const res = await fetch(`${BASE}${path}`, { ...options, headers })
+
   if (!res.ok) {
     if (res.status === 404) return null
+    if (res.status === 401) {
+      console.warn('[api] 401 Unauthorized — token may be expired')
+    }
     const body = await res.json().catch(() => ({}))
     throw new Error(body.error || `API error: ${res.status}`)
   }
@@ -11,6 +33,13 @@ export async function fetchJSON(path, options) {
 }
 
 export const api = {
+  // Auth
+  login: (userId) => fetchJSON('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId }),
+  }),
+
   getPatients: () => fetchJSON('/api/patients'),
   getPatient: (id) => fetchJSON(`/api/patients/${id}`),
   getTimeline: (id) => fetchJSON(`/api/cvf/timeline/${id}`),
@@ -46,4 +75,7 @@ export const api = {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ confirm: 'DELETE_ALL_DATA' }),
   }),
+
+  // Admin
+  getAuditLogs: (limit, offset) => fetchJSON(`/api/admin/audit-logs?limit=${limit || 100}&offset=${offset || 0}`),
 }

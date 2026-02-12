@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import AppLayout from './components/layout/AppLayout'
 import { PatientDataGuard, AdminGuard, SuperAdminGuard } from './components/guards/RoleGuard'
+import { useAuth } from './lib/auth'
 
 // Patient / Clinical pages
 import DashboardPage from './pages/DashboardPage'
@@ -28,10 +30,27 @@ import ClinicalPage from './pages/admin/ClinicalPage'
 import IncidentsPage from './pages/admin/IncidentsPage'
 import CompliancePage from './pages/admin/CompliancePage'
 
+function AuthLoadingGuard({ children }) {
+  const { loading } = useAuth()
+  if (loading) {
+    return (
+      <div className="fixed inset-0 bg-slate-950 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg mx-auto mb-4 animate-pulse">
+            M
+          </div>
+          <div className="text-sm text-slate-400">Authenticating...</div>
+        </div>
+      </div>
+    )
+  }
+  return children || <Outlet />
+}
+
 function App() {
   return (
     <Routes>
-      <Route element={<AppLayout />}>
+      <Route element={<AuthLoadingGuard><AppLayout /></AuthLoadingGuard>}>
         {/* Patient data routes — only family + clinician */}
         <Route path="/" element={<PatientDataGuard><DashboardPage /></PatientDataGuard>} />
         <Route path="/patients" element={<PatientDataGuard><PatientsPage /></PatientDataGuard>} />

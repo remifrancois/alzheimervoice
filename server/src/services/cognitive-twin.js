@@ -18,6 +18,7 @@
 
 import fs from 'fs/promises';
 import path from 'path';
+import { readSecureJSONSafe, writeSecureJSON } from '../lib/secure-fs.js';
 import { ALL_FEATURES, CVF_FEATURES } from '../models/cvf.js';
 
 const DATA_DIR = path.resolve('data/twins');
@@ -202,13 +203,12 @@ Compare real patient values to twin expected values.
  * Save twin analysis result.
  */
 export async function saveTwinAnalysis(patientId, analysis) {
-  await fs.mkdir(DATA_DIR, { recursive: true });
   const filePath = path.join(DATA_DIR, `twin_${patientId}.json`);
-  await fs.writeFile(filePath, JSON.stringify({
+  await writeSecureJSON(filePath, {
     patient_id: patientId,
     generated_at: new Date().toISOString(),
     ...analysis
-  }, null, 2));
+  });
   return analysis;
 }
 
@@ -217,12 +217,7 @@ export async function saveTwinAnalysis(patientId, analysis) {
  */
 export async function loadTwinAnalysis(patientId) {
   const filePath = path.join(DATA_DIR, `twin_${patientId}.json`);
-  try {
-    const data = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return null;
-  }
+  return await readSecureJSONSafe(filePath, null);
 }
 
 // Helpers

@@ -124,15 +124,16 @@ function SidebarLink({ item, t }) {
 }
 
 function RoleSwitcher() {
-  const { currentUser, allUsers, switchUser } = useAuth()
+  const { currentUser, allUsers, switchUser, loading } = useAuth()
 
   return (
     <div>
       <div className="text-[10px] text-slate-600 mb-1.5">Demo: Switch Role</div>
       <select
-        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-violet-500/50"
+        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-violet-500/50 disabled:opacity-50"
         value={currentUser.id}
         onChange={e => switchUser(e.target.value)}
+        disabled={loading}
       >
         {allUsers.map(u => (
           <option key={u.id} value={u.id}>

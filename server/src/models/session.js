@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import fs from 'fs/promises';
 import path from 'path';
+import { readSecureJSON, writeSecureJSON } from '../lib/secure-fs.js';
 
 const DATA_DIR = path.resolve('data/sessions');
 
@@ -21,14 +22,13 @@ export function createSession({ patientId, language, transcript, durationSeconds
 export async function saveSession(session) {
   await fs.mkdir(DATA_DIR, { recursive: true });
   const filePath = path.join(DATA_DIR, `${session.session_id}.json`);
-  await fs.writeFile(filePath, JSON.stringify(session, null, 2));
+  await writeSecureJSON(filePath, session);
   return session;
 }
 
 export async function loadSession(sessionId) {
   const filePath = path.join(DATA_DIR, `${sessionId}.json`);
-  const data = await fs.readFile(filePath, 'utf-8');
-  return JSON.parse(data);
+  return await readSecureJSON(filePath);
 }
 
 export async function loadPatientSessions(patientId) {
@@ -37,8 +37,7 @@ export async function loadPatientSessions(patientId) {
   const sessions = [];
   for (const file of files) {
     if (file.endsWith('.json')) {
-      const data = await fs.readFile(path.join(DATA_DIR, file), 'utf-8');
-      const session = JSON.parse(data);
+      const session = await readSecureJSON(path.join(DATA_DIR, file));
       if (session.patient_id === patientId) {
         sessions.push(session);
       }
@@ -53,8 +52,7 @@ export async function deletePatientSessions(patientId) {
   let deleted = 0;
   for (const file of files) {
     if (file.endsWith('.json')) {
-      const data = await fs.readFile(path.join(DATA_DIR, file), 'utf-8');
-      const session = JSON.parse(data);
+      const session = await readSecureJSON(path.join(DATA_DIR, file));
       if (session.patient_id === patientId) {
         await fs.unlink(path.join(DATA_DIR, file));
         deleted++;

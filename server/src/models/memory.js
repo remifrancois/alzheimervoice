@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import fs from 'fs/promises';
 import path from 'path';
+import { readSecureJSONSafe, writeSecureJSON } from '../lib/secure-fs.js';
 
 const DATA_DIR = path.resolve('data/patients');
 
@@ -22,18 +23,13 @@ export function createMemory({ content, source, category, people, places, dates,
 
 export async function loadMemoryProfile(patientId) {
   const filePath = path.join(DATA_DIR, `memories_${patientId}.json`);
-  try {
-    const data = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return { patient_id: patientId, memories: [] };
-  }
+  return await readSecureJSONSafe(filePath, { patient_id: patientId, memories: [] });
 }
 
 export async function saveMemoryProfile(profile) {
   await fs.mkdir(DATA_DIR, { recursive: true });
   const filePath = path.join(DATA_DIR, `memories_${profile.patient_id}.json`);
-  await fs.writeFile(filePath, JSON.stringify(profile, null, 2));
+  await writeSecureJSON(filePath, profile);
   return profile;
 }
 
