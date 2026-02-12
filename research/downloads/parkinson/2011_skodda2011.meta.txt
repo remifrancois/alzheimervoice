@@ -1,6 +1,0 @@
-Paper: Progression of Dysarthria in Parkinsonian Disorders
-Authors: Skodda et al.
-Year: 2011
-Status: Not available for open-access download
-Reason: S2 API: HTTP Error 429: 
-Action: Search on PubMed, Google Scholar, or institution library

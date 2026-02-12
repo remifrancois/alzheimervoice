@@ -1,6 +1,0 @@
-Paper: Parkinsons Disease Diagnosis Using Machine Learning and Voice
-Authors: Wroge et al.
-Year: 2018
-Status: Not available for open-access download
-Reason: S2 API: HTTP Error 429: 
-Action: Search on PubMed, Google Scholar, or institution library

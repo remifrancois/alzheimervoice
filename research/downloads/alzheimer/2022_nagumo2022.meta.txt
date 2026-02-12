@@ -1,6 +1,0 @@
-Paper: Automatic Detection of Cognitive Decline Using Telephone Speech
-Authors: Nagumo et al.
-Year: 2022
-Status: Not available for open-access download
-Reason: S2 API: HTTP Error 429: 
-Action: Search on PubMed, Google Scholar, or institution library

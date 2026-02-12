@@ -1,6 +1,0 @@
-Paper: Analysis of Voice Recordings Using MFCC for PD Detection
-Authors: Benba et al.
-Year: 2016
-Status: Not available for open-access download
-Reason: S2 API: HTTP Error 429: 
-Action: Search on PubMed, Google Scholar, or institution library

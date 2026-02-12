@@ -1,6 +1,0 @@
-Paper: Detecting Depression from Facial Actions and Vocal Prosody
-Authors: Cohn et al.
-Year: 2009
-Status: Not available for open-access download
-Reason: unknown url type: ''
-Action: Search on PubMed, Google Scholar, or institution library
