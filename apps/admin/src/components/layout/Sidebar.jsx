@@ -33,7 +33,7 @@ export default function Sidebar() {
         <Icon name="lock" size={14} className="text-red-400 shrink-0" />
         <div>
           <div className="text-[10px] font-bold text-red-400 uppercase tracking-wider">Restricted Access</div>
-          <div className="text-[9px] text-red-400/60">rk2.alzheimervoice.com</div>
+          <div className="text-[9px] text-red-400/60">rk2.alzheimervoice.org</div>
         </div>
       </div>
 

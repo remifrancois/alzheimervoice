@@ -42,7 +42,7 @@ export default function Footer() {
               <li className="text-sm text-slate-500">{t('footer.projectEvent')}</li>
               <li><a href={buildPath(lang, 'privacy')} onClick={(e) => handleNav(e, 'privacy')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkPrivacy')}</a></li>
               <li><a href={buildPath(lang, 'legal')} onClick={(e) => handleNav(e, 'legal')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkLegal')}</a></li>
-              <li><a href="https://interface.alzheimervoice.com" className="text-sm text-slate-500 hover:text-white transition-colors">Login</a></li>
+              <li><a href="https://interface.alzheimervoice.org" className="text-sm text-slate-500 hover:text-white transition-colors">Login</a></li>
             </ul>
           </div>
         </div>

@@ -1,13 +1,13 @@
 /**
- * API Gateway Service — api.alzheimervoice.com
+ * API Gateway Service — api.alzheimervoice.org
  *
  * Internal-only API gateway for the AlzheimerVoice platform.
  * No external API access — used exclusively by:
- *   - interface.alzheimervoice.com (family/clinician SaaS)
- *   - rk2.alzheimervoice.com (admin panel)
+ *   - interface.alzheimervoice.org (family/clinician SaaS)
+ *   - rk2.alzheimervoice.org (admin panel)
  *
  * Handles auth, patient CRUD, memories, GDPR, admin.
- * Proxies CVF computation requests to cvf.alzheimervoice.com.
+ * Proxies CVF computation requests to cvf.alzheimervoice.org.
  */
 
 import 'dotenv/config';
@@ -49,7 +49,7 @@ await app.register(cvfProxyRoutes);
 app.get('/health', async () => ({
   status: 'ok',
   service: 'api-gateway',
-  domain: 'api.alzheimervoice.com',
+  domain: 'api.alzheimervoice.org',
   version: '1.0.0',
   endpoints: {
     auth: '/api/auth/login',
@@ -67,7 +67,7 @@ const port = process.env.API_PORT || process.env.PORT || 3001;
 try {
   await app.listen({ port, host: '0.0.0.0' });
   console.log(`\n  API Gateway running on http://localhost:${port}`);
-  console.log(`  Domain: api.alzheimervoice.com`);
+  console.log(`  Domain: api.alzheimervoice.org`);
   console.log(`  CVF proxy → ${process.env.CVF_URL || 'http://localhost:3002'}`);
   console.log(`  CORS: ${process.env.INTERFACE_URL || 'localhost:5173'}, ${process.env.ADMIN_URL || 'localhost:5174'}`);
   console.log(`  "La voix se souvient de ce que l'esprit oublie."\n`);

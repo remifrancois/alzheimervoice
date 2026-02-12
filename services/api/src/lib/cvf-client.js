@@ -1,7 +1,7 @@
 /**
  * CVF Service Client — Internal HTTP client for the CVF engine.
  *
- * The API gateway forwards CVF-related requests to cvf.alzheimervoice.com
+ * The API gateway forwards CVF-related requests to cvf.alzheimervoice.org
  * using service-to-service authentication (x-service-key header).
  */
 
