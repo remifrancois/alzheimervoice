@@ -1,0 +1,6 @@
+alzheimervoice.com.          300  IN  A      76.76.21.21
+alzheimervoice.com.          300  IN  AAAA   2606:4700:20::681a:1521
+www.alzheimervoice.com.      300  IN  CNAME  cname.vercel-dns.com.
+interface.alzheimervoice.com.    300  IN  CNAME  cname.vercel-dns.com.
+devinterface.alzheimervoice.com. 300  IN  CNAME  cname.vercel-dns.com.
+rk2.alzheimervoice.com.      300  IN  CNAME  cname.vercel-dns.com.
