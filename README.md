@@ -3,35 +3,37 @@
 > *"The voice remembers what the mind forgets."*
 > *"La voix se souvient de ce que l'esprit oublie."*
 
-AlzheimerVoice detects early signs of Alzheimer's disease through daily phone conversations with elderly patients. It extracts a 47-indicator **Cognitive Voice Fingerprint (CVF)** from natural speech and tracks drift over weeks and months, catching cognitive decline up to 2 years before clinical diagnosis.
+AlzheimerVoice detects early signs of Alzheimer's disease through daily phone conversations with elderly patients. It extracts a 107-indicator **Cognitive Voice Fingerprint (CVF)** from natural speech using multimodal analysis (text + audio + topic detection + NLP anchors) and tracks drift over weeks and months, catching cognitive decline up to 2 years before clinical diagnosis.
 
 Available in **10 languages**: English, French, Spanish, Chinese, Hindi, Arabic, Bengali, Portuguese, Russian, Japanese.
 
 ## How It Works
 
 ```
-Phone Call → Transcription → 47-Indicator Extraction → Drift Detection → Alert
-   5 min        STT            Sonnet 4.5 (daily)       z-scores        Family + Doctor
-                               Opus 4.6 (weekly)
+Audio   → GPU Pipeline → 27 acoustic + 5 temporal → ─┐
+                                                       ├─→ 107-indicator vector → 11-domain scoring → Alert
+Speech  → NLP Anchors + Topic Detection → Opus 4.6 ──┘    Topic-adjusted z-scores    Family + Doctor
+  5 min        ~20 deterministic          Dual-pass ($0.25)
 ```
 
 1. AlzheimerVoice calls the patient daily — a warm, 5-minute conversation
-2. The transcript is analyzed by Claude Sonnet 4.5 to extract 47 linguistic biomarkers
-3. Each session is compared against the patient's personal baseline
-4. Weekly deep analysis by Claude Opus 4.6 with 1M-token clinical reasoning
-5. Drift is measured as z-scores across 8 cognitive domains
-6. Alerts escalate: GREEN → YELLOW → ORANGE → RED
+2. GPU-accelerated audio analysis extracts 27 acoustic and 5 temporal features via torchaudio, parselmouth, and nolds
+3. The transcript is analyzed by Claude Opus 4.6 in a dual-pass extraction to identify 107 linguistic and acoustic biomarkers
+4. Each session is compared against the patient's personal baseline
+5. Weekly deep analysis by Claude Opus 4.6 with 32K Extended Thinking for clinical reasoning
+6. Drift is measured as topic-adjusted z-scores across 11 cognitive domains
+7. Alerts escalate: GREEN → YELLOW → ORANGE → RED
 
-## CVF Engine — Evidence-Compiled Scoring
+## CVF Engine — Evidence-Compiled Scoring (V5 deep_voice)
 
-Two-tier architecture optimized for accuracy and cost:
+Unified architecture powered by Claude Opus 4.6 exclusively:
 
-- **Daily processing** (Sonnet 4.5): Cost-efficient extraction of 47 indicators from each conversation
-- **Weekly deep analysis** (Opus 4.6): Full clinical reasoning with 1M-token context window, differential diagnosis, trajectory projection, and evidence-backed reporting
+- **Daily processing** (Opus 4.6 dual-pass with Extended Thinking): Multimodal extraction of 107 indicators from each conversation — NLP anchors identify ~20 deterministic features before LLM pass, topic detection adjusts scoring baselines per genre
+- **Weekly deep analysis** (Opus 4.6 32K thinking): Full clinical reasoning with 32K Extended Thinking, differential diagnosis across 10 conditions using 30 rules, trajectory projection, and evidence-backed reporting
 
-47 indicators across 8 cognitive domains, backed by 60+ peer-reviewed studies with citation tracking for every score.
+107 indicators across 11 domains, 30 differential rules, 10 conditions, backed by 84+ peer-reviewed studies with citation tracking for every score.
 
-### The 8 Cognitive Domains
+### The 11 Cognitive Domains
 
 | Domain | What It Measures |
 |--------|-----------------|
@@ -41,8 +43,10 @@ Two-tier architecture optimized for accuracy and cost:
 | **Fluency & Prosody** | Pause patterns, filler rate, false starts, speech rate |
 | **Memory Retrieval** | Free recall, cued recall, temporal precision |
 | **Semantic Processing** | Word-finding difficulty, circumlocution, semantic paraphasia |
-| **Pragmatic Function** | Turn-taking, repair strategies, conversational initiative |
+| **Pragmatic Function** | Indirect speech, discourse markers, register shift, narrative structure, perspective-taking, humor/irony |
 | **Emotional Prosody** | Emotional range, affect congruence, engagement patterns |
+| **Motor Speech** | PD markers: jitter, shimmer, PPE, DDK, tremor, voice breaks |
+| **Executive Function** | Task switching, inhibition, planning, dual-task, cognitive flexibility |
 
 ## Architecture
 
@@ -66,9 +70,9 @@ Two-tier architecture optimized for accuracy and cost:
                                                       ▼
                                            ┌─────────────────────┐
                                            │  CVF Engine (3002)  │
-                                           │  47 indicators      │
-                                           │  8 domains          │
-                                           │  Evidence engine    │
+                                           │  107 indicators     │
+                                           │  11 domains | V5    │
+                                           │  deep_voice engine  │
                                            │  Claude API calls   │
                                            └─────────────────────┘
 
@@ -146,20 +150,22 @@ All frontend requests go through the API gateway. The gateway proxies CVF reques
 | `GET` | `/api/memories/:id` | Get memory profile |
 | `POST` | `/api/memories/:id` | Add memory |
 
-### CVF Engine
+### CVF Engine (V5)
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `POST` | `/api/v3/process` | Daily session processing (Sonnet 4.5) |
-| `POST` | `/api/v3/weekly` | Weekly deep analysis (Opus 4.6) |
-| `GET` | `/api/v3/drift/:id` | Drift analysis |
-| `GET` | `/api/v3/timeline/:id` | Patient timeline |
-| `GET` | `/api/v3/differential/:id` | Differential diagnosis |
-| `GET` | `/api/v3/trajectory/:id` | Cognitive trajectory projection |
-| `GET` | `/api/v3/report/:id/:week` | Weekly report |
-| `GET` | `/api/v3/reports/:id` | All reports for patient |
-| `GET` | `/api/v3/baseline/:id` | Patient baseline |
-| `GET` | `/api/v3/indicators` | All 47 indicators |
-| `GET` | `/api/v3/meta` | Engine metadata |
+| `POST` | `/api/v5/process` | Daily session processing (Opus 4.6 dual-pass) |
+| `POST` | `/api/v5/process-audio` | Audio feature extraction (GPU) |
+| `POST` | `/api/v5/weekly` | Weekly deep analysis (Opus 4.6, 32K thinking) |
+| `GET` | `/api/v5/drift/:id` | Topic-adjusted drift analysis |
+| `GET` | `/api/v5/timeline/:id` | Patient timeline with genre metadata |
+| `GET` | `/api/v5/differential/:id` | 10-condition differential (30 rules) |
+| `GET` | `/api/v5/trajectory/:id` | 11-domain trajectory prediction |
+| `GET` | `/api/v5/pd/:id` | PD motor analysis |
+| `GET` | `/api/v5/micro-tasks/:id` | 6 micro-task status |
+| `GET` | `/api/v5/indicators` | All 107 indicators |
+| `GET` | `/api/v5/meta` | V5 metadata |
+| `POST` | `/api/v5/topic-detect` | Topic genre detection |
+| `POST` | `/api/v5/cross-validate` | Cross-validation analysis |
 
 ### GDPR
 | Method | Endpoint | Description |
@@ -206,9 +212,10 @@ Language is auto-detected from the browser and can be changed in settings. All c
 
 ## Tech Stack
 
-- **Backend**: Node.js, Fastify 5, Claude Opus 4.6 + Sonnet 4.5 (Anthropic SDK)
+- **Backend**: Node.js, Fastify 5, Claude Opus 4.6 (Anthropic SDK)
 - **Frontend**: React 19, Vite 7, Tailwind CSS 4, Recharts 3
-- **AI**: Claude Opus 4.6 (1M context + Extended Thinking), Sonnet 4.5 (daily extraction)
+- **AI**: Claude Opus 4.6 exclusively (daily dual-pass + weekly 32K thinking)
+- **GPU**: torchaudio, Whisper large-v3, parselmouth, nolds
 - **Security**: AES-256-GCM encryption, JWT HS256, RBAC, TLS 1.3
 - **Compliance**: HIPAA, GDPR (Art. 17, 20, 25, 30, 32)
 - **Workspace**: pnpm monorepo with shared packages
@@ -216,19 +223,23 @@ Language is auto-detected from the browser and can be changed in settings. All c
 
 ## Scientific Foundation
 
-Based on 84 peer-reviewed studies:
+Based on 84+ peer-reviewed studies:
 - Fraser et al. 2015 — 370 linguistic features, 81.9% accuracy
 - ADReSS Challenge (Luz 2020) — Gold standard speech-based detection
 - Snowdon Nun Study — Idea density as longitudinal predictor
 - Eyigoz Framingham — Speech surpasses APOE + demographics
 - Young 2024 — Pre-symptomatic fluency microchanges
+- Rusz et al. 2021 — LBD vocal biomarkers, motor speech analysis
+- Hardy et al. 2023 — FTD pragmatic language decline
+- Boschi et al. 2017 — Topic-aware scoring and genre effects on linguistic measures
 
 ## Budget
 
-| Operation | Standard | With Caching |
-|-----------|----------|-------------|
-| Daily extraction (Sonnet 4.5) | ~$0.08 | ~$0.04 |
-| Weekly deep analysis (Opus 4.6) | ~$1.50 | ~$0.85 |
+| Operation | Cost |
+|-----------|------|
+| Daily extraction (Opus 4.6 dual-pass) | ~$0.25 |
+| Weekly deep analysis (Opus 4.6 32K) | ~$0.50-0.80 |
+| Weekly total per patient | ~$2.10 |
 
 Adaptive mode: GREEN patients get standard analysis. YELLOW+ patients get full deep analysis with differential diagnosis and trajectory projection.
 
@@ -238,4 +249,4 @@ MIT License — see [LICENSE](LICENSE).
 
 ---
 
-*55 million people live with Alzheimer's. Most are diagnosed too late. AlzheimerVoice catches the signal in the voice — for less than $0.04 a day, on any phone.*
+*55 million people live with Alzheimer's. Most are diagnosed too late. AlzheimerVoice catches the signal in the voice — for ~$0.25 a day, on any phone.*

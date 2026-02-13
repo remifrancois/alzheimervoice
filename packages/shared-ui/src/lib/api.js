@@ -94,9 +94,49 @@ export const api = {
     body: JSON.stringify({ confirm: 'DELETE_ALL_DATA' }),
   }),
 
+  // V5 — Deep Voice Engine
+  v5Process: (data) => fetchJSON('/api/v5/process', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }),
+  v5ProcessAudio: (data) => fetchJSON('/api/v5/process-audio', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }),
+  v5Weekly: (data) => fetchJSON('/api/v5/weekly', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }),
+  v5GetDrift: (id) => fetchJSON(`/api/v5/drift/${sanitizeParam(id)}`),
+  v5GetTimeline: (id) => fetchJSON(`/api/v5/timeline/${sanitizeParam(id)}`),
+  v5GetDifferential: (id) => fetchJSON(`/api/v5/differential/${sanitizeParam(id)}`),
+  v5GetTrajectory: (id) => fetchJSON(`/api/v5/trajectory/${sanitizeParam(id)}`),
+  v5GetPD: (id) => fetchJSON(`/api/v5/pd/${sanitizeParam(id)}`),
+  v5GetMicroTasks: (id) => fetchJSON(`/api/v5/micro-tasks/${sanitizeParam(id)}`),
+  v5GetReport: (id, week) => fetchJSON(`/api/v5/report/${sanitizeParam(id)}/${sanitizeParam(week)}`),
+  v5GetReports: (id) => fetchJSON(`/api/v5/reports/${sanitizeParam(id)}`),
+  v5GetIndicators: () => fetchJSON('/api/v5/indicators'),
+  v5GetBaseline: (id) => fetchJSON(`/api/v5/baseline/${sanitizeParam(id)}`),
+  v5GetMeta: () => fetchJSON('/api/v5/meta'),
+  v5GetMetrics: () => fetchJSON('/api/v5/metrics'),
+  v5TopicDetect: (data) => fetchJSON('/api/v5/topic-detect', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }),
+  v5CrossValidate: (data) => fetchJSON('/api/v5/cross-validate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }),
+
   // Admin
   getAuditLogs: (limit, offset) => fetchJSON(`/api/admin/audit-logs?limit=${Number(limit) || 100}&offset=${Number(offset) || 0}`),
   getEngineMetrics: () => fetchJSON('/cvf/v4/metrics'),
+  getDatabaseStatus: () => fetchJSON('/api/admin/database-status'),
 
   // Admin — Cognito user management
   getCognitoUsers: (token) => fetchJSON(`/api/admin/cognito/users${token ? `?token=${encodeURIComponent(token)}` : ''}`),

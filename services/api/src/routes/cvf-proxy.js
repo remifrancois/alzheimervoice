@@ -180,4 +180,121 @@ export default async function cvfProxyRoutes(app) {
     if (!request.user) return reply.code(401).send({ error: 'Authentication required' });
     return cvfClient.get('/cvf/v3/meta', { userContext: request.user });
   });
+
+  // ── V5 Routes ──
+
+  app.post('/api/v5/process', {
+    preHandler: [requireRole('clinician')],
+  }, async (request, reply) => {
+    const { patientIds } = request.user;
+    if (patientIds && !patientIds.includes(request.body.patientId)) {
+      return reply.code(403).send({ error: 'Access denied for this patient' });
+    }
+    return cvfClient.post('/cvf/v5/process', { body: request.body, userContext: request.user });
+  });
+
+  app.post('/api/v5/process-audio', {
+    preHandler: [requireRole('clinician')],
+  }, async (request, reply) => {
+    const { patientIds } = request.user;
+    if (patientIds && !patientIds.includes(request.body.patientId)) {
+      return reply.code(403).send({ error: 'Access denied for this patient' });
+    }
+    return cvfClient.post('/cvf/v5/process-audio', { body: request.body, userContext: request.user });
+  });
+
+  app.post('/api/v5/weekly', {
+    preHandler: [requireRole('clinician')],
+  }, async (request, reply) => {
+    const { patientIds } = request.user;
+    if (patientIds && !patientIds.includes(request.body.patientId)) {
+      return reply.code(403).send({ error: 'Access denied for this patient' });
+    }
+    return cvfClient.post('/cvf/v5/weekly', { body: request.body, userContext: request.user });
+  });
+
+  app.get('/api/v5/drift/:patientId', {
+    preHandler: [requireRole('clinician', 'family'), requirePatientAccess()],
+  }, async (request) => {
+    return cvfClient.get(`/cvf/v5/drift/${request.params.patientId}`, { userContext: request.user });
+  });
+
+  app.get('/api/v5/timeline/:patientId', {
+    preHandler: [requireRole('clinician', 'family'), requirePatientAccess()],
+  }, async (request) => {
+    return cvfClient.get(`/cvf/v5/timeline/${request.params.patientId}`, { userContext: request.user });
+  });
+
+  app.get('/api/v5/differential/:patientId', {
+    preHandler: [requireRole('clinician', 'family'), requirePatientAccess()],
+  }, async (request) => {
+    return cvfClient.get(`/cvf/v5/differential/${request.params.patientId}`, { userContext: request.user });
+  });
+
+  app.get('/api/v5/trajectory/:patientId', {
+    preHandler: [requireRole('clinician', 'family'), requirePatientAccess()],
+  }, async (request) => {
+    return cvfClient.get(`/cvf/v5/trajectory/${request.params.patientId}`, { userContext: request.user });
+  });
+
+  app.get('/api/v5/pd/:patientId', {
+    preHandler: [requireRole('clinician', 'family'), requirePatientAccess()],
+  }, async (request) => {
+    return cvfClient.get(`/cvf/v5/pd/${request.params.patientId}`, { userContext: request.user });
+  });
+
+  app.get('/api/v5/micro-tasks/:patientId', {
+    preHandler: [requireRole('clinician', 'family'), requirePatientAccess()],
+  }, async (request) => {
+    return cvfClient.get(`/cvf/v5/micro-tasks/${request.params.patientId}`, { userContext: request.user });
+  });
+
+  app.get('/api/v5/report/:patientId/:weekNumber', {
+    preHandler: [requireRole('clinician', 'family'), requirePatientAccess()],
+  }, async (request) => {
+    return cvfClient.get(`/cvf/v5/report/${request.params.patientId}/${request.params.weekNumber}`, { userContext: request.user });
+  });
+
+  app.get('/api/v5/reports/:patientId', {
+    preHandler: [requireRole('clinician', 'family'), requirePatientAccess()],
+  }, async (request) => {
+    return cvfClient.get(`/cvf/v5/reports/${request.params.patientId}`, { userContext: request.user });
+  });
+
+  app.get('/api/v5/indicators', async (request, reply) => {
+    if (!request.user) return reply.code(401).send({ error: 'Authentication required' });
+    return cvfClient.get('/cvf/v5/indicators', { userContext: request.user });
+  });
+
+  app.get('/api/v5/baseline/:patientId', {
+    preHandler: [requireRole('clinician', 'family'), requirePatientAccess()],
+  }, async (request) => {
+    return cvfClient.get(`/cvf/v5/baseline/${request.params.patientId}`, { userContext: request.user });
+  });
+
+  app.get('/api/v5/meta', async (request, reply) => {
+    if (!request.user) return reply.code(401).send({ error: 'Authentication required' });
+    return cvfClient.get('/cvf/v5/meta', { userContext: request.user });
+  });
+
+  app.get('/api/v5/metrics', async (request, reply) => {
+    if (!request.user) return reply.code(401).send({ error: 'Authentication required' });
+    return cvfClient.get('/cvf/v5/metrics', { userContext: request.user });
+  });
+
+  app.post('/api/v5/topic-detect', {
+    preHandler: [requireRole('clinician')],
+  }, async (request) => {
+    return cvfClient.post('/cvf/v5/topic-detect', { body: request.body, userContext: request.user });
+  });
+
+  app.post('/api/v5/cross-validate', {
+    preHandler: [requireRole('clinician')],
+  }, async (request, reply) => {
+    const { patientIds } = request.user;
+    if (patientIds && !patientIds.includes(request.body.patientId)) {
+      return reply.code(403).send({ error: 'Access denied for this patient' });
+    }
+    return cvfClient.post('/cvf/v5/cross-validate', { body: request.body, userContext: request.user });
+  });
 }
