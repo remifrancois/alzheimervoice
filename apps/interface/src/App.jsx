@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate, Outlet, useNavigate } from 'react-router-dom'
 import AppLayout from './components/layout/AppLayout'
-import { PatientDataGuard, useAuth, LoginPage, RegisterPage, ForgotPasswordPage } from '@azh/shared-ui'
+import { PatientDataGuard, AdminGuard, useAuth, LoginPage, RegisterPage, ForgotPasswordPage } from '@azh/shared-ui'
 
 // Clinical pages
 import DashboardPage from './pages/DashboardPage'
@@ -10,6 +10,7 @@ import ReportsPage from './pages/ReportsPage'
 import SettingsPage from './pages/SettingsPage'
 import ChangelogPage from './pages/ChangelogPage'
 import PrivacyPage from './pages/PrivacyPage'
+import AdminPage from './pages/AdminPage'
 
 function AuthLoadingGuard({ children }) {
   const { loading } = useAuth()
@@ -97,6 +98,9 @@ function App() {
           <Route path="/patients" element={<PatientDataGuard><PatientsPage /></PatientDataGuard>} />
           <Route path="/analysis" element={<PatientDataGuard><AnalysisPage /></PatientDataGuard>} />
           <Route path="/reports" element={<PatientDataGuard><ReportsPage /></PatientDataGuard>} />
+
+          {/* Admin — admin/superadmin only */}
+          <Route path="/admin" element={<AdminGuard><AdminPage /></AdminGuard>} />
 
           {/* Shared routes — all roles */}
           <Route path="/settings" element={<SettingsPage />} />

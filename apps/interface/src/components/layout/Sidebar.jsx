@@ -12,8 +12,14 @@ const SETTINGS_NAV = [
   { id: 'settings',  labelKey: 'nav.settings',  icon: 'settings', path: '/settings' },
 ]
 
+const ADMIN_NAV = [
+  { id: 'admin', labelKey: 'nav.engineAdmin', icon: 'monitor', path: '/admin' },
+]
+
 export default function Sidebar() {
   const { t } = useT()
+  const { canAccessAdmin } = useAuth()
+  const isAdmin = canAccessAdmin()
 
   return (
     <aside className="fixed left-0 top-0 bottom-0 w-[var(--sidebar-width)] bg-slate-950 border-r border-slate-800 flex flex-col z-20">
@@ -45,6 +51,18 @@ export default function Sidebar() {
         {SETTINGS_NAV.map(item => (
           <SidebarLink key={item.id} item={item} t={t} />
         ))}
+
+        {/* Admin — visible to admin/superadmin only */}
+        {isAdmin && (
+          <>
+            <div className="text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-3 mb-2 mt-6">
+              {t('nav.admin')}
+            </div>
+            {ADMIN_NAV.map(item => (
+              <SidebarLink key={item.id} item={item} t={t} />
+            ))}
+          </>
+        )}
       </nav>
 
       {/* Bottom section */}

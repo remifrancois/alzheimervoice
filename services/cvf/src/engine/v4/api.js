@@ -50,10 +50,39 @@ import {
 } from './index.js';
 
 import crypto from 'crypto';
+import { performance } from 'perf_hooks';
 
 const PATIENT_ID_REGEX = /^[a-zA-Z0-9_-]{1,64}$/;
 const MAX_PATIENTS = 10000;
 const MAX_SESSIONS_PER_PATIENT = 1000;
+
+// ════════════════════════════════════════════════
+// PERFORMANCE METRICS
+// ════════════════════════════════════════════════
+
+const RING_BUFFER_SIZE = 50;
+
+const metrics = {
+  started_at: new Date().toISOString(),
+  sessions_processed: 0,
+  sessions_failed: 0,
+  audio_extractions: 0,
+  audio_failures: 0,
+  weekly_analyses: 0,
+  weekly_failures: 0,
+  micro_tasks_processed: 0,
+  last_processing_times: [],
+  text_extraction_total_ms: 0,
+  audio_extraction_total_ms: 0,
+  analysis_total_ms: 0,
+};
+
+function pushProcessingTime(entry) {
+  metrics.last_processing_times.push(entry);
+  if (metrics.last_processing_times.length > RING_BUFFER_SIZE) {
+    metrics.last_processing_times.shift();
+  }
+}
 
 function validatePatientId(patientId) {
   if (!patientId || !PATIENT_ID_REGEX.test(patientId)) {
@@ -129,6 +158,10 @@ export default async function v4Routes(app) {
     }
   }, async (request, reply) => {
     const { patientId, transcript, audioBase64, audioFormat, language, confounders, durationSeconds, mode } = request.body;
+    const processStart = performance.now();
+    const patientHash = crypto.createHash('sha256').update(patientId).digest('hex').slice(0, 8);
+
+    try {
 
     let patient = getPatient(patientId);
     if (!patient) {
@@ -137,15 +170,17 @@ export default async function v4Routes(app) {
       savePatientLocal(patient);
     }
 
-    console.log(`[V4] Processing session for patient_${crypto.createHash('sha256').update(patientId).digest('hex').slice(0, 8)} (mode=${mode}, audio=${audioBase64 ? 'yes' : 'no'})...`);
+    console.log(`[V4] Processing session for patient_${patientHash} (mode=${mode}, audio=${audioBase64 ? 'yes' : 'no'})...`);
 
     // Run text extraction and audio pipeline in parallel
+    const textStart = performance.now();
     const textPromise = mode === 'early_detection'
       ? extractV4EarlyDetection(transcript, { language: language || patient.language })
       : extractV4Features(transcript, { language: language || patient.language });
 
     let audioPromise = null;
     let audioTempFiles = [];
+    const audioStart = performance.now();
     if (audioBase64) {
       const audioBuffer = Buffer.from(audioBase64, 'base64');
       audioPromise = extractAcousticFeatures(audioBuffer, {
@@ -153,6 +188,7 @@ export default async function v4Routes(app) {
         gender: patient.gender || 'unknown',
       }).catch(err => {
         console.error('[V4] Audio extraction failed, continuing with text only:', err.message);
+        metrics.audio_failures++;
         return {};
       });
     }
@@ -161,6 +197,12 @@ export default async function v4Routes(app) {
       textPromise,
       audioPromise || Promise.resolve({}),
     ]);
+    const textDuration = performance.now() - textStart;
+    metrics.text_extraction_total_ms += textDuration;
+    if (audioBase64 && audioVector && Object.keys(audioVector).length > 0) {
+      metrics.audio_extractions++;
+      metrics.audio_extraction_total_ms += performance.now() - audioStart;
+    }
 
     // Merge text + audio vectors (only allow known AUDIO_INDICATORS)
     const mergedVector = { ...textVector };
@@ -203,6 +245,9 @@ export default async function v4Routes(app) {
         savePatientLocal(patient);
         console.log(`[V4] Baseline established for patient_${crypto.createHash('sha256').update(patientId).digest('hex').slice(0, 8)} (${baselineResult.sessions} sessions)`);
       }
+      metrics.sessions_processed++;
+      const duration = performance.now() - processStart;
+      pushProcessingTime({ timestamp: new Date().toISOString(), duration_ms: Math.round(duration), type: 'session', patient_hash: patientHash });
       return {
         status: 'calibrating',
         version: 'v4',
@@ -215,11 +260,13 @@ export default async function v4Routes(app) {
     }
 
     // Analyze session against baseline
+    const analysisStart = performance.now();
     const history = v4Sessions.slice(-14).map(s => ({
       domain_scores: s._cached_domain_scores || {},
       composite: s._cached_composite,
     }));
     const result = analyzeSession(mergedVector, baseline.vector, confounders || {}, history);
+    metrics.analysis_total_ms += performance.now() - analysisStart;
 
     // Cache for history building
     session._cached_domain_scores = result.domain_scores;
@@ -232,6 +279,10 @@ export default async function v4Routes(app) {
       savePatientLocal(patient);
     }
 
+    metrics.sessions_processed++;
+    const duration = performance.now() - processStart;
+    pushProcessingTime({ timestamp: new Date().toISOString(), duration_ms: Math.round(duration), type: 'session', patient_hash: patientHash });
+
     return {
       status: 'analyzed',
       version: 'v4',
@@ -241,6 +292,13 @@ export default async function v4Routes(app) {
       audio_indicators_extracted: audioBase64 ? Object.keys(audioVector || {}).length : 0,
       ...result,
     };
+
+    } catch (err) {
+      metrics.sessions_failed++;
+      const duration = performance.now() - processStart;
+      pushProcessingTime({ timestamp: new Date().toISOString(), duration_ms: Math.round(duration), type: 'session_error', patient_hash: patientHash });
+      throw err;
+    }
   });
 
   // ────────────────────────────────────────────
@@ -262,11 +320,13 @@ export default async function v4Routes(app) {
     }
   }, async (request, reply) => {
     const { patientId, audioBase64, audioFormat, taskType, language } = request.body;
+    const audioStart = performance.now();
+    const patientHash = crypto.createHash('sha256').update(patientId).digest('hex').slice(0, 8);
 
     const patient = getPatient(patientId);
     if (!patient) return reply.code(404).send({ error: 'Patient not found' });
 
-    console.log(`[V4] Processing ${taskType} micro-task audio for patient_${crypto.createHash('sha256').update(patientId).digest('hex').slice(0, 8)}...`);
+    console.log(`[V4] Processing ${taskType} micro-task audio for patient_${patientHash}...`);
 
     const audioBuffer = Buffer.from(audioBase64, 'base64');
     const features = await extractMicroTaskAudio(audioBuffer, taskType, {
@@ -275,6 +335,12 @@ export default async function v4Routes(app) {
     });
 
     const taskResult = scoreMicroTask(taskType, features);
+
+    metrics.micro_tasks_processed++;
+    metrics.audio_extractions++;
+    const duration = performance.now() - audioStart;
+    metrics.audio_extraction_total_ms += duration;
+    pushProcessingTime({ timestamp: new Date().toISOString(), duration_ms: Math.round(duration), type: 'audio', patient_hash: patientHash });
 
     return {
       version: 'v4',
@@ -303,6 +369,8 @@ export default async function v4Routes(app) {
     }
   }, async (request, reply) => {
     const { patientId, weekNumber, microTaskResults } = request.body;
+    const weeklyStart = performance.now();
+    const patientHash = crypto.createHash('sha256').update(patientId).digest('hex').slice(0, 8);
 
     const patient = getPatient(patientId);
     if (!patient) return reply.code(404).send({ error: 'Patient not found' });
@@ -316,11 +384,20 @@ export default async function v4Routes(app) {
 
     const weeklyHistory = await listWeeklyReports(patientId);
 
-    const report = await runWeeklyDeepAnalysis({
-      patient, baseline, sessions: recentSessions, weeklyHistory, weekNumber, microTaskResults,
-    });
+    try {
+      const report = await runWeeklyDeepAnalysis({
+        patient, baseline, sessions: recentSessions, weeklyHistory, weekNumber, microTaskResults,
+      });
 
-    return report;
+      metrics.weekly_analyses++;
+      const duration = performance.now() - weeklyStart;
+      pushProcessingTime({ timestamp: new Date().toISOString(), duration_ms: Math.round(duration), type: 'weekly', patient_hash: patientHash });
+
+      return report;
+    } catch (err) {
+      metrics.weekly_failures++;
+      throw err;
+    }
   });
 
   // ────────────────────────────────────────────
@@ -604,6 +681,60 @@ export default async function v4Routes(app) {
         depression: SENTINELS.depression?.length || 0,
         parkinson: SENTINELS.parkinson?.length || 0,
       },
+    };
+  });
+
+  // ────────────────────────────────────────────
+  // 15. GET /metrics — Engine performance metrics
+  // ────────────────────────────────────────────
+  app.get('/metrics', async () => {
+    const allSessions = [...sessions.values()].flat();
+
+    return {
+      version: 'v4',
+      uptime_seconds: Math.round((Date.now() - new Date(metrics.started_at).getTime()) / 1000),
+      started_at: metrics.started_at,
+
+      // Capacity
+      patients_total: patients.size,
+      patients_max: MAX_PATIENTS,
+      sessions_total: allSessions.length,
+      baselines_established: [...baselines.values()].filter(b => b?.complete).length,
+      baselines_calibrating: [...baselines.values()].filter(b => b && !b.complete).length,
+
+      // Patient breakdown by alert level
+      patients_by_alert: {
+        green: [...patients.values()].filter(p => (p.alert_level || 'green') === 'green').length,
+        yellow: [...patients.values()].filter(p => p.alert_level === 'yellow').length,
+        orange: [...patients.values()].filter(p => p.alert_level === 'orange').length,
+        red: [...patients.values()].filter(p => p.alert_level === 'red').length,
+      },
+
+      // Processing throughput
+      sessions_processed: metrics.sessions_processed,
+      sessions_failed: metrics.sessions_failed,
+      audio_extractions: metrics.audio_extractions,
+      audio_failures: metrics.audio_failures,
+      weekly_analyses: metrics.weekly_analyses,
+      weekly_failures: metrics.weekly_failures,
+      micro_tasks_processed: metrics.micro_tasks_processed,
+
+      // Audio pipeline
+      audio_sessions: allSessions.filter(s => s.has_audio).length,
+      audio_rate: allSessions.length > 0
+        ? allSessions.filter(s => s.has_audio).length / allSessions.length
+        : 0,
+
+      // Average execution times
+      avg_text_extraction_ms: metrics.sessions_processed > 0
+        ? Math.round(metrics.text_extraction_total_ms / metrics.sessions_processed) : 0,
+      avg_audio_extraction_ms: metrics.audio_extractions > 0
+        ? Math.round(metrics.audio_extraction_total_ms / metrics.audio_extractions) : 0,
+      avg_analysis_ms: metrics.sessions_processed > 0
+        ? Math.round(metrics.analysis_total_ms / metrics.sessions_processed) : 0,
+
+      // Recent activity (last 50 processing events)
+      recent_activity: metrics.last_processing_times,
     };
   });
 }

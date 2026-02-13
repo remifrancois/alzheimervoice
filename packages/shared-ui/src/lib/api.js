@@ -96,6 +96,7 @@ export const api = {
 
   // Admin
   getAuditLogs: (limit, offset) => fetchJSON(`/api/admin/audit-logs?limit=${Number(limit) || 100}&offset=${Number(offset) || 0}`),
+  getEngineMetrics: () => fetchJSON('/cvf/v4/metrics'),
 
   // Admin — Cognito user management
   getCognitoUsers: (token) => fetchJSON(`/api/admin/cognito/users${token ? `?token=${encodeURIComponent(token)}` : ''}`),
