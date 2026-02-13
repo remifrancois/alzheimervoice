@@ -27,7 +27,7 @@ export default function Navbar() {
   const currentLang = languages.find(l => l.code === lang)
 
   const pageLinks = [
-    { label: t('nav.scientific'), page: 'scientific' },
+    { label: t('nav.scientific'), page: 'cognitivevoicefingerprint' },
     { label: t('nav.family'), page: 'family' },
     { label: t('nav.opensource'), page: 'opensource' },
   ]
@@ -79,7 +79,7 @@ export default function Navbar() {
               </div>
             )}
           </div>
-          <a href="https://interface.alzheimervoice.org" className="px-5 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors">{t('nav.cta')}</a>
+          <a href="https://demo.alzheimervoice.org" className="px-5 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors">{t('nav.cta')}</a>
         </div>
         <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 text-slate-400">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -102,7 +102,7 @@ export default function Navbar() {
               ))}
             </div>
           </div>
-          <a href="https://interface.alzheimervoice.org" className="block px-4 py-2 rounded-lg bg-violet-600 text-sm font-medium text-white text-center">{t('nav.cta')}</a>
+          <a href="https://demo.alzheimervoice.org" className="block px-4 py-2 rounded-lg bg-violet-600 text-sm font-medium text-white text-center">{t('nav.cta')}</a>
         </div>
       )}
     </nav>

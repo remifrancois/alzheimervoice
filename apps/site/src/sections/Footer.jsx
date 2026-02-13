@@ -31,7 +31,7 @@ export default function Footer() {
           <div>
             <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">{t('footer.researchHeader')}</h4>
             <ul className="space-y-2">
-              <li><a href={buildPath(lang, 'scientific')} onClick={(e) => handleNav(e, 'scientific')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkScience')}</a></li>
+              <li><a href={buildPath(lang, 'cognitivevoicefingerprint')} onClick={(e) => handleNav(e, 'cognitivevoicefingerprint')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkScience')}</a></li>
               <li><a href={buildPath(lang, 'corevoiceframework')} onClick={(e) => handleNav(e, 'corevoiceframework')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkCvf')}</a></li>
               <li><a href={buildPath(lang, 'opensource')} onClick={(e) => handleNav(e, 'opensource')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkOpenSource')}</a></li>
             </ul>
@@ -43,7 +43,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><a href={buildPath(lang, 'family')} onClick={(e) => handleNav(e, 'family')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkFamily')}</a></li>
               <li><a href={buildPath(lang, 'demo')} onClick={(e) => handleNav(e, 'demo')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkDemo')}</a></li>
-              <li><a href="https://interface.alzheimervoice.org" className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkPlatform')}</a></li>
+              <li><a href="https://demo.alzheimervoice.org" className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkPlatform')}</a></li>
             </ul>
           </div>
 

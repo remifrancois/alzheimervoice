@@ -1,0 +1,6 @@
+_amazonses.alzheimervoice.org. 300 IN TXT "8cMoSa5hF8lY5+n1Qp0gPtbSO/kRWV0b/s9CAymQ1JQ="
+dq3r6tnbhzhxonlgwwszhc7pa5hk4v6h._domainkey.alzheimervoice.org. 300 IN CNAME dq3r6tnbhzhxonlgwwszhc7pa5hk4v6h.dkim.amazonses.com.
+fd6lsvt4wjeplfnjrhkerflnsp2awxq2._domainkey.alzheimervoice.org. 300 IN CNAME fd6lsvt4wjeplfnjrhkerflnsp2awxq2.dkim.amazonses.com.
+cnnpsfpqwvnrax4ha32hpra2f6qrxny2._domainkey.alzheimervoice.org. 300 IN CNAME cnnpsfpqwvnrax4ha32hpra2f6qrxny2.dkim.amazonses.com.
+mail.alzheimervoice.org. 300 IN MX 10 feedback-smtp.us-east-1.amazonses.com.
+mail.alzheimervoice.org. 300 IN TXT "v=spf1 include:amazonses.com ~all"

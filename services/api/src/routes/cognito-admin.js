@@ -3,6 +3,7 @@
  *
  * All routes require admin role.
  * Only active when COGNITO_USER_POOL_ID is set.
+ * Sends email notifications via SES when available.
  */
 
 import { requireRole } from '@azh/shared-auth/rbac';
@@ -18,6 +19,11 @@ import {
   ListUsersInGroupCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { loadUsers, saveUsers } from '@azh/shared-models/users';
+import {
+  isEmailEnabled,
+  sendAccountActivatedEmail,
+  sendAccountDisabledEmail,
+} from '../lib/email.js';
 
 export default async function cognitoAdminRoutes(app) {
   const userPoolId = process.env.COGNITO_USER_POOL_ID;
@@ -164,6 +170,17 @@ export default async function cognitoAdminRoutes(app) {
       await saveUsers(users);
     }
 
+    // Send activation email
+    if (isEmailEnabled()) {
+      try {
+        const userName = user?.name || email;
+        await sendAccountActivatedEmail(email, { name: userName, role });
+        app.log.info({ email, role }, 'Account activation email sent');
+      } catch (err) {
+        app.log.warn({ err: err.message, email }, 'Failed to send activation email');
+      }
+    }
+
     return { message: 'Role updated', email, role };
   });
 
@@ -178,6 +195,18 @@ export default async function cognitoAdminRoutes(app) {
       Username: email,
     }));
 
+    // Send disabled notification
+    if (isEmailEnabled()) {
+      try {
+        const users = await loadUsers();
+        const user = users.find(u => u.email === email);
+        await sendAccountDisabledEmail(email, { name: user?.name || email });
+        app.log.info({ email }, 'Account disabled email sent');
+      } catch (err) {
+        app.log.warn({ err: err.message, email }, 'Failed to send disabled email');
+      }
+    }
+
     return { message: 'User disabled', email };
   });
 
@@ -191,6 +220,18 @@ export default async function cognitoAdminRoutes(app) {
       UserPoolId: userPoolId,
       Username: email,
     }));
+
+    // Send activation email
+    if (isEmailEnabled()) {
+      try {
+        const users = await loadUsers();
+        const user = users.find(u => u.email === email);
+        await sendAccountActivatedEmail(email, { name: user?.name || email, role: user?.role || 'family' });
+        app.log.info({ email }, 'Account re-enabled email sent');
+      } catch (err) {
+        app.log.warn({ err: err.message, email }, 'Failed to send enabled email');
+      }
+    }
 
     return { message: 'User enabled', email };
   });

@@ -1,0 +1,2191 @@
+{
+  "profile": "profile01",
+  "sessions_count": 10,
+  "sessions": [
+    {
+      "session_id": "session01",
+      "filename": "session01.webm",
+      "file_size_bytes": 11563313,
+      "transcript": {
+        "text": "Hier, je me trouvais \u00e0 la montagne, plus particuli\u00e8rement en Haute-Savoie \u00e0 Meribel. Donc, il ne faisait pas tr\u00e8s beau, la neige tombait, donc je suis descendue par les escaliers, mais \u00e7a me plaisait m\u00eame si le temps n'\u00e9tait pas tr\u00e8s beau, j'admirais les paysages, les sapins enneig\u00e9s, c'\u00e9tait quand m\u00eame tr\u00e8s agr\u00e9able. Voil\u00e0, et j'ai fait comme d'habitude mes courses, c'est \u00e0 dire des achats courants, le pain, des yaourts, quelques fruits, voil\u00e0, et apr\u00e8s je suis remont\u00e9e par le t\u00e9l\u00e9port\u00e9. Hier apr\u00e8s-midi, je n'avais pas envie, malgr\u00e9 les chutes de neige, de rester enferm\u00e9e dans l'appartement. J'en ai profit\u00e9 pour lire un petit peu un livre sur la croisade. J'ai profit\u00e9 \u00e9galement de ce moment un petit peu enferm\u00e9, on va dire, \u00e0 l'appartement pour comment lire et faire de la broderie surtout. Et puis, le ciel s'\u00e9tend \u00e9clairci, j'ai d\u00e9cid\u00e9 avec Philippe de faire une balade. Voil\u00e0, nous avons fait une grande promenade \u00e0 Tueda, le ciel n'\u00e9tait pas franchement bleu, mais c'\u00e9tait agr\u00e9able, il y avait de la neige fra\u00eeche, on pouvait marcher facilement et \u00e7a nous a fait du bien de faire cette grande balade. Ensuite, nous sommes rentr\u00e9s et le soir, et bien j'ai regard\u00e9 les Jeux Olympiques, surtout le patinage artistique que j'aime beaucoup et l\u00e0, \u00e7a a vraiment \u00e9t\u00e9 une tr\u00e8s belle surprise, bien que je ne sois pas all\u00e9e jusqu'au bout, car \u00e0 10 heures, j'\u00e9tais quand m\u00eame assez fatigu\u00e9e, donc nous sommes all\u00e9s nous coucher et nous avons regard\u00e9 le lendemain, Henri Plez, les cinq derniers concurrents dont Guillaume Cizeron et Laurence Fournier-Beaudry qui ont gagn\u00e9 la m\u00e9daille d'or. Voil\u00e0, c'est toujours un spectacle merveilleux, magique de regarder ces patineurs qui sont quand m\u00eame tous de tr\u00e8s haut niveau, \u00e9volu\u00e9s sur cette patinoire avec tellement d'aisance, tellement de beaut\u00e9, de gr\u00e2ce, de charme. Cela me rappelle un petit peu aussi la danse classique quelque part. Je pense que les patineurs sont beaucoup inspir\u00e9s aussi par les mouvements, les gestes que l'on retrouve en danse classique. C'\u00e9tait vraiment un tr\u00e8s tr\u00e8s beau spectacle. J'aimerais que le reste du temps, c'est-\u00e0-dire entre les deux JO, on nous propose aussi des spectacles de patinage artistique, mais malheureusement, on n'a pas l'info de ce type de spectacle.",
+        "language": "fr",
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 6.96,
+            "text": "Hier, je me trouvais \u00e0 la montagne, plus particuli\u00e8rement en Haute-Savoie \u00e0 Meribel."
+          },
+          {
+            "start": 6.96,
+            "end": 14.76,
+            "text": "Donc, il ne faisait pas tr\u00e8s beau, la neige tombait, donc je suis descendue par les escaliers,"
+          },
+          {
+            "start": 14.76,
+            "end": 21.36,
+            "text": "mais \u00e7a me plaisait m\u00eame si le temps n'\u00e9tait pas tr\u00e8s beau, j'admirais les paysages, les"
+          },
+          {
+            "start": 21.36,
+            "end": 24.64,
+            "text": "sapins enneig\u00e9s, c'\u00e9tait quand m\u00eame tr\u00e8s agr\u00e9able."
+          },
+          {
+            "start": 24.64,
+            "end": 30.76,
+            "text": "Voil\u00e0, et j'ai fait comme d'habitude mes courses, c'est \u00e0 dire des achats courants,"
+          },
+          {
+            "start": 30.76,
+            "end": 37.2,
+            "text": "le pain, des yaourts, quelques fruits, voil\u00e0, et apr\u00e8s je suis remont\u00e9e par le t\u00e9l\u00e9port\u00e9."
+          },
+          {
+            "start": 37.2,
+            "end": 45.44,
+            "text": "Hier apr\u00e8s-midi, je n'avais pas envie, malgr\u00e9 les chutes de neige, de rester enferm\u00e9e dans"
+          },
+          {
+            "start": 45.44,
+            "end": 46.44,
+            "text": "l'appartement."
+          },
+          {
+            "start": 46.44,
+            "end": 54.120000000000005,
+            "text": "J'en ai profit\u00e9 pour lire un petit peu un livre sur la croisade."
+          },
+          {
+            "start": 54.519999999999996,
+            "end": 63.0,
+            "text": "J'ai profit\u00e9 \u00e9galement de ce moment un petit peu enferm\u00e9, on va dire, \u00e0 l'appartement"
+          },
+          {
+            "start": 63.0,
+            "end": 69.56,
+            "text": "pour comment lire et faire de la broderie surtout."
+          },
+          {
+            "start": 69.56,
+            "end": 76.75999999999999,
+            "text": "Et puis, le ciel s'\u00e9tend \u00e9clairci, j'ai d\u00e9cid\u00e9 avec Philippe de faire une balade."
+          },
+          {
+            "start": 76.75999999999999,
+            "end": 83.0,
+            "text": "Voil\u00e0, nous avons fait une grande promenade \u00e0 Tueda, le ciel n'\u00e9tait pas franchement"
+          },
+          {
+            "start": 83.0,
+            "end": 89.16,
+            "text": "bleu, mais c'\u00e9tait agr\u00e9able, il y avait de la neige fra\u00eeche, on pouvait marcher facilement"
+          },
+          {
+            "start": 89.16,
+            "end": 92.6,
+            "text": "et \u00e7a nous a fait du bien de faire cette grande balade."
+          },
+          {
+            "start": 92.6,
+            "end": 98.36,
+            "text": "Ensuite, nous sommes rentr\u00e9s et le soir, et bien j'ai regard\u00e9 les Jeux Olympiques,"
+          },
+          {
+            "start": 98.36,
+            "end": 105.96000000000001,
+            "text": "surtout le patinage artistique que j'aime beaucoup et l\u00e0, \u00e7a a vraiment \u00e9t\u00e9 une"
+          },
+          {
+            "start": 105.96000000000001,
+            "end": 111.24000000000001,
+            "text": "tr\u00e8s belle surprise, bien que je ne sois pas all\u00e9e jusqu'au bout, car \u00e0 10 heures,"
+          },
+          {
+            "start": 111.24,
+            "end": 116.36,
+            "text": "j'\u00e9tais quand m\u00eame assez fatigu\u00e9e, donc nous sommes all\u00e9s nous coucher et nous avons"
+          },
+          {
+            "start": 116.36,
+            "end": 126.11999999999999,
+            "text": "regard\u00e9 le lendemain, Henri Plez, les cinq derniers concurrents dont Guillaume Cizeron"
+          },
+          {
+            "start": 126.11999999999999,
+            "end": 131.07999999999998,
+            "text": "et Laurence Fournier-Beaudry qui ont gagn\u00e9 la m\u00e9daille d'or."
+          },
+          {
+            "start": 131.07999999999998,
+            "end": 139.4,
+            "text": "Voil\u00e0, c'est toujours un spectacle merveilleux, magique de regarder ces patineurs qui sont"
+          },
+          {
+            "start": 139.4,
+            "end": 146.68,
+            "text": "quand m\u00eame tous de tr\u00e8s haut niveau, \u00e9volu\u00e9s sur cette patinoire avec tellement d'aisance,"
+          },
+          {
+            "start": 146.68,
+            "end": 151.32,
+            "text": "tellement de beaut\u00e9, de gr\u00e2ce, de charme."
+          },
+          {
+            "start": 151.32,
+            "end": 157.0,
+            "text": "Cela me rappelle un petit peu aussi la danse classique quelque part."
+          },
+          {
+            "start": 157.0,
+            "end": 164.28,
+            "text": "Je pense que les patineurs sont beaucoup inspir\u00e9s aussi par les mouvements, les gestes que l'on"
+          },
+          {
+            "start": 164.28,
+            "end": 166.52,
+            "text": "retrouve en danse classique."
+          },
+          {
+            "start": 167.16,
+            "end": 170.20000000000002,
+            "text": "C'\u00e9tait vraiment un tr\u00e8s tr\u00e8s beau spectacle."
+          },
+          {
+            "start": 170.20000000000002,
+            "end": 178.84,
+            "text": "J'aimerais que le reste du temps, c'est-\u00e0-dire entre les deux JO, on nous propose aussi des"
+          },
+          {
+            "start": 178.84,
+            "end": 186.60000000000002,
+            "text": "spectacles de patinage artistique, mais malheureusement, on n'a pas l'info de ce type de spectacle."
+          }
+        ]
+      },
+      "acoustic_features": {
+        "duration_s": 188.16,
+        "f0_mean": 199.82,
+        "f0_sd": 45.12,
+        "f0_range": 413.55,
+        "jitter_local": 0.015372,
+        "shimmer_local": 0.072963,
+        "hnr": 19.61,
+        "mfcc2_mean": 86.05,
+        "cpp": 1.6062,
+        "f1_mean": 587.14,
+        "f2_mean": 1802.23,
+        "spectral_harmonicity": 0.5307,
+        "energy_range": 63.85,
+        "articulation_rate": 0.6804,
+        "ppe": 0.8965,
+        "rpde": 0.671,
+        "dfa": 0.5616,
+        "d2": 0.9314,
+        "vot": 131.56
+      }
+    },
+    {
+      "session_id": "session02",
+      "filename": "session02.webm",
+      "file_size_bytes": 12797798,
+      "transcript": {
+        "text": "Le week-end dernier, comme nous \u00e9tions aussi \u00e0 Mary Bell, les Alus, d\u00e9j\u00e0 depuis plusieurs semaines, et bien nous avons profit\u00e9 de faire une grande balade le matin \u00e0 Tueda. Il faisait assez beau, le ciel \u00e9tait bleu, bien avec quelques nuages, mais c'\u00e9tait quand m\u00eame assez ensoleill\u00e9 pour permettre une tr\u00e8s belle balade. J'ai fait ce qu'on appelle le grand tour du lac et au-del\u00e0. Par contre, je ne suis pas mont\u00e9e au refuge du plan parce que je pensais que la neige \u00e9tait tr\u00e8s tass\u00e9e et des fois quand elle est tr\u00e8s tass\u00e9e, la descente du refuge du plan peut \u00eatre un petit peu p\u00e9rilleuse. Donc j'ai pr\u00e9f\u00e9r\u00e9 rester sur le chemin plat, mais c'\u00e9tait une belle balade, bien agr\u00e9able. Le plus souvent, je pars tardivement, c'est-\u00e0-dire vers 10h30, je m'arr\u00eate \u00e0 la boulangerie acheter le pain, d\u00e9j\u00e0 parce que je pr\u00e9f\u00e8re acheter le pain \u00e0 cette heure-l\u00e0, car quand je le fais au retour, vers midi et demi, une heure, il y a beaucoup de monde car les skewers viennent chercher des g\u00e2teaux, des sandwichs pour se restaurer. Donc je pr\u00e9f\u00e8re prendre mon pain avant que je mette dans mon sac \u00e0 dos et hop, me voil\u00e0 parti. C'est une belle balade, toujours agr\u00e9able, tu\u00e9 d'art, on rencontre plein de gens et souvent il suffit de s'asseoir un petit peu sur un banc pour que d'autres personnes viennent s'asseoir et qu'on entame un petit peu une discussion et on rencontre des personnes int\u00e9ressantes qui habitent dans divers endroits de la France, parfois qui viennent ici pour la premi\u00e8re fois, d'autres qui sont habitu\u00e9es comme nous, qui viennent tr\u00e8s r\u00e9guli\u00e8rement, mais c'est des fois des moments de conversation tr\u00e8s agr\u00e9ables. Et puis je rentre, il est souvent 13h, m\u00eame 13h30, le temps de remonter dans l'escalier et puis c'est l'hiver, c'est la montagne, donc il faut se d\u00e9shabiller, il faut enlever le gros manteau, le bonnet, l'\u00e9charpe, les gants, enlever le pantalon de ski qui me sert quand m\u00eame \u00e0 m'isoler du froid, les grosses chaussettes. Bref, souvent on n'est pas \u00e0 table avant 13h30, mais ce n'est pas grave. Voil\u00e0, et l'apr\u00e8s-midi, l'apr\u00e8s-midi c'est un petit peu d\u00e9tente, lecture, broderie, parfois du dessin, mais je n'ai pas le souvenir le week-end dernier d'avoir fait un petit peu de dessin. Voil\u00e0, et puis comme c'est la p\u00e9riode des Jeux Olympiques, c'est vrai qu'on regarde le soir les Jeux Olympiques, quand il y a du patinage. Je ne me souviens pas pr\u00e9cis\u00e9ment si le week-end dernier il y avait du patinage, mais je sais que j'ai regard\u00e9 plusieurs soirs de suite le patinage. Voil\u00e0, c'\u00e9tait une belle journ\u00e9e \u00e0 la montagne.",
+        "language": "fr",
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 8.3,
+            "text": "Le week-end dernier, comme nous \u00e9tions aussi \u00e0 Mary Bell, les Alus, d\u00e9j\u00e0 depuis plusieurs"
+          },
+          {
+            "start": 8.3,
+            "end": 16.0,
+            "text": "semaines, et bien nous avons profit\u00e9 de faire une grande balade le matin \u00e0 Tueda."
+          },
+          {
+            "start": 16.0,
+            "end": 25.68,
+            "text": "Il faisait assez beau, le ciel \u00e9tait bleu, bien avec quelques nuages, mais c'\u00e9tait quand"
+          },
+          {
+            "start": 25.68,
+            "end": 29.6,
+            "text": "m\u00eame assez ensoleill\u00e9 pour permettre une tr\u00e8s belle balade."
+          },
+          {
+            "start": 29.6,
+            "end": 35.08,
+            "text": "J'ai fait ce qu'on appelle le grand tour du lac et au-del\u00e0."
+          },
+          {
+            "start": 35.08,
+            "end": 42.2,
+            "text": "Par contre, je ne suis pas mont\u00e9e au refuge du plan parce que je pensais que la neige"
+          },
+          {
+            "start": 42.2,
+            "end": 48.56,
+            "text": "\u00e9tait tr\u00e8s tass\u00e9e et des fois quand elle est tr\u00e8s tass\u00e9e, la descente du refuge du"
+          },
+          {
+            "start": 48.56,
+            "end": 51.32,
+            "text": "plan peut \u00eatre un petit peu p\u00e9rilleuse."
+          },
+          {
+            "start": 52.08,
+            "end": 59.36,
+            "text": "Donc j'ai pr\u00e9f\u00e9r\u00e9 rester sur le chemin plat, mais c'\u00e9tait une belle balade, bien"
+          },
+          {
+            "start": 59.36,
+            "end": 60.36,
+            "text": "agr\u00e9able."
+          },
+          {
+            "start": 60.36,
+            "end": 68.76,
+            "text": "Le plus souvent, je pars tardivement, c'est-\u00e0-dire vers 10h30, je m'arr\u00eate \u00e0 la boulangerie"
+          },
+          {
+            "start": 68.76,
+            "end": 75.16,
+            "text": "acheter le pain, d\u00e9j\u00e0 parce que je pr\u00e9f\u00e8re acheter le pain \u00e0 cette heure-l\u00e0, car quand"
+          },
+          {
+            "start": 75.16,
+            "end": 81.08,
+            "text": "je le fais au retour, vers midi et demi, une heure, il y a beaucoup de monde car les skewers"
+          },
+          {
+            "start": 81.08,
+            "end": 85.8,
+            "text": "viennent chercher des g\u00e2teaux, des sandwichs pour se restaurer."
+          },
+          {
+            "start": 85.8,
+            "end": 91.6,
+            "text": "Donc je pr\u00e9f\u00e8re prendre mon pain avant que je mette dans mon sac \u00e0 dos et hop, me voil\u00e0"
+          },
+          {
+            "start": 91.6,
+            "end": 92.6,
+            "text": "parti."
+          },
+          {
+            "start": 92.6,
+            "end": 99.28,
+            "text": "C'est une belle balade, toujours agr\u00e9able, tu\u00e9 d'art, on rencontre plein de gens et"
+          },
+          {
+            "start": 99.28,
+            "end": 103.8,
+            "text": "souvent il suffit de s'asseoir un petit peu sur un banc pour que d'autres personnes viennent"
+          },
+          {
+            "start": 103.8,
+            "end": 110.72,
+            "text": "s'asseoir et qu'on entame un petit peu une discussion et on rencontre des personnes"
+          },
+          {
+            "start": 110.72,
+            "end": 119.56,
+            "text": "int\u00e9ressantes qui habitent dans divers endroits de la France, parfois qui viennent ici pour"
+          },
+          {
+            "start": 119.56,
+            "end": 126.64,
+            "text": "la premi\u00e8re fois, d'autres qui sont habitu\u00e9es comme nous, qui viennent tr\u00e8s r\u00e9guli\u00e8rement,"
+          },
+          {
+            "start": 126.64,
+            "end": 131.48,
+            "text": "mais c'est des fois des moments de conversation tr\u00e8s agr\u00e9ables."
+          },
+          {
+            "start": 132.35999999999999,
+            "end": 141.83999999999997,
+            "text": "Et puis je rentre, il est souvent 13h, m\u00eame 13h30, le temps de remonter dans l'escalier"
+          },
+          {
+            "start": 141.83999999999997,
+            "end": 147.35999999999999,
+            "text": "et puis c'est l'hiver, c'est la montagne, donc il faut se d\u00e9shabiller, il faut enlever"
+          },
+          {
+            "start": 147.35999999999999,
+            "end": 154.48,
+            "text": "le gros manteau, le bonnet, l'\u00e9charpe, les gants, enlever le pantalon de ski qui me sert"
+          },
+          {
+            "start": 154.48,
+            "end": 157.83999999999997,
+            "text": "quand m\u00eame \u00e0 m'isoler du froid, les grosses chaussettes."
+          },
+          {
+            "start": 158.24,
+            "end": 164.20000000000002,
+            "text": "Bref, souvent on n'est pas \u00e0 table avant 13h30, mais ce n'est pas grave."
+          },
+          {
+            "start": 164.20000000000002,
+            "end": 173.0,
+            "text": "Voil\u00e0, et l'apr\u00e8s-midi, l'apr\u00e8s-midi c'est un petit peu d\u00e9tente, lecture, broderie,"
+          },
+          {
+            "start": 173.0,
+            "end": 178.32,
+            "text": "parfois du dessin, mais je n'ai pas le souvenir le week-end dernier d'avoir fait un petit"
+          },
+          {
+            "start": 178.32,
+            "end": 179.32,
+            "text": "peu de dessin."
+          },
+          {
+            "start": 179.32,
+            "end": 185.92000000000002,
+            "text": "Voil\u00e0, et puis comme c'est la p\u00e9riode des Jeux Olympiques, c'est vrai qu'on regarde"
+          },
+          {
+            "start": 186.0,
+            "end": 190.2,
+            "text": "le soir les Jeux Olympiques, quand il y a du patinage."
+          },
+          {
+            "start": 190.2,
+            "end": 196.56,
+            "text": "Je ne me souviens pas pr\u00e9cis\u00e9ment si le week-end dernier il y avait du patinage, mais je sais"
+          },
+          {
+            "start": 196.56,
+            "end": 201.2,
+            "text": "que j'ai regard\u00e9 plusieurs soirs de suite le patinage."
+          },
+          {
+            "start": 201.2,
+            "end": 204.76,
+            "text": "Voil\u00e0, c'\u00e9tait une belle journ\u00e9e \u00e0 la montagne."
+          }
+        ]
+      },
+      "acoustic_features": {
+        "duration_s": 206.34,
+        "f0_mean": 202.57,
+        "f0_sd": 49.31,
+        "f0_range": 424.59,
+        "jitter_local": 0.01599,
+        "shimmer_local": 0.075774,
+        "hnr": 18.61,
+        "mfcc2_mean": 79.93,
+        "cpp": 1.6919,
+        "f1_mean": 610.01,
+        "f2_mean": 1819.63,
+        "spectral_harmonicity": 0.4888,
+        "energy_range": 62.91,
+        "articulation_rate": 0.682,
+        "ppe": 0.57,
+        "rpde": 0.8791,
+        "dfa": 0.5347,
+        "d2": 0.4864,
+        "vot": 238.22
+      }
+    },
+    {
+      "session_id": "session03",
+      "filename": "session03.webm",
+      "file_size_bytes": 20895011,
+      "transcript": {
+        "text": "Si je dois me souvenir d'un voyage qui m'a marqu\u00e9 davantage que les autres, c'est peut-\u00eatre celui que j'ai effectu\u00e9 en Bolivie en 2024 pour le mariage de mon fils. C'\u00e9tait la premi\u00e8re fois que j'allais sur le continent sud-am\u00e9ricain et je d\u00e9couvrais toute une population, une civilisation, une fa\u00e7on de vivre. Alors on va dire pour les personnes qui nous ont re\u00e7ues, pas forc\u00e9ment tr\u00e8s diff\u00e9rentes de la n\u00f4tre car on sait que ces pays ont \u00e9t\u00e9 fortement colonis\u00e9s par l'Espagne. Mais avec la confrontation par contre des descendants des Indiens qu\u00e9chois et l\u00e0 j'ai \u00e9t\u00e9 tr\u00e8s marqu\u00e9e par cette population d'Indiens qu\u00e9chois que l'on voit dans les rues. Alors on les remarque parce qu'ils sont beaucoup plus petits que la moyenne des autres personnes en taille. Ils ont aussi leurs v\u00eatements particuliers sur toutes les femmes, des robes, des jupes avec multiples jupons de toutes les couleurs. Et ce qui m'a frapp\u00e9e c'est qu'elles portent leurs enfants dans leur dos assez longtemps et qu'elles travaillent dans des petits m\u00e9tiers travaux de rue. Elles font un petit peu ce que chez nous on appelait les marchandes des quatre saisons. D'ailleurs la m\u00e8re de mon arri\u00e8re-grand-tante \u00e9tait marchande de quatre saisons \u00e0 Paris. C'est pour \u00e7a peut-\u00eatre que c'est rentr\u00e9 en r\u00e9sonance de voir ces femmes indiennes qu\u00e9chois vendent sur leurs petits \u00e9talages des fruits, des avocats. Voil\u00e0. Renseignement pris aupr\u00e8s des personnes qui nous ont accueillies \u00e0 Cochabamba et qui nous ont fait visiter, appr\u00e9cier leur ville. On a pu visiter des mus\u00e9es, aller au restaurant avec eux, partager vraiment plein de choses de leur vie quotidienne. Ils m'ont expliqu\u00e9 que ces indiennes qu\u00e9chois en fait c'\u00e9taient un petit peu on va dire les nomades de Bolivie puisqu'ils se d\u00e9placent de ville en ville au gr\u00e9 des r\u00e9coltes pour travailler dans l'agriculture, dans les r\u00e9coltes de fruits, de l\u00e9gumes suivant les saisons. Et malheureusement on les voit accompagn\u00e9s de leurs enfants, des fois des enfants plus grands qui ont sept ans, huit ans, dix ans. Et ces enfants-l\u00e0 malheureusement ne vont pas \u00e0 l'\u00e9cole. Ils ne vont pas \u00e0 l'\u00e9cole, ils aident, ils travaillent avec leurs parents. D'ailleurs \u00e0 l'h\u00f4tel o\u00f9 nous \u00e9tions c'est vrai que les matin\u00e9es \u00e9taient fra\u00eeches et j'ai vu un matin une livraison de bois qui s'effectuait parce qu'il y avait un petit poil \u00e0 bois dans la salle du restaurant o\u00f9 on prenait notre petit d\u00e9jeuner. Et j'ai vu un enfant tr\u00e8s jeune qui avait l'\u00e2ge d'aller \u00e0 l'\u00e9cole et qui aidait \u00e0 son patron, son patron ou son p\u00e8re je ne sais pas, mais \u00e0 d\u00e9charger le bois pour l'h\u00f4tel. Voil\u00e0 c'est un pays tr\u00e8s contrast\u00e9 avec une pauvret\u00e9 importante de la part de ces populations indiennes, k\u00e9choises d'origine on va dire. Et \u00e0 c\u00f4t\u00e9 de cela la population hispanique qui elle est beaucoup plus \u00e9duqu\u00e9e, form\u00e9e, qui vit \u00e0 l'europ\u00e9enne. Bon voil\u00e0 c'est un contraste important de civilisation m\u00eame si on sait que \u00e7a existe, m\u00eame si on a vu des reportages, c'est diff\u00e9rent de le voir. Ce qui m'a beaucoup marqu\u00e9 aussi c'\u00e9tait le midi de voir les ouvriers, la plupart aussi des indiens, des descendants indiens qui travaillaient soit dans la r\u00e9fection des routes, dans le b\u00e2timent. Et bien le midi il y a des femmes qui apportent un petit peu comme les mar\u00e7antes de quatre saisons des gamelles pour ces ouvriers, des repas, des repas chauds souvent compos\u00e9s de riz, de haricots, je ne sais pas s'il y a de la viande. Mais ce qui m'a choqu\u00e9e c'est que ces personnes n'ont m\u00eame pas un endroit pour se poser, je ne dirais m\u00eame pas une table dans un jardin public ou quelque chose. Non, ils mangent par terre, assis sur le trottoir comme \u00e7a, dans l'indiff\u00e9rence des pi\u00e9tons qui traversent, qui les enjambe. C'est tr\u00e8s curieux, on a l'impression qu'il y a une sorte de m\u00e9pris des autres personnes vis-\u00e0-vis de ces populations tr\u00e8s pauvres. Voil\u00e0, c'est quelque chose qui m'a beaucoup marqu\u00e9, c'est s\u00fbr, qui m'a choqu\u00e9e. Mais bon, voil\u00e0, c'est aussi \u00e7a la d\u00e9couverte des voyages. C'est un pays tr\u00e8s contrast\u00e9, tr\u00e8s \u00e9tonnant.",
+        "language": "fr",
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 7.8,
+            "text": "Si je dois me souvenir d'un voyage qui m'a marqu\u00e9 davantage que les autres, c'est"
+          },
+          {
+            "start": 7.8,
+            "end": 15.120000000000001,
+            "text": "peut-\u00eatre celui que j'ai effectu\u00e9 en Bolivie en 2024 pour le mariage de mon fils."
+          },
+          {
+            "start": 15.120000000000001,
+            "end": 23.36,
+            "text": "C'\u00e9tait la premi\u00e8re fois que j'allais sur le continent sud-am\u00e9ricain et je d\u00e9couvrais"
+          },
+          {
+            "start": 23.36,
+            "end": 28.759999999999998,
+            "text": "toute une population, une civilisation, une fa\u00e7on de vivre."
+          },
+          {
+            "start": 28.759999999999998,
+            "end": 35.08,
+            "text": "Alors on va dire pour les personnes qui nous ont re\u00e7ues, pas forc\u00e9ment tr\u00e8s diff\u00e9rentes"
+          },
+          {
+            "start": 35.08,
+            "end": 41.8,
+            "text": "de la n\u00f4tre car on sait que ces pays ont \u00e9t\u00e9 fortement colonis\u00e9s par l'Espagne."
+          },
+          {
+            "start": 41.8,
+            "end": 50.44,
+            "text": "Mais avec la confrontation par contre des descendants des Indiens qu\u00e9chois et l\u00e0 j'ai"
+          },
+          {
+            "start": 50.44,
+            "end": 57.48,
+            "text": "\u00e9t\u00e9 tr\u00e8s marqu\u00e9e par cette population d'Indiens qu\u00e9chois que l'on voit dans les rues."
+          },
+          {
+            "start": 57.48,
+            "end": 64.6,
+            "text": "Alors on les remarque parce qu'ils sont beaucoup plus petits que la moyenne des autres"
+          },
+          {
+            "start": 64.6,
+            "end": 66.24,
+            "text": "personnes en taille."
+          },
+          {
+            "start": 66.24,
+            "end": 74.64,
+            "text": "Ils ont aussi leurs v\u00eatements particuliers sur toutes les femmes, des robes, des jupes"
+          },
+          {
+            "start": 74.64,
+            "end": 77.64,
+            "text": "avec multiples jupons de toutes les couleurs."
+          },
+          {
+            "start": 78.12,
+            "end": 84.76,
+            "text": "Et ce qui m'a frapp\u00e9e c'est qu'elles portent leurs enfants dans leur dos assez longtemps"
+          },
+          {
+            "start": 84.76,
+            "end": 90.32,
+            "text": "et qu'elles travaillent dans des petits m\u00e9tiers travaux de rue."
+          },
+          {
+            "start": 90.32,
+            "end": 94.68,
+            "text": "Elles font un petit peu ce que chez nous on appelait les marchandes des quatre saisons."
+          },
+          {
+            "start": 94.68,
+            "end": 100.08,
+            "text": "D'ailleurs la m\u00e8re de mon arri\u00e8re-grand-tante \u00e9tait marchande de quatre saisons \u00e0 Paris."
+          },
+          {
+            "start": 100.08,
+            "end": 105.48,
+            "text": "C'est pour \u00e7a peut-\u00eatre que c'est rentr\u00e9 en r\u00e9sonance de voir ces femmes indiennes"
+          },
+          {
+            "start": 105.48,
+            "end": 112.32000000000001,
+            "text": "qu\u00e9chois vendent sur leurs petits \u00e9talages des fruits, des avocats."
+          },
+          {
+            "start": 112.32000000000001,
+            "end": 113.32000000000001,
+            "text": "Voil\u00e0."
+          },
+          {
+            "start": 113.32000000000001,
+            "end": 119.4,
+            "text": "Renseignement pris aupr\u00e8s des personnes qui nous ont accueillies \u00e0 Cochabamba et qui"
+          },
+          {
+            "start": 119.4,
+            "end": 123.88000000000001,
+            "text": "nous ont fait visiter, appr\u00e9cier leur ville."
+          },
+          {
+            "start": 123.88000000000001,
+            "end": 131.4,
+            "text": "On a pu visiter des mus\u00e9es, aller au restaurant avec eux, partager vraiment plein de choses"
+          },
+          {
+            "start": 131.4,
+            "end": 132.92000000000002,
+            "text": "de leur vie quotidienne."
+          },
+          {
+            "start": 133.39999999999998,
+            "end": 140.23999999999998,
+            "text": "Ils m'ont expliqu\u00e9 que ces indiennes qu\u00e9chois en fait c'\u00e9taient un petit peu on va dire"
+          },
+          {
+            "start": 140.23999999999998,
+            "end": 148.0,
+            "text": "les nomades de Bolivie puisqu'ils se d\u00e9placent de ville en ville au gr\u00e9 des r\u00e9coltes pour"
+          },
+          {
+            "start": 148.0,
+            "end": 153.92,
+            "text": "travailler dans l'agriculture, dans les r\u00e9coltes de fruits, de l\u00e9gumes suivant les saisons."
+          },
+          {
+            "start": 153.92,
+            "end": 159.32,
+            "text": "Et malheureusement on les voit accompagn\u00e9s de leurs enfants, des fois des enfants plus"
+          },
+          {
+            "start": 159.32,
+            "end": 162.27999999999997,
+            "text": "grands qui ont sept ans, huit ans, dix ans."
+          },
+          {
+            "start": 162.36,
+            "end": 165.56,
+            "text": "Et ces enfants-l\u00e0 malheureusement ne vont pas \u00e0 l'\u00e9cole."
+          },
+          {
+            "start": 165.56,
+            "end": 169.72,
+            "text": "Ils ne vont pas \u00e0 l'\u00e9cole, ils aident, ils travaillent avec leurs parents."
+          },
+          {
+            "start": 169.72,
+            "end": 175.72,
+            "text": "D'ailleurs \u00e0 l'h\u00f4tel o\u00f9 nous \u00e9tions c'est vrai que les matin\u00e9es \u00e9taient fra\u00eeches"
+          },
+          {
+            "start": 175.72,
+            "end": 181.4,
+            "text": "et j'ai vu un matin une livraison de bois qui s'effectuait parce qu'il y avait un petit"
+          },
+          {
+            "start": 181.4,
+            "end": 186.28,
+            "text": "poil \u00e0 bois dans la salle du restaurant o\u00f9 on prenait notre petit d\u00e9jeuner."
+          },
+          {
+            "start": 186.76,
+            "end": 193.64000000000001,
+            "text": "Et j'ai vu un enfant tr\u00e8s jeune qui avait l'\u00e2ge d'aller \u00e0 l'\u00e9cole et qui aidait"
+          },
+          {
+            "start": 193.64000000000001,
+            "end": 201.0,
+            "text": "\u00e0 son patron, son patron ou son p\u00e8re je ne sais pas, mais \u00e0 d\u00e9charger le bois pour l'h\u00f4tel."
+          },
+          {
+            "start": 201.0,
+            "end": 209.56,
+            "text": "Voil\u00e0 c'est un pays tr\u00e8s contrast\u00e9 avec une pauvret\u00e9 importante de la part de ces"
+          },
+          {
+            "start": 209.56,
+            "end": 214.84,
+            "text": "populations indiennes, k\u00e9choises d'origine on va dire."
+          },
+          {
+            "start": 215.24,
+            "end": 221.56,
+            "text": "Et \u00e0 c\u00f4t\u00e9 de cela la population hispanique qui elle est beaucoup plus \u00e9duqu\u00e9e,"
+          },
+          {
+            "start": 221.56,
+            "end": 225.08,
+            "text": "form\u00e9e, qui vit \u00e0 l'europ\u00e9enne."
+          },
+          {
+            "start": 225.08,
+            "end": 232.36,
+            "text": "Bon voil\u00e0 c'est un contraste important de civilisation m\u00eame si on sait que \u00e7a existe,"
+          },
+          {
+            "start": 232.36,
+            "end": 237.08,
+            "text": "m\u00eame si on a vu des reportages, c'est diff\u00e9rent de le voir."
+          },
+          {
+            "start": 237.08,
+            "end": 243.32,
+            "text": "Ce qui m'a beaucoup marqu\u00e9 aussi c'\u00e9tait le midi de voir les ouvriers,"
+          },
+          {
+            "start": 244.28,
+            "end": 252.76,
+            "text": "la plupart aussi des indiens, des descendants indiens qui travaillaient soit dans la r\u00e9fection"
+          },
+          {
+            "start": 252.76,
+            "end": 254.76,
+            "text": "des routes, dans le b\u00e2timent."
+          },
+          {
+            "start": 254.76,
+            "end": 260.52,
+            "text": "Et bien le midi il y a des femmes qui apportent un petit peu comme les mar\u00e7antes de quatre"
+          },
+          {
+            "start": 260.52,
+            "end": 268.28,
+            "text": "saisons des gamelles pour ces ouvriers, des repas, des repas chauds souvent compos\u00e9s de riz,"
+          },
+          {
+            "start": 268.28,
+            "end": 271.96,
+            "text": "de haricots, je ne sais pas s'il y a de la viande."
+          },
+          {
+            "start": 272.84,
+            "end": 277.56,
+            "text": "Mais ce qui m'a choqu\u00e9e c'est que ces personnes n'ont m\u00eame pas un endroit pour se poser,"
+          },
+          {
+            "start": 277.56,
+            "end": 284.03999999999996,
+            "text": "je ne dirais m\u00eame pas une table dans un jardin public ou quelque chose."
+          },
+          {
+            "start": 284.03999999999996,
+            "end": 288.91999999999996,
+            "text": "Non, ils mangent par terre, assis sur le trottoir comme \u00e7a,"
+          },
+          {
+            "start": 288.91999999999996,
+            "end": 295.08,
+            "text": "dans l'indiff\u00e9rence des pi\u00e9tons qui traversent, qui les enjambe."
+          },
+          {
+            "start": 295.8,
+            "end": 303.0,
+            "text": "C'est tr\u00e8s curieux, on a l'impression qu'il y a une sorte de m\u00e9pris des autres personnes"
+          },
+          {
+            "start": 303.0,
+            "end": 307.0,
+            "text": "vis-\u00e0-vis de ces populations tr\u00e8s pauvres."
+          },
+          {
+            "start": 307.0,
+            "end": 316.36,
+            "text": "Voil\u00e0, c'est quelque chose qui m'a beaucoup marqu\u00e9, c'est s\u00fbr, qui m'a choqu\u00e9e."
+          },
+          {
+            "start": 316.36,
+            "end": 322.76,
+            "text": "Mais bon, voil\u00e0, c'est aussi \u00e7a la d\u00e9couverte des voyages."
+          },
+          {
+            "start": 322.76,
+            "end": 328.36,
+            "text": "C'est un pays tr\u00e8s contrast\u00e9, tr\u00e8s \u00e9tonnant."
+          }
+        ]
+      },
+      "acoustic_features": {
+        "duration_s": 337.89,
+        "f0_mean": 200.55,
+        "f0_sd": 43.24,
+        "f0_range": 421.87,
+        "jitter_local": 0.01531,
+        "shimmer_local": 0.073783,
+        "hnr": 19.84,
+        "mfcc2_mean": 86.68,
+        "cpp": 1.6614,
+        "f1_mean": 582.38,
+        "f2_mean": 1792.57,
+        "spectral_harmonicity": 0.5498,
+        "energy_range": 55.8,
+        "articulation_rate": 0.6667,
+        "ppe": 0.8111,
+        "rpde": 1.0551,
+        "dfa": 0.591,
+        "d2": 0.4507,
+        "vot": 270.22
+      }
+    },
+    {
+      "session_id": "session04",
+      "filename": "session04.webm",
+      "file_size_bytes": 16692662,
+      "transcript": {
+        "text": "Ma recette pr\u00e9f\u00e9r\u00e9e ? Oh bah \u00e7a c'est difficile alors ! Je pourrais parler de ce que mon petit plat pr\u00e9f\u00e9r\u00e9 qui est tout simple qui est simplement un tr\u00e8s bon oeuf \u00e0 la coque avec des petites mouillettes au beurre mais \u00e7a on est bien d'accord ce n'est pas une recette voil\u00e0. Sinon ben j'en ai plein d'autres j'aime assez cuisiner et je fais souvent des plats, des desserts plus ou moins r\u00e9ussis voil\u00e0 j'aime faire la tarte aux poires bourdalu, j'aime aussi dans les plats sal\u00e9s faire la moussaka \u00e7a c'est vrai que j'ai une recette de moussaka que j'aime beaucoup alors il faut prendre des aubergines \u00e9videmment il faut choisir la p\u00e9riode o\u00f9 on fait la moussaka c'est plut\u00f4t l'\u00e9t\u00e9 o\u00f9 ces l\u00e9gumes sont l\u00e0 de mani\u00e8re abondante et pas ch\u00e8re donc ce que l'on fait on lave ces aubergines bien s\u00fbr apr\u00e8s on les coupe en tranches fines on met un petit peu de sel fin pour les laisser d\u00e9gorger voil\u00e0 et on pr\u00e9pare dans un plat un petit peu sp\u00e9cial il faut prendre un petit peu comme un plat \u00e0 souffler mais plut\u00f4t en m\u00e9tal et apr\u00e8s on va disposer ces aubergines de mani\u00e8re \u00e0 recouvrir le fond et que cela fait la tranche on peut dire remonte jusqu'au bord jusqu'en haut du plat parall\u00e8lement \u00e0 \u00e7a je fais alors ce n'est pas la vraie aubergine grecque parce que les grecs j'utilise la viande de mouton hach\u00e9 avec le b\u0153uf nous ici c'est quand m\u00eame plus compliqu\u00e9 d'avoir du mouton hach\u00e9 donc je me contente d'un bon beef steak hach\u00e9 que je fais revenir dans la po\u00eale avec des oignons et des tomates et je rajoute aussi du coulis de tomates voil\u00e0 une fois que \u00e7a c'est bien revenu une fois qu'on a bien tapiss\u00e9 son moule son plat avec les tranches d'aubergines on met une petite couche de viande on red\u00e9coupe quelques tranches d'aubergines qu'on met dessus et voil\u00e0 on superpose \u00e0 chaque fois viande tranche d'aubergines un petit peu comme un millefeuille en quelque sorte voil\u00e0 et on met le tout au four pendant une heure et alors je vous assure que c'est quelque chose de d\u00e9licieux qui en g\u00e9n\u00e9ral r\u00e9gale toute la famille voil\u00e0 c'est un plat assez copieux assez consistant pour les gourmands on peut rajouter \u00e0 c\u00f4t\u00e9 peut-\u00eatre un petit peu de semoule parce que sinon il n'y a que des l\u00e9gumes et de la viande on peut aussi voil\u00e0 l'agr\u00e9menter soit de riz pour ceux qui pr\u00e9f\u00e8rent \u00e0 la semoule voil\u00e0 c'est un bon plat g\u00e9n\u00e9reux un bon plat d'\u00e9t\u00e9 \u00e7a a \u00e9t\u00e9 une d\u00e9couverte lors d'un voyage en gr\u00e8ce lorsque j'\u00e9tais jeune et j'avoue que cette recette ce n'est pas gr\u00e2ce \u00e0 des gr\u00e8ques que je l'ai apprise mais je l'ai apprise plut\u00f4t par l'interm\u00e9diaire d'une \u00e9mission t\u00e9l\u00e9vision cuisine o\u00f9 il y avait un chef qui donnait ses recettes de cuisine et un jour il a donn\u00e9 cette recette de moussaka que j'ai manuscrite et que je garde pr\u00e9cieusement mais c'est vrai que maintenant je peux la faire sans la regarder si je peux dire voil\u00e0 et c'est vraiment un bon r\u00e9gal mais des recettes voil\u00e0 j'en aurais encore plein d'autres \u00e0 raconter quand on aime bien cuisiner et bien voil\u00e0 on essaye toutes sortes de recettes mais c'est vrai qu'on a toujours tendance \u00e0 refaire basse celle qu'on r\u00e9ussit le mieux forc\u00e9ment c'est la nature humaine on essaye on fait toujours ce qu'on r\u00e9ussit le mieux voil\u00e0 et bien bon app\u00e9tit parce que si vous voulez copier cette recette de moussaka ou l'essayer je vous assure que vous ne serez pas d\u00e9\u00e7us elle est vraiment tr\u00e8s simple \u00e0 faire et vraiment d\u00e9licieuse",
+        "language": "fr",
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 8.52,
+            "text": "Ma recette pr\u00e9f\u00e9r\u00e9e ? Oh bah \u00e7a c'est difficile alors ! Je pourrais parler de ce que mon petit"
+          },
+          {
+            "start": 8.52,
+            "end": 14.66,
+            "text": "plat pr\u00e9f\u00e9r\u00e9 qui est tout simple qui est simplement un tr\u00e8s bon oeuf \u00e0 la coque avec"
+          },
+          {
+            "start": 14.66,
+            "end": 20.2,
+            "text": "des petites mouillettes au beurre mais \u00e7a on est bien d'accord ce n'est pas une recette voil\u00e0."
+          },
+          {
+            "start": 20.2,
+            "end": 27.92,
+            "text": "Sinon ben j'en ai plein d'autres j'aime assez cuisiner et je fais souvent des plats,"
+          },
+          {
+            "start": 27.92,
+            "end": 35.2,
+            "text": "des desserts plus ou moins r\u00e9ussis voil\u00e0 j'aime faire la tarte aux poires bourdalu,"
+          },
+          {
+            "start": 35.2,
+            "end": 42.56,
+            "text": "j'aime aussi dans les plats sal\u00e9s faire la moussaka \u00e7a c'est vrai que j'ai une recette"
+          },
+          {
+            "start": 42.56,
+            "end": 48.96,
+            "text": "de moussaka que j'aime beaucoup alors il faut prendre des aubergines \u00e9videmment il faut choisir"
+          },
+          {
+            "start": 48.96,
+            "end": 57.44,
+            "text": "la p\u00e9riode o\u00f9 on fait la moussaka c'est plut\u00f4t l'\u00e9t\u00e9 o\u00f9 ces l\u00e9gumes sont l\u00e0 de mani\u00e8re abondante"
+          },
+          {
+            "start": 58.0,
+            "end": 64.86,
+            "text": "et pas ch\u00e8re donc ce que l'on fait on lave ces aubergines bien s\u00fbr apr\u00e8s on les coupe en"
+          },
+          {
+            "start": 64.86,
+            "end": 72.44,
+            "text": "tranches fines on met un petit peu de sel fin pour les laisser d\u00e9gorger voil\u00e0 et on pr\u00e9pare dans"
+          },
+          {
+            "start": 72.44,
+            "end": 78.4,
+            "text": "un plat un petit peu sp\u00e9cial il faut prendre un petit peu comme un plat \u00e0 souffler mais plut\u00f4t"
+          },
+          {
+            "start": 78.4,
+            "end": 86.84,
+            "text": "en m\u00e9tal et apr\u00e8s on va disposer ces aubergines de mani\u00e8re \u00e0 recouvrir le fond et que cela fait"
+          },
+          {
+            "start": 86.84,
+            "end": 96.36,
+            "text": "la tranche on peut dire remonte jusqu'au bord jusqu'en haut du plat parall\u00e8lement \u00e0 \u00e7a je fais"
+          },
+          {
+            "start": 96.36,
+            "end": 101.28,
+            "text": "alors ce n'est pas la vraie aubergine grecque parce que les grecs j'utilise la viande de"
+          },
+          {
+            "start": 101.28,
+            "end": 108.12,
+            "text": "mouton hach\u00e9 avec le b\u0153uf nous ici c'est quand m\u00eame plus compliqu\u00e9 d'avoir du mouton hach\u00e9 donc"
+          },
+          {
+            "start": 108.12,
+            "end": 115.52000000000001,
+            "text": "je me contente d'un bon beef steak hach\u00e9 que je fais revenir dans la po\u00eale avec des oignons et"
+          },
+          {
+            "start": 115.56,
+            "end": 123.6,
+            "text": "des tomates et je rajoute aussi du coulis de tomates voil\u00e0 une fois que \u00e7a c'est bien revenu une fois"
+          },
+          {
+            "start": 123.6,
+            "end": 132.32,
+            "text": "qu'on a bien tapiss\u00e9 son moule son plat avec les tranches d'aubergines on met une petite couche"
+          },
+          {
+            "start": 132.32,
+            "end": 140.12,
+            "text": "de viande on red\u00e9coupe quelques tranches d'aubergines qu'on met dessus et voil\u00e0 on superpose"
+          },
+          {
+            "start": 140.12,
+            "end": 147.52,
+            "text": "\u00e0 chaque fois viande tranche d'aubergines un petit peu comme un millefeuille en"
+          },
+          {
+            "start": 147.52,
+            "end": 155.96,
+            "text": "quelque sorte voil\u00e0 et on met le tout au four pendant une heure et alors je vous assure que"
+          },
+          {
+            "start": 155.96,
+            "end": 162.96,
+            "text": "c'est quelque chose de d\u00e9licieux qui en g\u00e9n\u00e9ral r\u00e9gale toute la famille voil\u00e0 c'est un plat"
+          },
+          {
+            "start": 162.96,
+            "end": 170.52,
+            "text": "assez copieux assez consistant pour les gourmands on peut rajouter \u00e0 c\u00f4t\u00e9 peut-\u00eatre un petit peu"
+          },
+          {
+            "start": 170.52,
+            "end": 178.20000000000002,
+            "text": "de semoule parce que sinon il n'y a que des l\u00e9gumes et de la viande on peut aussi voil\u00e0 l'agr\u00e9menter"
+          },
+          {
+            "start": 178.20000000000002,
+            "end": 188.28,
+            "text": "soit de riz pour ceux qui pr\u00e9f\u00e8rent \u00e0 la semoule voil\u00e0 c'est un bon plat g\u00e9n\u00e9reux un bon plat"
+          },
+          {
+            "start": 188.28,
+            "end": 196.72,
+            "text": "d'\u00e9t\u00e9 \u00e7a a \u00e9t\u00e9 une d\u00e9couverte lors d'un voyage en gr\u00e8ce lorsque j'\u00e9tais jeune et j'avoue que cette"
+          },
+          {
+            "start": 196.72,
+            "end": 205.36,
+            "text": "recette ce n'est pas gr\u00e2ce \u00e0 des gr\u00e8ques que je l'ai apprise mais je l'ai apprise plut\u00f4t par"
+          },
+          {
+            "start": 205.36,
+            "end": 213.08,
+            "text": "l'interm\u00e9diaire d'une \u00e9mission t\u00e9l\u00e9vision cuisine o\u00f9 il y avait un chef qui donnait ses"
+          },
+          {
+            "start": 213.08,
+            "end": 220.16000000000003,
+            "text": "recettes de cuisine et un jour il a donn\u00e9 cette recette de moussaka que j'ai manuscrite et que je"
+          },
+          {
+            "start": 220.16000000000003,
+            "end": 226.76000000000002,
+            "text": "garde pr\u00e9cieusement mais c'est vrai que maintenant je peux la faire sans la regarder si je peux dire"
+          },
+          {
+            "start": 226.76000000000002,
+            "end": 234.32000000000002,
+            "text": "voil\u00e0 et c'est vraiment un bon r\u00e9gal mais des recettes voil\u00e0 j'en aurais encore plein d'autres"
+          },
+          {
+            "start": 234.32,
+            "end": 244.12,
+            "text": "\u00e0 raconter quand on aime bien cuisiner et bien voil\u00e0 on essaye toutes sortes de recettes mais"
+          },
+          {
+            "start": 244.12,
+            "end": 249.79999999999998,
+            "text": "c'est vrai qu'on a toujours tendance \u00e0 refaire basse celle qu'on r\u00e9ussit le mieux forc\u00e9ment"
+          },
+          {
+            "start": 249.79999999999998,
+            "end": 258.6,
+            "text": "c'est la nature humaine on essaye on fait toujours ce qu'on r\u00e9ussit le mieux voil\u00e0 et bien bon"
+          },
+          {
+            "start": 258.64000000000004,
+            "end": 265.8,
+            "text": "app\u00e9tit parce que si vous voulez copier cette recette de moussaka ou l'essayer je vous assure"
+          },
+          {
+            "start": 265.8,
+            "end": 271.64000000000004,
+            "text": "que vous ne serez pas d\u00e9\u00e7us elle est vraiment tr\u00e8s simple \u00e0 faire et vraiment d\u00e9licieuse"
+          }
+        ]
+      },
+      "acoustic_features": {
+        "duration_s": 273.53,
+        "f0_mean": 217.12,
+        "f0_sd": 65.12,
+        "f0_range": 424.53,
+        "jitter_local": 0.017309,
+        "shimmer_local": 0.079984,
+        "hnr": 17.33,
+        "mfcc2_mean": 74.7,
+        "cpp": 1.5447,
+        "f1_mean": 643.3,
+        "f2_mean": 1861.59,
+        "spectral_harmonicity": 0.3505,
+        "energy_range": 65.99,
+        "articulation_rate": 0.6265,
+        "ppe": 1.2471,
+        "rpde": 0.7917,
+        "dfa": 0.5793,
+        "d2": 0.1356,
+        "vot": 199.11
+      }
+    },
+    {
+      "session_id": "session05",
+      "filename": "session05.webm",
+      "file_size_bytes": 24798747,
+      "transcript": {
+        "text": "Mon parcours professionnel a \u00e9t\u00e9 le suivant. Voil\u00e0, j'ai fait un bac technologique en sant\u00e9 et social et l\u00e0 j'ai eu un d\u00e9clic car j'ai eu un professeur de sciences sociales qui nous parlait effectivement, elle faisait des cours sur l'assurance maladie, sur les prestations familiales, sur le risque d'accident du travail, enfin un petit peu tous ces sujets et elle nous avait expliqu\u00e9 qu'elle \u00e9tait assistante sociale au d\u00e9part et qu'elle \u00e9tait devenue professeure enseignante donc dans ces mati\u00e8res et j'avoue que \u00e7a me plaisait beaucoup, j'avais envie moi d'aller vers l'enseignement comme \u00e7a. Malheureusement apr\u00e8s mon bac je n'ai pas pu faire mes \u00e9tudes de suite parce que je n'en avais pas les moyens financiers donc je suis rentr\u00e9e comme me le permettait \u00e0 ce moment l\u00e0 mon bac technologique comme secr\u00e9taire m\u00e9dical en radiologie dans un h\u00f4pital. \u00c7a a \u00e9t\u00e9 une exp\u00e9rience de quatre ans tr\u00e8s int\u00e9ressante o\u00f9 j'ai appris plein de choses, o\u00f9 j'ai travaill\u00e9 vraiment avec une \u00e9quipe de m\u00e9decins, de manipulateurs et manipulatrices en radiologie, vraiment des gens tr\u00e8s sympathiques. Je me souviens d'une ambiance de travail mais vraiment tr\u00e8s rigolote, tr\u00e8s d\u00e9tendue m\u00eame si on travaillait tr\u00e8s s\u00e9rieusement. Mais c'est vrai que le secr\u00e9tariat m\u00e9dical m'ennuyait quand m\u00eame, ce n'\u00e9tait pas ce qui me plaisait le plus et je ne me voyais pas faire toute ma carri\u00e8re dedans. Donc j'ai eu l'opportunit\u00e9 \u00e0 l'h\u00f4pital, il y avait des assistantes sociales bien entendu et leur secr\u00e9taire \u00e9tait parti. Et comme elle venait souvent prendre le caf\u00e9 en radiologie parce qu'on \u00e9tait un petit peu les seuls \u00e0 l'\u00e9poque \u00e0 avoir une machine \u00e0 caf\u00e9 dans notre service, je discutais souvent avec elle et je leur parlais de mon envie de faire le m\u00eame m\u00e9tier qu'elle, c'est \u00e0 dire de faire des \u00e9tudes d'assistante sociale. Et j'ai eu donc cette opportunit\u00e9 puisque leur secr\u00e9taire \u00e9tait parti de venir, de quitter mon poste en radiologie pour travailler aupr\u00e8s d'elle. Et l\u00e0 j'avoue que \u00e7a a \u00e9t\u00e9 une exp\u00e9rience tr\u00e8s enrichissante car j'ai appris beaucoup de choses sur le m\u00e9tier, d'autant plus que l'une des deux assistantes sociales \u00e9tait arr\u00eat\u00e9e pour un cong\u00e9 maternit\u00e9, enfin plut\u00f4t une grossesse un petit peu compliqu\u00e9e et je peux pas dire que je l'ai remplac\u00e9, \u00e7a ne serait pas exact, pas vrai puisque je n'\u00e9tais pas assistante sociale \u00e0 l'\u00e9poque mais disons j'ai fait plus que mon travail de secr\u00e9taire. Voil\u00e0 c'\u00e9tait donc tr\u00e8s int\u00e9ressant, je dois aussi remercier la directrice du personnel car \u00e0 la fin de cette ann\u00e9e donc \u00e0 l'h\u00f4pital, \u00e7a faisait cinq ans que j'y \u00e9tais, j'avais la possibilit\u00e9 de passer le concours pour rentrer \u00e0 l'\u00e9cole d'assistante sociale et donc d'obtenir une bourse d'\u00e9tudes d'\u00e9tat puisque j'avais travaill\u00e9 cinq ans dans le secteur m\u00e9dico-social. La grosse difficult\u00e9 pour moi c'est qu'il fallait que je quitte mon poste, je passais le concours en juin, je n'avais la r\u00e9ponse de certitude qu'en septembre si j'\u00e9tais pris ou pas \u00e0 l'\u00e9cole et surtout si j'avais la bourse et l\u00e0 patatrac si je n'avais pas la bourse qu'est ce que je faisais ? Je ne pouvais pas revenir comme \u00e7a, rester sans salaire, \u00e7a aurait \u00e9t\u00e9 tr\u00e8s compliqu\u00e9 et l\u00e0 j'avoue que je suis tomb\u00e9e sur une directrice du personnel de l'h\u00f4pital qui \u00e9tait une femme charmante qui m'a dit qu'elle aimait que les gens justement aient envie de progresser dans leur carri\u00e8re et elle ne vous inqui\u00e9tez pas de toute fa\u00e7on si vous n'avez pas votre bourse d'\u00e9tudes je vous reprendrai \u00e0 l'h\u00f4pital il n'y aura aucun probl\u00e8me et l\u00e0 j'avoue que \u00e7a a \u00e9t\u00e9 un grand soulagement pour moi. Par chance j'ai eu le concours et j'ai eu \u00e9galement la bourse d'\u00e9tudes donc l\u00e0 j'ai vraiment appr\u00e9ci\u00e9 trois ans trois ans d'\u00e9tudes, devenir \u00e9tudiante sur Paris c'est quelque chose qui m'avait manqu\u00e9 apr\u00e8s le bac de ne pas conna\u00eetre cette vie d'\u00e9tudiante surtout qu'\u00e0 l'\u00e9poque je n'avais pas d'enfant donc c'\u00e9tait assez facile \u00e0 l'\u00e9cole il y avait des filles qui \u00e9taient d\u00e9j\u00e0 m\u00e8res de famille et pour elles c'est vrai c'\u00e9tait plus difficile de concilier les deux mais j'ai vraiment appr\u00e9ci\u00e9 ces trois ann\u00e9es d'\u00e9tudes, ces trois ann\u00e9es d'\u00e9tudes apr\u00e8s j'ai travaill\u00e9 en ce qu'on appelle en polyvalence de secteur en milieu rural o\u00f9 j'ai rencontr\u00e9 toutes sortes de situations et puis apr\u00e8s un certain nombre d'ann\u00e9es pr\u00e8s de 20 ans en milieu scolaire voil\u00e0 c'\u00e9tait une exp\u00e9rience tr\u00e8s enrichissante c'est un m\u00e9tier que j'ai ador\u00e9 que j'ai choisi que j'ai aim\u00e9 m\u00eame si parfois c'est vrai c'est pesant c'est difficile d'\u00eatre assistante sociale toute sa vie toute sa carri\u00e8re car on est confront\u00e9 toujours \u00e0 la souffrance \u00e0 la difficult\u00e9 \u00e0 des situations pour lesquelles on n'a pas toujours de solution on essaye d'aider au mieux les personnes de les accompagner de les comprendre avec le plus d'empathie possible voil\u00e0 il y a bien s\u00fbr le volet aussi protection de l'enfance qui peut \u00eatre tr\u00e8s d\u00e9licat \u00e0 appr\u00e9cier tr\u00e8s difficile on voudrait sauver tous les enfants malheureux de la terre et on se rend compte que voil\u00e0 ce n'est pas chose ais\u00e9e parce qu'il y a derri\u00e8re nous des services qui manquent de moyens des magistrats qui manquent de moyens aussi et que parfois on n'a pas la solution que l'on souhaiterait pour des enfants malheureux voil\u00e0 donc c'est un m\u00e9tier que j'ai beaucoup aim\u00e9 mais que j'ai aussi quitt\u00e9 puisque maintenant je suis \u00e0 la retraite avec un certain soulagement car c'est vrai que bah on rentre pas toujours tous les soirs tranquille chez soi dans ce m\u00e9tier on se rend compte que c'est un m\u00e9tier qui demande beaucoup et qui usent qui usent psychologiquement",
+        "language": "fr",
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 4.36,
+            "text": "Mon parcours professionnel a \u00e9t\u00e9 le suivant."
+          },
+          {
+            "start": 4.36,
+            "end": 13.68,
+            "text": "Voil\u00e0, j'ai fait un bac technologique en sant\u00e9 et social et l\u00e0 j'ai eu un d\u00e9clic"
+          },
+          {
+            "start": 13.68,
+            "end": 20.88,
+            "text": "car j'ai eu un professeur de sciences sociales qui nous parlait effectivement, elle faisait"
+          },
+          {
+            "start": 20.88,
+            "end": 27.2,
+            "text": "des cours sur l'assurance maladie, sur les prestations familiales, sur le risque d'accident"
+          },
+          {
+            "start": 27.2,
+            "end": 32.48,
+            "text": "du travail, enfin un petit peu tous ces sujets et elle nous avait expliqu\u00e9 qu'elle \u00e9tait"
+          },
+          {
+            "start": 32.48,
+            "end": 40.04,
+            "text": "assistante sociale au d\u00e9part et qu'elle \u00e9tait devenue professeure enseignante donc dans ces"
+          },
+          {
+            "start": 40.04,
+            "end": 44.96,
+            "text": "mati\u00e8res et j'avoue que \u00e7a me plaisait beaucoup, j'avais envie moi d'aller vers l'enseignement"
+          },
+          {
+            "start": 44.96,
+            "end": 52.879999999999995,
+            "text": "comme \u00e7a. Malheureusement apr\u00e8s mon bac je n'ai pas pu faire mes \u00e9tudes de suite parce que je"
+          },
+          {
+            "start": 52.92,
+            "end": 59.080000000000005,
+            "text": "n'en avais pas les moyens financiers donc je suis rentr\u00e9e comme me le permettait \u00e0 ce moment l\u00e0"
+          },
+          {
+            "start": 59.080000000000005,
+            "end": 67.12,
+            "text": "mon bac technologique comme secr\u00e9taire m\u00e9dical en radiologie dans un h\u00f4pital. \u00c7a a \u00e9t\u00e9 une"
+          },
+          {
+            "start": 67.12,
+            "end": 72.4,
+            "text": "exp\u00e9rience de quatre ans tr\u00e8s int\u00e9ressante o\u00f9 j'ai appris plein de choses, o\u00f9 j'ai travaill\u00e9"
+          },
+          {
+            "start": 72.4,
+            "end": 79.84,
+            "text": "vraiment avec une \u00e9quipe de m\u00e9decins, de manipulateurs et manipulatrices en radiologie,"
+          },
+          {
+            "start": 79.84,
+            "end": 85.92,
+            "text": "vraiment des gens tr\u00e8s sympathiques. Je me souviens d'une ambiance de travail mais vraiment"
+          },
+          {
+            "start": 85.92,
+            "end": 92.24000000000001,
+            "text": "tr\u00e8s rigolote, tr\u00e8s d\u00e9tendue m\u00eame si on travaillait tr\u00e8s s\u00e9rieusement. Mais c'est vrai que le"
+          },
+          {
+            "start": 92.24000000000001,
+            "end": 98.12,
+            "text": "secr\u00e9tariat m\u00e9dical m'ennuyait quand m\u00eame, ce n'\u00e9tait pas ce qui me plaisait le plus et je"
+          },
+          {
+            "start": 98.12,
+            "end": 106.84,
+            "text": "ne me voyais pas faire toute ma carri\u00e8re dedans. Donc j'ai eu l'opportunit\u00e9 \u00e0 l'h\u00f4pital, il y avait"
+          },
+          {
+            "start": 106.84,
+            "end": 112.72,
+            "text": "des assistantes sociales bien entendu et leur secr\u00e9taire \u00e9tait parti. Et comme elle venait"
+          },
+          {
+            "start": 112.72,
+            "end": 118.16,
+            "text": "souvent prendre le caf\u00e9 en radiologie parce qu'on \u00e9tait un petit peu les seuls \u00e0 l'\u00e9poque \u00e0 avoir"
+          },
+          {
+            "start": 118.16,
+            "end": 124.08000000000001,
+            "text": "une machine \u00e0 caf\u00e9 dans notre service, je discutais souvent avec elle et je leur parlais de mon envie"
+          },
+          {
+            "start": 124.08000000000001,
+            "end": 131.24,
+            "text": "de faire le m\u00eame m\u00e9tier qu'elle, c'est \u00e0 dire de faire des \u00e9tudes d'assistante sociale. Et j'ai eu"
+          },
+          {
+            "start": 131.24,
+            "end": 138.68,
+            "text": "donc cette opportunit\u00e9 puisque leur secr\u00e9taire \u00e9tait parti de venir, de quitter mon poste en"
+          },
+          {
+            "start": 138.68,
+            "end": 144.60000000000002,
+            "text": "radiologie pour travailler aupr\u00e8s d'elle. Et l\u00e0 j'avoue que \u00e7a a \u00e9t\u00e9 une exp\u00e9rience tr\u00e8s"
+          },
+          {
+            "start": 144.60000000000002,
+            "end": 151.92000000000002,
+            "text": "enrichissante car j'ai appris beaucoup de choses sur le m\u00e9tier, d'autant plus que l'une des deux"
+          },
+          {
+            "start": 151.92000000000002,
+            "end": 157.56,
+            "text": "assistantes sociales \u00e9tait arr\u00eat\u00e9e pour un cong\u00e9 maternit\u00e9, enfin plut\u00f4t une grossesse un petit"
+          },
+          {
+            "start": 157.56,
+            "end": 164.76,
+            "text": "peu compliqu\u00e9e et je peux pas dire que je l'ai remplac\u00e9, \u00e7a ne serait pas exact, pas vrai puisque"
+          },
+          {
+            "start": 164.76,
+            "end": 170.12,
+            "text": "je n'\u00e9tais pas assistante sociale \u00e0 l'\u00e9poque mais disons j'ai fait plus que mon travail de secr\u00e9taire."
+          },
+          {
+            "start": 170.12,
+            "end": 177.76,
+            "text": "Voil\u00e0 c'\u00e9tait donc tr\u00e8s int\u00e9ressant, je dois aussi remercier la directrice du personnel car \u00e0"
+          },
+          {
+            "start": 177.76,
+            "end": 184.6,
+            "text": "la fin de cette ann\u00e9e donc \u00e0 l'h\u00f4pital, \u00e7a faisait cinq ans que j'y \u00e9tais, j'avais la possibilit\u00e9 de"
+          },
+          {
+            "start": 184.6,
+            "end": 190.6,
+            "text": "passer le concours pour rentrer \u00e0 l'\u00e9cole d'assistante sociale et donc d'obtenir une"
+          },
+          {
+            "start": 190.6,
+            "end": 197.2,
+            "text": "bourse d'\u00e9tudes d'\u00e9tat puisque j'avais travaill\u00e9 cinq ans dans le secteur m\u00e9dico-social. La grosse"
+          },
+          {
+            "start": 197.2,
+            "end": 203.4,
+            "text": "difficult\u00e9 pour moi c'est qu'il fallait que je quitte mon poste, je passais le concours en juin,"
+          },
+          {
+            "start": 203.4,
+            "end": 210.35999999999999,
+            "text": "je n'avais la r\u00e9ponse de certitude qu'en septembre si j'\u00e9tais pris ou pas \u00e0 l'\u00e9cole et surtout si"
+          },
+          {
+            "start": 210.36,
+            "end": 216.32000000000002,
+            "text": "j'avais la bourse et l\u00e0 patatrac si je n'avais pas la bourse qu'est ce que je faisais ? Je ne pouvais"
+          },
+          {
+            "start": 216.32000000000002,
+            "end": 226.16000000000003,
+            "text": "pas revenir comme \u00e7a, rester sans salaire, \u00e7a aurait \u00e9t\u00e9 tr\u00e8s compliqu\u00e9 et l\u00e0 j'avoue que je"
+          },
+          {
+            "start": 226.16000000000003,
+            "end": 230.84,
+            "text": "suis tomb\u00e9e sur une directrice du personnel de l'h\u00f4pital qui \u00e9tait une femme charmante qui"
+          },
+          {
+            "start": 230.84,
+            "end": 237.32000000000002,
+            "text": "m'a dit qu'elle aimait que les gens justement aient envie de progresser dans leur carri\u00e8re et elle"
+          },
+          {
+            "start": 237.64,
+            "end": 242.88,
+            "text": "ne vous inqui\u00e9tez pas de toute fa\u00e7on si vous n'avez pas votre bourse d'\u00e9tudes je vous reprendrai"
+          },
+          {
+            "start": 242.88,
+            "end": 248.51999999999998,
+            "text": "\u00e0 l'h\u00f4pital il n'y aura aucun probl\u00e8me et l\u00e0 j'avoue que \u00e7a a \u00e9t\u00e9 un grand soulagement pour moi."
+          },
+          {
+            "start": 248.51999999999998,
+            "end": 260.32,
+            "text": "Par chance j'ai eu le concours et j'ai eu \u00e9galement la bourse d'\u00e9tudes donc l\u00e0 j'ai vraiment"
+          },
+          {
+            "start": 260.32,
+            "end": 267.8,
+            "text": "appr\u00e9ci\u00e9 trois ans trois ans d'\u00e9tudes, devenir \u00e9tudiante sur Paris c'est quelque chose qui m'avait"
+          },
+          {
+            "start": 267.8,
+            "end": 273.8,
+            "text": "manqu\u00e9 apr\u00e8s le bac de ne pas conna\u00eetre cette vie d'\u00e9tudiante surtout qu'\u00e0 l'\u00e9poque je n'avais"
+          },
+          {
+            "start": 273.8,
+            "end": 280.24,
+            "text": "pas d'enfant donc c'\u00e9tait assez facile \u00e0 l'\u00e9cole il y avait des filles qui \u00e9taient d\u00e9j\u00e0 m\u00e8res de"
+          },
+          {
+            "start": 280.24,
+            "end": 286.12,
+            "text": "famille et pour elles c'est vrai c'\u00e9tait plus difficile de concilier les deux mais j'ai vraiment"
+          },
+          {
+            "start": 286.12,
+            "end": 293.8,
+            "text": "appr\u00e9ci\u00e9 ces trois ann\u00e9es d'\u00e9tudes, ces trois ann\u00e9es d'\u00e9tudes apr\u00e8s j'ai travaill\u00e9 en ce qu'on"
+          },
+          {
+            "start": 293.8,
+            "end": 300.64,
+            "text": "appelle en polyvalence de secteur en milieu rural o\u00f9 j'ai rencontr\u00e9 toutes sortes de situations et"
+          },
+          {
+            "start": 300.64,
+            "end": 308.36,
+            "text": "puis apr\u00e8s un certain nombre d'ann\u00e9es pr\u00e8s de 20 ans en milieu scolaire voil\u00e0 c'\u00e9tait une"
+          },
+          {
+            "start": 308.36,
+            "end": 315.4,
+            "text": "exp\u00e9rience tr\u00e8s enrichissante c'est un m\u00e9tier que j'ai ador\u00e9 que j'ai choisi que j'ai aim\u00e9"
+          },
+          {
+            "start": 315.4,
+            "end": 321.79999999999995,
+            "text": "m\u00eame si parfois c'est vrai c'est pesant c'est difficile d'\u00eatre assistante sociale toute sa"
+          },
+          {
+            "start": 321.79999999999995,
+            "end": 330.2,
+            "text": "vie toute sa carri\u00e8re car on est confront\u00e9 toujours \u00e0 la souffrance \u00e0 la difficult\u00e9 \u00e0 des situations"
+          },
+          {
+            "start": 330.2,
+            "end": 337.32,
+            "text": "pour lesquelles on n'a pas toujours de solution on essaye d'aider au mieux les personnes de les"
+          },
+          {
+            "start": 337.32,
+            "end": 343.64,
+            "text": "accompagner de les comprendre avec le plus d'empathie possible voil\u00e0 il y a bien s\u00fbr le volet"
+          },
+          {
+            "start": 343.71999999999997,
+            "end": 353.4,
+            "text": "aussi protection de l'enfance qui peut \u00eatre tr\u00e8s d\u00e9licat \u00e0 appr\u00e9cier tr\u00e8s difficile on voudrait"
+          },
+          {
+            "start": 353.4,
+            "end": 361.32,
+            "text": "sauver tous les enfants malheureux de la terre et on se rend compte que voil\u00e0 ce n'est pas chose"
+          },
+          {
+            "start": 361.32,
+            "end": 368.44,
+            "text": "ais\u00e9e parce qu'il y a derri\u00e8re nous des services qui manquent de moyens des magistrats qui manquent"
+          },
+          {
+            "start": 368.44,
+            "end": 377.24,
+            "text": "de moyens aussi et que parfois on n'a pas la solution que l'on souhaiterait pour des enfants"
+          },
+          {
+            "start": 377.24,
+            "end": 384.64,
+            "text": "malheureux voil\u00e0 donc c'est un m\u00e9tier que j'ai beaucoup aim\u00e9 mais que j'ai aussi quitt\u00e9 puisque"
+          },
+          {
+            "start": 384.64,
+            "end": 391.4,
+            "text": "maintenant je suis \u00e0 la retraite avec un certain soulagement car c'est vrai que bah on rentre pas"
+          },
+          {
+            "start": 391.4,
+            "end": 397.91999999999996,
+            "text": "toujours tous les soirs tranquille chez soi dans ce m\u00e9tier on se rend compte que c'est"
+          },
+          {
+            "start": 397.91999999999996,
+            "end": 403.08,
+            "text": "un m\u00e9tier qui demande beaucoup et qui usent qui usent psychologiquement"
+          }
+        ]
+      },
+      "acoustic_features": {
+        "duration_s": 405.63,
+        "f0_mean": 199.32,
+        "f0_sd": 49.33,
+        "f0_range": 423.39,
+        "jitter_local": 0.017925,
+        "shimmer_local": 0.082652,
+        "hnr": 18.44,
+        "mfcc2_mean": 87.78,
+        "cpp": 1.4492,
+        "f1_mean": 609.88,
+        "f2_mean": 1851.83,
+        "spectral_harmonicity": 0.4498,
+        "energy_range": 58.57,
+        "articulation_rate": 0.6113,
+        "ppe": 0.572,
+        "rpde": 1.0646,
+        "dfa": 0.5828,
+        "d2": 0.0777,
+        "vot": 245.33
+      }
+    },
+    {
+      "session_id": "session06",
+      "filename": "session06.webm",
+      "file_size_bytes": 17558740,
+      "transcript": {
+        "text": "Ma passion ou plut\u00f4t mes passions car j'ai envie de dire j'ai deux passions. La danse classique qui m'a accompagn\u00e9e depuis toute petite, enfin toute petite on va dire peut-\u00eatre depuis l'\u00e2ge de 6 ans et pour lequel j'ai toujours gard\u00e9 une admiration des danseuses, de ce milieu artistique vraiment la danse a accompagn\u00e9 toute ma jeunesse. C'est d'autant plus int\u00e9ressant que je suis arriv\u00e9e \u00e0 la danse classique de mani\u00e8re tout \u00e0 fait inhabituelle puisque ce n'\u00e9tait pas du tout dans la culture de mes parents qui \u00e9taient des personnes ouvri\u00e8res et qui n'avaient pas suivi d'\u00e9tudes et qui n'avaient pas les moyens en fait de payer des cours de danse classique. Mais voil\u00e0 j'avais une petite d\u00e9formation au pied et le m\u00e9decin qui me suivait que j'allais voir une fois par an \u00e0 l'h\u00f4pital des enfants malades, \u00e7a s'appelait comme \u00e7a avant cet h\u00f4pital qui se trouvait \u00e0 Paris pr\u00e8s d'enfer Rochereau. Voil\u00e0 le m\u00e9decin avait dit \u00e0 ma m\u00e8re il faut travailler l'endroit, il faut faire lui de la danse classique et c'est vrai que alors l\u00e0 c'est une prescription merveilleuse. J'ai jamais eu une telle ordonnance avec plaisir. Voil\u00e0 donc \u00e9coutez j'ai fait de la danse classique jusque tard dans l'adolescence et vraiment \u00e7a a \u00e9t\u00e9 un grand bonheur pour moi la danse. Je n'avais qu'une envie c'est d'avoir un tutu blanc comme les danseuses de l'op\u00e9ra et d'ailleurs je me souviens que d\u00e8s mes premiers salaires la premi\u00e8re chose que j'ai fait c'est d'aller \u00e0 Paris d'aller voir l'op\u00e9ra et surtout de prendre deux billets pour moi et pour celui qui allait devenir mon futur mari, mon mari plut\u00f4t, des billets pour voir un spectacle \u00e0 l'op\u00e9ra de Paris. \u00c7a a \u00e9t\u00e9 une soir\u00e9e magique vraiment un r\u00eave de petite fille donc la danse aussi m'a fait acc\u00e9der \u00e0 tout un milieu intellectuel une sensibilisation \u00e0 la musique classique que je n'avais pas dans mon milieu familial mais \u00e7a vraiment c'est rest\u00e9 toujours une passion toujours aujourd'hui j'aime aller \u00e0 l'op\u00e9ra j'aime ne serait-ce que passer devant l'op\u00e9ra visiter l'op\u00e9ra que j'ai visit\u00e9 maintes et maintes fois c'est \u00e7a reste toujours et voir des \u00e9missions sur la danse des reportages sur la danse c'est vraiment une passion. Ma deuxi\u00e8me passion aussi parce que on peut dire que j'ai deux grandes passions c'est le dessin et la peinture. C'est mon p\u00e8re qui m'a appris \u00e0 dessiner et il avait un bon coup de crayon il dessinait et je me souviens enfant assez jeune avec lui sur la table de la salle \u00e0 manger l'hiver certainement quand il faisait froid que tout le monde \u00e9tait calfetr\u00e9 \u00e0 la maison et bien je dessinais et il me corrigeait il me r\u00e9apprenait un petit peu \u00e0 dessiner j'ai toujours gard\u00e9 cette passion de la peinture en classe au coll\u00e8ge au lyc\u00e9e les professeurs disaient que j'avais des aptitudes que j'aurais pu faire peut-\u00eatre l'\u00e9cole des beaux-arts c'est vrai que si j'avais eu les moyens financiers j'ai parl\u00e9 de mon m\u00e9tier d'assistante sociale que j'ai choisi que j'ai aim\u00e9 c'\u00e9tait vraiment un choix mais si j'avais eu je dirais pas de souci financier c'est vraiment une \u00e9cole des beaux-arts que j'aurais aim\u00e9 faire faire des beaux-arts faire un m\u00e9tier peut-\u00eatre dans la restauration de l'art j'aime bien beaucoup les restaurateurs de peinture c'est quelque chose qui m'attire beaucoup voil\u00e0 et j'aime toujours aller dans les mus\u00e9es malheureusement je ne peins pas beaucoup je n'ai pas toujours l'inspiration qu'il faudrait j'ai l'impression qu'en vieillissant on perd peut-\u00eatre cette inspiration que l'on a plus jeune j'ai besoin le plus souvent d'avoir un professeur qui me guide dans mes choix qui me corrige et j'ai pas toujours trouv\u00e9 de la satisfaction dans ces cours avec diff\u00e9rents enseignants que j'ai pris voil\u00e0 mais bon \u00e7a reste la peinture la danse c'est vraiment les deux passions qui m'accompagneront toute ma vie",
+        "language": "fr",
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 7.5200000000000005,
+            "text": "Ma passion ou plut\u00f4t mes passions car j'ai envie de dire j'ai deux passions."
+          },
+          {
+            "start": 7.5200000000000005,
+            "end": 15.0,
+            "text": "La danse classique qui m'a accompagn\u00e9e depuis toute petite, enfin toute petite on va dire"
+          },
+          {
+            "start": 15.0,
+            "end": 22.0,
+            "text": "peut-\u00eatre depuis l'\u00e2ge de 6 ans et pour lequel j'ai toujours gard\u00e9 une admiration des danseuses,"
+          },
+          {
+            "start": 22.0,
+            "end": 28.32,
+            "text": "de ce milieu artistique vraiment la danse a accompagn\u00e9 toute ma jeunesse."
+          },
+          {
+            "start": 28.32,
+            "end": 37.24,
+            "text": "C'est d'autant plus int\u00e9ressant que je suis arriv\u00e9e \u00e0 la danse classique de mani\u00e8re tout"
+          },
+          {
+            "start": 37.24,
+            "end": 43.44,
+            "text": "\u00e0 fait inhabituelle puisque ce n'\u00e9tait pas du tout dans la culture de mes parents qui \u00e9taient"
+          },
+          {
+            "start": 43.44,
+            "end": 48.96,
+            "text": "des personnes ouvri\u00e8res et qui n'avaient pas suivi d'\u00e9tudes et qui n'avaient pas les moyens"
+          },
+          {
+            "start": 48.96,
+            "end": 56.24,
+            "text": "en fait de payer des cours de danse classique. Mais voil\u00e0 j'avais une petite d\u00e9formation au pied"
+          },
+          {
+            "start": 56.56,
+            "end": 65.36,
+            "text": "et le m\u00e9decin qui me suivait que j'allais voir une fois par an \u00e0 l'h\u00f4pital des enfants malades,"
+          },
+          {
+            "start": 65.36,
+            "end": 71.04,
+            "text": "\u00e7a s'appelait comme \u00e7a avant cet h\u00f4pital qui se trouvait \u00e0 Paris pr\u00e8s d'enfer Rochereau."
+          },
+          {
+            "start": 71.04,
+            "end": 75.8,
+            "text": "Voil\u00e0 le m\u00e9decin avait dit \u00e0 ma m\u00e8re il faut travailler l'endroit, il faut"
+          },
+          {
+            "start": 75.8,
+            "end": 82.88,
+            "text": "faire lui de la danse classique et c'est vrai que alors l\u00e0 c'est une prescription merveilleuse."
+          },
+          {
+            "start": 82.88,
+            "end": 90.52,
+            "text": "J'ai jamais eu une telle ordonnance avec plaisir. Voil\u00e0 donc \u00e9coutez j'ai fait de la danse classique"
+          },
+          {
+            "start": 90.52,
+            "end": 99.5,
+            "text": "jusque tard dans l'adolescence et vraiment \u00e7a a \u00e9t\u00e9 un grand bonheur pour moi la danse. Je"
+          },
+          {
+            "start": 99.5,
+            "end": 105.24,
+            "text": "n'avais qu'une envie c'est d'avoir un tutu blanc comme les danseuses de l'op\u00e9ra et d'ailleurs je"
+          },
+          {
+            "start": 105.24,
+            "end": 110.8,
+            "text": "me souviens que d\u00e8s mes premiers salaires la premi\u00e8re chose que j'ai fait c'est d'aller \u00e0"
+          },
+          {
+            "start": 110.8,
+            "end": 117.8,
+            "text": "Paris d'aller voir l'op\u00e9ra et surtout de prendre deux billets pour moi et pour celui qui allait"
+          },
+          {
+            "start": 117.8,
+            "end": 124.75999999999999,
+            "text": "devenir mon futur mari, mon mari plut\u00f4t, des billets pour voir un spectacle \u00e0 l'op\u00e9ra de"
+          },
+          {
+            "start": 124.75999999999999,
+            "end": 133.48,
+            "text": "Paris. \u00c7a a \u00e9t\u00e9 une soir\u00e9e magique vraiment un r\u00eave de petite fille donc la danse aussi m'a fait"
+          },
+          {
+            "start": 133.48,
+            "end": 141.44,
+            "text": "acc\u00e9der \u00e0 tout un milieu intellectuel une sensibilisation \u00e0 la musique classique que"
+          },
+          {
+            "start": 141.44,
+            "end": 149.6,
+            "text": "je n'avais pas dans mon milieu familial mais \u00e7a vraiment c'est rest\u00e9 toujours une passion toujours"
+          },
+          {
+            "start": 149.6,
+            "end": 156.88,
+            "text": "aujourd'hui j'aime aller \u00e0 l'op\u00e9ra j'aime ne serait-ce que passer devant l'op\u00e9ra visiter"
+          },
+          {
+            "start": 156.88,
+            "end": 163.64,
+            "text": "l'op\u00e9ra que j'ai visit\u00e9 maintes et maintes fois c'est \u00e7a reste toujours et voir des \u00e9missions sur"
+          },
+          {
+            "start": 163.64,
+            "end": 170.96,
+            "text": "la danse des reportages sur la danse c'est vraiment une passion. Ma deuxi\u00e8me passion aussi parce que"
+          },
+          {
+            "start": 170.96,
+            "end": 177.6,
+            "text": "on peut dire que j'ai deux grandes passions c'est le dessin et la peinture. C'est mon p\u00e8re qui m'a"
+          },
+          {
+            "start": 177.6,
+            "end": 184.51999999999998,
+            "text": "appris \u00e0 dessiner et il avait un bon coup de crayon il dessinait et je me souviens enfant assez"
+          },
+          {
+            "start": 184.56,
+            "end": 192.16000000000003,
+            "text": "jeune avec lui sur la table de la salle \u00e0 manger l'hiver certainement quand il faisait froid que"
+          },
+          {
+            "start": 192.16000000000003,
+            "end": 197.96,
+            "text": "tout le monde \u00e9tait calfetr\u00e9 \u00e0 la maison et bien je dessinais et il me corrigeait il me"
+          },
+          {
+            "start": 197.96,
+            "end": 206.0,
+            "text": "r\u00e9apprenait un petit peu \u00e0 dessiner j'ai toujours gard\u00e9 cette passion de la peinture en classe au"
+          },
+          {
+            "start": 206.0,
+            "end": 211.92000000000002,
+            "text": "coll\u00e8ge au lyc\u00e9e les professeurs disaient que j'avais des aptitudes que j'aurais pu faire peut-\u00eatre"
+          },
+          {
+            "start": 211.92,
+            "end": 218.23999999999998,
+            "text": "l'\u00e9cole des beaux-arts c'est vrai que si j'avais eu les moyens financiers j'ai parl\u00e9 de mon m\u00e9tier"
+          },
+          {
+            "start": 218.23999999999998,
+            "end": 225.0,
+            "text": "d'assistante sociale que j'ai choisi que j'ai aim\u00e9 c'\u00e9tait vraiment un choix mais si j'avais"
+          },
+          {
+            "start": 225.0,
+            "end": 231.88,
+            "text": "eu je dirais pas de souci financier c'est vraiment une \u00e9cole des beaux-arts que j'aurais aim\u00e9 faire"
+          },
+          {
+            "start": 231.88,
+            "end": 238.48,
+            "text": "faire des beaux-arts faire un m\u00e9tier peut-\u00eatre dans la restauration de l'art j'aime bien beaucoup"
+          },
+          {
+            "start": 238.64,
+            "end": 245.56,
+            "text": "les restaurateurs de peinture c'est quelque chose qui m'attire beaucoup voil\u00e0 et j'aime toujours"
+          },
+          {
+            "start": 245.56,
+            "end": 253.67999999999998,
+            "text": "aller dans les mus\u00e9es malheureusement je ne peins pas beaucoup je n'ai pas toujours l'inspiration"
+          },
+          {
+            "start": 253.67999999999998,
+            "end": 259.52,
+            "text": "qu'il faudrait j'ai l'impression qu'en vieillissant on perd peut-\u00eatre cette inspiration que l'on a"
+          },
+          {
+            "start": 259.52,
+            "end": 265.68,
+            "text": "plus jeune j'ai besoin le plus souvent d'avoir un professeur qui me guide dans mes choix qui me"
+          },
+          {
+            "start": 265.68,
+            "end": 272.84000000000003,
+            "text": "corrige et j'ai pas toujours trouv\u00e9 de la satisfaction dans ces cours avec diff\u00e9rents"
+          },
+          {
+            "start": 272.84000000000003,
+            "end": 280.0,
+            "text": "enseignants que j'ai pris voil\u00e0 mais bon \u00e7a reste la peinture la danse c'est vraiment les"
+          },
+          {
+            "start": 280.0,
+            "end": 282.68,
+            "text": "deux passions qui m'accompagneront toute ma vie"
+          }
+        ]
+      },
+      "acoustic_features": {
+        "duration_s": 285.27,
+        "f0_mean": 190.48,
+        "f0_sd": 41.5,
+        "f0_range": 424.46,
+        "jitter_local": 0.01606,
+        "shimmer_local": 0.075001,
+        "hnr": 18.65,
+        "mfcc2_mean": 76.8,
+        "cpp": 1.5737,
+        "f1_mean": 632.5,
+        "f2_mean": 1885.7,
+        "spectral_harmonicity": 0.4947,
+        "energy_range": 62.86,
+        "articulation_rate": 0.6392,
+        "ppe": 1.0964,
+        "rpde": 0.9628,
+        "dfa": 0.5673,
+        "d2": 0.2721,
+        "vot": 160.0
+      }
+    },
+    {
+      "session_id": "session07",
+      "filename": "session07.webm",
+      "file_size_bytes": 13637687,
+      "transcript": {
+        "text": "Un souvenir d'enfance. Mon meilleur souvenir je pense c'est mon ami V\u00e9ronique qui habitait le m\u00eame petit village que moi. Nous habitions \u00e0 un tout petit hameau un petit peu perch\u00e9 en haut d'une petite colline o\u00f9 tr\u00e8s peu de voitures passaient et comme tous les enfants du village on jouait \u00e0 la marelle dans la rue, on tra\u00e7ait une marelle dans la rue, on tra\u00e7ait \u00e0 la cr\u00e9er une maison avec notre chambre, notre cuisine voil\u00e0 et on jouait comme \u00e7a toute la journ\u00e9e. L'\u00e9t\u00e9 probablement j'ai plus de souvenirs des journ\u00e9es d'\u00e9t\u00e9. Voil\u00e0 avec V\u00e9ronique dans la rue elle avait une petite soeur qui s'appelait Laurence qui \u00e9tait peut-\u00eatre plus jeune de 4-5 ans qu'elle qui des fois venait nous emb\u00eater mais bon voil\u00e0 on jouait aussi avec Laurence et \u00e9videmment V\u00e9ronique c'\u00e9tait ma compagne de danse classique toutes les deux on allait au m\u00eame cours de danse classique car V\u00e9ronique elle avait une maman qui avait fait de la danse classique et on partageait toutes les deux cette passion. \u00c0 l'\u00e9cole nous \u00e9tions vraiment deux amis ins\u00e9parables et je me souviens je ne pourrais pas dire l'\u00e2ge qu'on avait peut-\u00eatre six ans, sept ans je ne sais pas mais je me souviens de l'\u00e9t\u00e9 il y avait des arbres dans la cour d'\u00e9cole ce devait \u00eatre des tilleuls puisque je me souviens que fin juin o\u00f9 on ramassait le tilleul pour donner pour faire des tisanes pour des personnes \u00e2g\u00e9es qui \u00e9taient dans un h\u00f4pital \u00e0 c\u00f4t\u00e9 de l'\u00e9cole mais en tous les cas nous nous jouions toutes les deux ensemble dans la cour d'\u00e9cole et on s'imaginait on jouait aux f\u00e9es on s'imaginait qu'on \u00e9tait des f\u00e9es comme des dames du moyen \u00e2ge avec un grand homme et puis un grand voil\u00e0 voil\u00e0 on devait utiliser peut-\u00eatre un ruban ou un foulard en guise de haums de chapeau voil\u00e0 comme les grandes dames du moyen \u00e2ge et alors on avait un arbre un petit arbre enfin un grand arbre plut\u00f4t qui avait un creux et alors c'\u00e9tait notre arbre secret que les autres enfants les autres petites filles de l'\u00e9cole ne connaissaient pas et l\u00e0 on cachait dedans des cailloux qui nous semblaient des diamants des cailloux tr\u00e8s brillants tr\u00e8s beaux enfin tr\u00e8s beaux \u00e0 nos yeux de petites filles et on les avait cach\u00e9es dans ce tronc d'arbre dans ce petit trou fait dans le tronc d'arbre et puis les vacances d'\u00e9t\u00e9 sont pass\u00e9es nouvelle rentr\u00e9e scolaire et avec V\u00e9ronique voil\u00e0 on va rechercher retrouver notre arbre \u00e0 secret et l\u00e0 c'\u00e9tait un petit peu la d\u00e9ception certainement un petit bout de l'enfance qui \u00e9tait parti on avait grandi toutes les deux on n'avait plus envie de jouer aux f\u00e9es les cailloux que l'on avait mis l\u00e0 bien \u00e0 l'abri dans notre petit trou bah nous ont sembl\u00e9 tout gris tout terne ce n'\u00e9tait plus du tout des diamants des pierres pr\u00e9cieuses voil\u00e0 c'\u00e9tait l'enfance peut-\u00eatre un petit peu l'enfance qui nous quittait alors certainement qu'apr\u00e8s on a jou\u00e9 \u00e0 d'autres choses mais voil\u00e0 mon arbre l'arbre aux f\u00e9es dans la cour d'\u00e9cole et bien c'\u00e9tait fini",
+        "language": "fr",
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 9.0,
+            "text": "Un souvenir d'enfance. Mon meilleur souvenir je pense c'est mon ami V\u00e9ronique qui habitait"
+          },
+          {
+            "start": 9.0,
+            "end": 16.92,
+            "text": "le m\u00eame petit village que moi. Nous habitions \u00e0 un tout petit hameau un petit peu perch\u00e9 en haut"
+          },
+          {
+            "start": 16.92,
+            "end": 22.64,
+            "text": "d'une petite colline o\u00f9 tr\u00e8s peu de voitures passaient et comme tous les enfants du village"
+          },
+          {
+            "start": 22.64,
+            "end": 30.72,
+            "text": "on jouait \u00e0 la marelle dans la rue, on tra\u00e7ait une marelle dans la rue, on tra\u00e7ait \u00e0 la cr\u00e9er une"
+          },
+          {
+            "start": 30.72,
+            "end": 36.72,
+            "text": "maison avec notre chambre, notre cuisine voil\u00e0 et on jouait comme \u00e7a toute la journ\u00e9e. L'\u00e9t\u00e9"
+          },
+          {
+            "start": 36.72,
+            "end": 43.44,
+            "text": "probablement j'ai plus de souvenirs des journ\u00e9es d'\u00e9t\u00e9. Voil\u00e0 avec V\u00e9ronique dans la rue elle"
+          },
+          {
+            "start": 43.44,
+            "end": 48.84,
+            "text": "avait une petite soeur qui s'appelait Laurence qui \u00e9tait peut-\u00eatre plus jeune de 4-5 ans qu'elle"
+          },
+          {
+            "start": 48.84,
+            "end": 54.88,
+            "text": "qui des fois venait nous emb\u00eater mais bon voil\u00e0 on jouait aussi avec Laurence et \u00e9videmment"
+          },
+          {
+            "start": 54.88,
+            "end": 61.52,
+            "text": "V\u00e9ronique c'\u00e9tait ma compagne de danse classique toutes les deux on allait au m\u00eame cours de danse"
+          },
+          {
+            "start": 61.52,
+            "end": 67.24000000000001,
+            "text": "classique car V\u00e9ronique elle avait une maman qui avait fait de la danse classique et on partageait"
+          },
+          {
+            "start": 67.24000000000001,
+            "end": 74.76,
+            "text": "toutes les deux cette passion. \u00c0 l'\u00e9cole nous \u00e9tions vraiment deux amis ins\u00e9parables et je"
+          },
+          {
+            "start": 74.80000000000001,
+            "end": 82.68,
+            "text": "me souviens je ne pourrais pas dire l'\u00e2ge qu'on avait peut-\u00eatre six ans, sept ans je ne sais pas"
+          },
+          {
+            "start": 82.68,
+            "end": 90.24000000000001,
+            "text": "mais je me souviens de l'\u00e9t\u00e9 il y avait des arbres dans la cour d'\u00e9cole ce devait \u00eatre des"
+          },
+          {
+            "start": 90.24000000000001,
+            "end": 98.28,
+            "text": "tilleuls puisque je me souviens que fin juin o\u00f9 on ramassait le tilleul pour donner pour faire des"
+          },
+          {
+            "start": 98.28,
+            "end": 103.94,
+            "text": "tisanes pour des personnes \u00e2g\u00e9es qui \u00e9taient dans un h\u00f4pital \u00e0 c\u00f4t\u00e9 de l'\u00e9cole mais en tous"
+          },
+          {
+            "start": 103.98,
+            "end": 110.89999999999999,
+            "text": "les cas nous nous jouions toutes les deux ensemble dans la cour d'\u00e9cole et on s'imaginait on jouait"
+          },
+          {
+            "start": 110.89999999999999,
+            "end": 117.42,
+            "text": "aux f\u00e9es on s'imaginait qu'on \u00e9tait des f\u00e9es comme des dames du moyen \u00e2ge avec un grand homme"
+          },
+          {
+            "start": 117.42,
+            "end": 128.78,
+            "text": "et puis un grand voil\u00e0 voil\u00e0 on devait utiliser peut-\u00eatre un ruban ou un foulard en guise de"
+          },
+          {
+            "start": 129.42,
+            "end": 135.82,
+            "text": "haums de chapeau voil\u00e0 comme les grandes dames du moyen \u00e2ge et alors on avait un arbre un petit"
+          },
+          {
+            "start": 135.82,
+            "end": 142.54,
+            "text": "arbre enfin un grand arbre plut\u00f4t qui avait un creux et alors c'\u00e9tait notre arbre secret que les"
+          },
+          {
+            "start": 142.54,
+            "end": 149.62,
+            "text": "autres enfants les autres petites filles de l'\u00e9cole ne connaissaient pas et l\u00e0 on cachait dedans des"
+          },
+          {
+            "start": 149.62,
+            "end": 156.94,
+            "text": "cailloux qui nous semblaient des diamants des cailloux tr\u00e8s brillants tr\u00e8s beaux enfin tr\u00e8s"
+          },
+          {
+            "start": 156.94,
+            "end": 161.85999999999999,
+            "text": "beaux \u00e0 nos yeux de petites filles et on les avait cach\u00e9es dans ce tronc d'arbre dans ce petit"
+          },
+          {
+            "start": 161.85999999999999,
+            "end": 168.96,
+            "text": "trou fait dans le tronc d'arbre et puis les vacances d'\u00e9t\u00e9 sont pass\u00e9es nouvelle rentr\u00e9e"
+          },
+          {
+            "start": 168.96,
+            "end": 179.82,
+            "text": "scolaire et avec V\u00e9ronique voil\u00e0 on va rechercher retrouver notre arbre \u00e0 secret et l\u00e0 c'\u00e9tait un"
+          },
+          {
+            "start": 179.82,
+            "end": 185.9,
+            "text": "petit peu la d\u00e9ception certainement un petit bout de l'enfance qui \u00e9tait parti on avait grandi"
+          },
+          {
+            "start": 185.9,
+            "end": 194.62,
+            "text": "toutes les deux on n'avait plus envie de jouer aux f\u00e9es les cailloux que l'on avait mis l\u00e0 bien"
+          },
+          {
+            "start": 194.62,
+            "end": 201.5,
+            "text": "\u00e0 l'abri dans notre petit trou bah nous ont sembl\u00e9 tout gris tout terne ce n'\u00e9tait plus du tout des"
+          },
+          {
+            "start": 201.5,
+            "end": 208.94,
+            "text": "diamants des pierres pr\u00e9cieuses voil\u00e0 c'\u00e9tait l'enfance peut-\u00eatre un petit peu l'enfance qui"
+          },
+          {
+            "start": 209.3,
+            "end": 216.5,
+            "text": "nous quittait alors certainement qu'apr\u00e8s on a jou\u00e9 \u00e0 d'autres choses mais voil\u00e0"
+          },
+          {
+            "start": 216.5,
+            "end": 222.14,
+            "text": "mon arbre l'arbre aux f\u00e9es dans la cour d'\u00e9cole et bien c'\u00e9tait fini"
+          }
+        ]
+      },
+      "acoustic_features": {
+        "duration_s": 225.92,
+        "f0_mean": 209.3,
+        "f0_sd": 47.57,
+        "f0_range": 413.12,
+        "jitter_local": 0.014001,
+        "shimmer_local": 0.072028,
+        "hnr": 20.06,
+        "mfcc2_mean": 74.24,
+        "cpp": 1.5413,
+        "f1_mean": 609.7,
+        "f2_mean": 1876.19,
+        "spectral_harmonicity": 0.4862,
+        "energy_range": 66.14,
+        "articulation_rate": 0.5445,
+        "ppe": 1.0623,
+        "rpde": 0.6607,
+        "dfa": 0.5509,
+        "d2": 0.5937,
+        "vot": 224.0
+      }
+    },
+    {
+      "session_id": "session08",
+      "filename": "session08.webm",
+      "file_size_bytes": 57894,
+      "transcript": {
+        "text": "Thank you.",
+        "language": "en",
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 2.0,
+            "text": "Thank you."
+          }
+        ]
+      },
+      "acoustic_features": {
+        "duration_s": 1.69,
+        "f0_mean": null,
+        "f0_sd": null,
+        "f0_range": null,
+        "jitter_local": null,
+        "shimmer_local": null,
+        "hnr": -2.22,
+        "mfcc2_mean": 42.07,
+        "cpp": 0.6649,
+        "f1_mean": 933.19,
+        "f2_mean": 2117.99,
+        "spectral_harmonicity": 0.1163,
+        "energy_range": 16.17,
+        "articulation_rate": 0.0,
+        "ppe": null,
+        "rpde": 1.0256,
+        "dfa": 0.635,
+        "d2": 0.0,
+        "vot": 214.86
+      }
+    },
+    {
+      "session_id": "session09",
+      "filename": "session09.webm",
+      "file_size_bytes": 7477334,
+      "transcript": {
+        "text": "Un projet ou un r\u00eave que j'aurais ? \u00c7a c'est compliqu\u00e9 alors. C'est vrai que j'aurais envie de plein de choses. J'aimerais faire un tour en montgolfi\u00e8re. Mais voil\u00e0, mon mari a tr\u00e8s peur de monter dans une montgolfi\u00e8re, donc il ne voudra jamais. Et est-ce que j'oserais seul faire un tour en montgolfi\u00e8re ? J'aimerais aussi dormir dans ces h\u00f4tels cabane dans les bois. Je trouve \u00e7a chouette. \u00c7a me plairait d'\u00eatre au milieu de la nature, dans une cabane au milieu des bois. Voil\u00e0. Je ne sais pas, c'est compliqu\u00e9 parce qu'on peut avoir beaucoup de projets, beaucoup de r\u00eaves, envie de faire beaucoup de voyages. \u00c7a c'est s\u00fbr, d\u00e9couvrir des civilisations tr\u00e8s diff\u00e9rentes des n\u00f4tres. J'aimerais aller au Japon, j'aimerais retourner aux USA. J'aimerais aller en Egypte. Bon, c'est vrai que si j'\u00e9tais plus jeune et si j'avais peut-\u00eatre une meilleure sant\u00e9, j'h\u00e9siterais moins \u00e0 voyager dans certains pays. Mais ce qui me retient, c'est vrai, dans ces projets de voyage, c'est le risque sanitaire. Voil\u00e0. C'est pourquoi je pense que certains voyages, en tous les cas certaines destinations, resteront de l'ordre du r\u00eave. Mais c'est bien aussi d'avoir des r\u00eaves, de pouvoir continuer \u00e0 se projeter dans des choses que l'on aime, que l'on aurait envie de faire. M\u00eame si on sait quelque part au fond de soi qu'on ne les r\u00e9alisera peut-\u00eatre pas. Mais bon, on se documente, on regarde attentivement des fois un reportage sur ces pays, sur ces vols en montgolfi\u00e8re et on r\u00eave. On a l'impression d'\u00eatre dedans, d'\u00eatre avec. Voil\u00e0. M\u00eame si ce n'est pas tout \u00e0 fait \u00e7a. Voil\u00e0.",
+        "language": "fr",
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 6.9,
+            "text": "Un projet ou un r\u00eave que j'aurais ? \u00c7a c'est compliqu\u00e9 alors."
+          },
+          {
+            "start": 6.9,
+            "end": 10.88,
+            "text": "C'est vrai que j'aurais envie de plein de choses."
+          },
+          {
+            "start": 10.88,
+            "end": 13.32,
+            "text": "J'aimerais faire un tour en montgolfi\u00e8re."
+          },
+          {
+            "start": 13.32,
+            "end": 18.36,
+            "text": "Mais voil\u00e0, mon mari a tr\u00e8s peur de monter dans une montgolfi\u00e8re, donc il ne voudra"
+          },
+          {
+            "start": 18.36,
+            "end": 19.36,
+            "text": "jamais."
+          },
+          {
+            "start": 19.36,
+            "end": 22.52,
+            "text": "Et est-ce que j'oserais seul faire un tour en montgolfi\u00e8re ?"
+          },
+          {
+            "start": 22.52,
+            "end": 28.32,
+            "text": "J'aimerais aussi dormir dans ces h\u00f4tels cabane dans les bois."
+          },
+          {
+            "start": 28.72,
+            "end": 29.72,
+            "text": "Je trouve \u00e7a chouette."
+          },
+          {
+            "start": 29.72,
+            "end": 34.72,
+            "text": "\u00c7a me plairait d'\u00eatre au milieu de la nature, dans une cabane au milieu des bois."
+          },
+          {
+            "start": 34.72,
+            "end": 35.72,
+            "text": "Voil\u00e0."
+          },
+          {
+            "start": 35.72,
+            "end": 42.56,
+            "text": "Je ne sais pas, c'est compliqu\u00e9 parce qu'on peut avoir beaucoup de projets, beaucoup de"
+          },
+          {
+            "start": 42.56,
+            "end": 45.28,
+            "text": "r\u00eaves, envie de faire beaucoup de voyages."
+          },
+          {
+            "start": 45.28,
+            "end": 52.6,
+            "text": "\u00c7a c'est s\u00fbr, d\u00e9couvrir des civilisations tr\u00e8s diff\u00e9rentes des n\u00f4tres."
+          },
+          {
+            "start": 52.6,
+            "end": 55.96,
+            "text": "J'aimerais aller au Japon, j'aimerais retourner aux USA."
+          },
+          {
+            "start": 56.36,
+            "end": 58.28,
+            "text": "J'aimerais aller en Egypte."
+          },
+          {
+            "start": 58.28,
+            "end": 66.0,
+            "text": "Bon, c'est vrai que si j'\u00e9tais plus jeune et si j'avais peut-\u00eatre une meilleure sant\u00e9,"
+          },
+          {
+            "start": 66.0,
+            "end": 68.84,
+            "text": "j'h\u00e9siterais moins \u00e0 voyager dans certains pays."
+          },
+          {
+            "start": 68.84,
+            "end": 76.64,
+            "text": "Mais ce qui me retient, c'est vrai, dans ces projets de voyage, c'est le risque sanitaire."
+          },
+          {
+            "start": 76.64,
+            "end": 77.64,
+            "text": "Voil\u00e0."
+          },
+          {
+            "start": 77.64,
+            "end": 84.72,
+            "text": "C'est pourquoi je pense que certains voyages, en tous les cas certaines destinations, resteront"
+          },
+          {
+            "start": 84.8,
+            "end": 86.24,
+            "text": "de l'ordre du r\u00eave."
+          },
+          {
+            "start": 86.24,
+            "end": 93.48,
+            "text": "Mais c'est bien aussi d'avoir des r\u00eaves, de pouvoir continuer \u00e0 se projeter dans des"
+          },
+          {
+            "start": 93.48,
+            "end": 97.76,
+            "text": "choses que l'on aime, que l'on aurait envie de faire."
+          },
+          {
+            "start": 97.76,
+            "end": 103.28,
+            "text": "M\u00eame si on sait quelque part au fond de soi qu'on ne les r\u00e9alisera peut-\u00eatre pas."
+          },
+          {
+            "start": 103.28,
+            "end": 113.92,
+            "text": "Mais bon, on se documente, on regarde attentivement des fois un reportage sur ces pays, sur ces"
+          },
+          {
+            "start": 113.92,
+            "end": 116.36,
+            "text": "vols en montgolfi\u00e8re et on r\u00eave."
+          },
+          {
+            "start": 116.36,
+            "end": 119.72,
+            "text": "On a l'impression d'\u00eatre dedans, d'\u00eatre avec."
+          },
+          {
+            "start": 119.72,
+            "end": 120.72,
+            "text": "Voil\u00e0."
+          },
+          {
+            "start": 120.72,
+            "end": 121.72,
+            "text": "M\u00eame si ce n'est pas tout \u00e0 fait \u00e7a."
+          },
+          {
+            "start": 121.72,
+            "end": 122.72,
+            "text": "Voil\u00e0."
+          }
+        ]
+      },
+      "acoustic_features": {
+        "duration_s": 124.41,
+        "f0_mean": 194.73,
+        "f0_sd": 38.74,
+        "f0_range": 421.61,
+        "jitter_local": 0.015262,
+        "shimmer_local": 0.076936,
+        "hnr": 19.87,
+        "mfcc2_mean": 84.03,
+        "cpp": 1.5608,
+        "f1_mean": 605.62,
+        "f2_mean": 1805.67,
+        "spectral_harmonicity": 0.5063,
+        "energy_range": 60.58,
+        "articulation_rate": 0.6264,
+        "ppe": 1.2948,
+        "rpde": 0.473,
+        "dfa": 0.5886,
+        "d2": 1.333,
+        "vot": 167.11
+      }
+    },
+    {
+      "session_id": "session10",
+      "filename": "session10.webm",
+      "file_size_bytes": 15707962,
+      "transcript": {
+        "text": "Une journ\u00e9e type dans ma vie. Bah, j'ai envie de dire \u00e7a, c'est un petit peu le quotidien de beaucoup de femmes. C'est vrai que souvent, je commence \u00e0 me lever, j'ai tendance des fois \u00e0 paraisser un petit peu au lit, \u00e0 pas avoir envie de me lever tout de suite, surtout l'hiver, quand il fait froid, me dire \u00ab ah, je suis bien au chaud, \u00e7a me permet de r\u00e9vasser, de r\u00e9fl\u00e9chir, voil\u00e0, et puis quand m\u00eame, il faut bien se lever. Donc petit d\u00e9jeuner, toilette, parce que \u00e7a, je n'aime pas trop rester longtemps, pas laver, pas habiller, c'est quelque chose qui me pla\u00eet pas, m\u00eame si je suis \u00e0 la retraite et que maintenant j'ai du temps. Voil\u00e0. Souvent, j'aime bien aller \u00e0 pied, faire mes courses, \u00e7a me fait une petite marche de trois kilom\u00e8tres et quel que soit le temps, souvent, je pars \u00e0 pied chercher mon pain, je vais chercher deux, trois courses. \u00c9videmment, il y a des jours o\u00f9 il y a des courses plus importantes \u00e0 faire, o\u00f9 je prends la voiture le matin surtout. Alors pour certains, \u00e7a pourrait para\u00eetre comme quelque chose de banal, d'ennuyant, m\u00eame une corv\u00e9e. Ben moi, pas du tout, parce que j'aime bien, j'aime bien aller dans le magasin, regarder, choisir, \u00e9laborer mes menus en fonction des promotions, de ce que je vois. Souvent, apr\u00e8s je rentre, je fais le repas. Alors il y a des jours effectivement o\u00f9 c'est du m\u00e9nage, du repassage, entretenir sa maison, s'occuper de la machine \u00e0 laver. Bref, plein de choses quotidiennes qu'on aimerait bien des fois voir qu'elles se r\u00e9p\u00e8tent moins souvent. Mais bon, c'est comme \u00e7a, c'est des choses qu'il faut faire parce que j'aime bien vivre aussi dans un environnement propre. J'aime bien aussi avoir des v\u00eatements propres repass\u00e9s sur moi. Voil\u00e0, m\u00eame si je d\u00e9plore que les jeunes aujourd'hui ne repassent plus, portent des v\u00eatements frip\u00e9s. C'est quelque chose que je ne trouve pas joli, mais bon, voil\u00e0, c'est comme \u00e7a, c'est peut-\u00eatre une question de g\u00e9n\u00e9ration. Apr\u00e8s, j'aime bien me promener, j'aime bien lire, j'aime bien peindre, j'aime bien, suivant la saison, faire du v\u00e9lo, faire des activit\u00e9s ext\u00e9rieures. Ne serait-ce que parfois me promener, rencontrer un voisin, une voisine, parler dix minutes, un quart d'heure, je trouve que \u00e7a fait du bien aux gens. C'est important, c'est le lien comme \u00e7a que l'on entretient avec ses voisins, ses amis. C'est une fa\u00e7on de vivre ensemble, m\u00eame si on n'\u00e9change que des banalit\u00e9s. C'est quand m\u00eame important, je trouve, d'avoir ce lien social dans son quartier. Voil\u00e0, c'est une journ\u00e9e ponctu\u00e9e aussi. Le soir, il faut refaire le repas, pr\u00e9parer la machine \u00e0 laver. Et alors, le moment que j'aime le plus, c'est le moment o\u00f9 je vais me coucher. Car l\u00e0, en fait, depuis l'enfance, je commence un petit peu ma nouvelle journ\u00e9e, c'est-\u00e0-dire j'adore lire. Je ne peux pas m'endormir sans lire. Je suis une d\u00e9voreuse de bouquins, j'adore lire. Et l\u00e0, depuis que mon fils m'a offert une Kindle, c'est magique parce que je peux lire le soir, la nuit, sans d\u00e9ranger mon mari par la lumi\u00e8re. Et je d\u00e9vore, je d\u00e9vore sous les couvertures, comme quand j'\u00e9tais enfant et que je lisais \u00e0 la pile \u00e9lectrique sous les couvertures et que parfois ma m\u00e8re me grondait. Mais n'emp\u00eache que j'ai toujours eu ce plaisir, plaisir de lire et je lis tr\u00e8s souvent jusqu'\u00e0 minuit. Et quand j'ai un livre qui me pla\u00eet, que j'adore, je ne le l\u00e2che plus. Voil\u00e0, je suis capable d'aller jusqu'au bout, jusqu'au moment o\u00f9 vraiment trop fatigu\u00e9e, je vais m'endort et l\u00e0 je l\u00e2che mon livre.",
+        "language": "fr",
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 3.3200000000000003,
+            "text": "Une journ\u00e9e type dans ma vie."
+          },
+          {
+            "start": 3.3200000000000003,
+            "end": 8.96,
+            "text": "Bah, j'ai envie de dire \u00e7a, c'est un petit peu le quotidien de beaucoup de femmes."
+          },
+          {
+            "start": 8.96,
+            "end": 14.88,
+            "text": "C'est vrai que souvent, je commence \u00e0 me lever, j'ai tendance des fois \u00e0 paraisser"
+          },
+          {
+            "start": 14.88,
+            "end": 20.04,
+            "text": "un petit peu au lit, \u00e0 pas avoir envie de me lever tout de suite, surtout l'hiver,"
+          },
+          {
+            "start": 20.04,
+            "end": 27.04,
+            "text": "quand il fait froid, me dire \u00ab ah, je suis bien au chaud, \u00e7a me permet de r\u00e9vasser,"
+          },
+          {
+            "start": 27.04,
+            "end": 31.2,
+            "text": "de r\u00e9fl\u00e9chir, voil\u00e0, et puis quand m\u00eame, il faut bien se lever."
+          },
+          {
+            "start": 31.2,
+            "end": 37.56,
+            "text": "Donc petit d\u00e9jeuner, toilette, parce que \u00e7a, je n'aime pas trop rester longtemps,"
+          },
+          {
+            "start": 37.56,
+            "end": 41.2,
+            "text": "pas laver, pas habiller, c'est quelque chose qui me pla\u00eet pas, m\u00eame si je suis \u00e0 la"
+          },
+          {
+            "start": 41.2,
+            "end": 43.36,
+            "text": "retraite et que maintenant j'ai du temps."
+          },
+          {
+            "start": 43.36,
+            "end": 44.36,
+            "text": "Voil\u00e0."
+          },
+          {
+            "start": 44.36,
+            "end": 49.96,
+            "text": "Souvent, j'aime bien aller \u00e0 pied, faire mes courses, \u00e7a me fait une petite marche"
+          },
+          {
+            "start": 49.96,
+            "end": 55.56,
+            "text": "de trois kilom\u00e8tres et quel que soit le temps, souvent, je pars \u00e0 pied chercher mon pain,"
+          },
+          {
+            "start": 55.56,
+            "end": 56.56,
+            "text": "je vais chercher deux, trois courses."
+          },
+          {
+            "start": 56.56,
+            "end": 61.040000000000006,
+            "text": "\u00c9videmment, il y a des jours o\u00f9 il y a des courses plus importantes \u00e0 faire, o\u00f9 je prends"
+          },
+          {
+            "start": 61.040000000000006,
+            "end": 63.2,
+            "text": "la voiture le matin surtout."
+          },
+          {
+            "start": 63.2,
+            "end": 69.2,
+            "text": "Alors pour certains, \u00e7a pourrait para\u00eetre comme quelque chose de banal, d'ennuyant,"
+          },
+          {
+            "start": 69.2,
+            "end": 70.2,
+            "text": "m\u00eame une corv\u00e9e."
+          },
+          {
+            "start": 70.2,
+            "end": 75.04,
+            "text": "Ben moi, pas du tout, parce que j'aime bien, j'aime bien aller dans le magasin, regarder,"
+          },
+          {
+            "start": 75.04,
+            "end": 81.4,
+            "text": "choisir, \u00e9laborer mes menus en fonction des promotions, de ce que je vois."
+          },
+          {
+            "start": 81.88000000000001,
+            "end": 84.96000000000001,
+            "text": "Souvent, apr\u00e8s je rentre, je fais le repas."
+          },
+          {
+            "start": 84.96000000000001,
+            "end": 93.96000000000001,
+            "text": "Alors il y a des jours effectivement o\u00f9 c'est du m\u00e9nage, du repassage, entretenir sa maison,"
+          },
+          {
+            "start": 93.96000000000001,
+            "end": 95.64,
+            "text": "s'occuper de la machine \u00e0 laver."
+          },
+          {
+            "start": 95.64,
+            "end": 103.56,
+            "text": "Bref, plein de choses quotidiennes qu'on aimerait bien des fois voir qu'elles se r\u00e9p\u00e8tent"
+          },
+          {
+            "start": 103.56,
+            "end": 104.56,
+            "text": "moins souvent."
+          },
+          {
+            "start": 104.56,
+            "end": 108.68,
+            "text": "Mais bon, c'est comme \u00e7a, c'est des choses qu'il faut faire parce que j'aime bien vivre"
+          },
+          {
+            "start": 108.68,
+            "end": 110.52000000000001,
+            "text": "aussi dans un environnement propre."
+          },
+          {
+            "start": 110.64,
+            "end": 113.84,
+            "text": "J'aime bien aussi avoir des v\u00eatements propres repass\u00e9s sur moi."
+          },
+          {
+            "start": 113.84,
+            "end": 118.56,
+            "text": "Voil\u00e0, m\u00eame si je d\u00e9plore que les jeunes aujourd'hui ne repassent plus, portent des"
+          },
+          {
+            "start": 118.56,
+            "end": 119.56,
+            "text": "v\u00eatements frip\u00e9s."
+          },
+          {
+            "start": 119.56,
+            "end": 125.47999999999999,
+            "text": "C'est quelque chose que je ne trouve pas joli, mais bon, voil\u00e0, c'est comme \u00e7a, c'est peut-\u00eatre"
+          },
+          {
+            "start": 125.47999999999999,
+            "end": 126.84,
+            "text": "une question de g\u00e9n\u00e9ration."
+          },
+          {
+            "start": 126.84,
+            "end": 134.35999999999999,
+            "text": "Apr\u00e8s, j'aime bien me promener, j'aime bien lire, j'aime bien peindre, j'aime bien,"
+          },
+          {
+            "start": 134.35999999999999,
+            "end": 138.32,
+            "text": "suivant la saison, faire du v\u00e9lo, faire des activit\u00e9s ext\u00e9rieures."
+          },
+          {
+            "start": 139.12,
+            "end": 146.16,
+            "text": "Ne serait-ce que parfois me promener, rencontrer un voisin, une voisine, parler dix minutes,"
+          },
+          {
+            "start": 146.16,
+            "end": 149.84,
+            "text": "un quart d'heure, je trouve que \u00e7a fait du bien aux gens."
+          },
+          {
+            "start": 149.84,
+            "end": 157.51999999999998,
+            "text": "C'est important, c'est le lien comme \u00e7a que l'on entretient avec ses voisins, ses amis."
+          },
+          {
+            "start": 157.51999999999998,
+            "end": 167.4,
+            "text": "C'est une fa\u00e7on de vivre ensemble, m\u00eame si on n'\u00e9change que des banalit\u00e9s."
+          },
+          {
+            "start": 167.48000000000002,
+            "end": 173.48000000000002,
+            "text": "C'est quand m\u00eame important, je trouve, d'avoir ce lien social dans son quartier."
+          },
+          {
+            "start": 173.48000000000002,
+            "end": 178.84,
+            "text": "Voil\u00e0, c'est une journ\u00e9e ponctu\u00e9e aussi."
+          },
+          {
+            "start": 178.84,
+            "end": 184.32,
+            "text": "Le soir, il faut refaire le repas, pr\u00e9parer la machine \u00e0 laver."
+          },
+          {
+            "start": 184.32,
+            "end": 190.0,
+            "text": "Et alors, le moment que j'aime le plus, c'est le moment o\u00f9 je vais me coucher."
+          },
+          {
+            "start": 190.0,
+            "end": 197.36,
+            "text": "Car l\u00e0, en fait, depuis l'enfance, je commence un petit peu ma nouvelle journ\u00e9e, c'est-\u00e0-dire"
+          },
+          {
+            "start": 197.36,
+            "end": 198.56,
+            "text": "j'adore lire."
+          },
+          {
+            "start": 198.56,
+            "end": 201.20000000000002,
+            "text": "Je ne peux pas m'endormir sans lire."
+          },
+          {
+            "start": 201.20000000000002,
+            "end": 204.88000000000002,
+            "text": "Je suis une d\u00e9voreuse de bouquins, j'adore lire."
+          },
+          {
+            "start": 204.88000000000002,
+            "end": 211.08,
+            "text": "Et l\u00e0, depuis que mon fils m'a offert une Kindle, c'est magique parce que je peux lire"
+          },
+          {
+            "start": 211.08,
+            "end": 216.0,
+            "text": "le soir, la nuit, sans d\u00e9ranger mon mari par la lumi\u00e8re."
+          },
+          {
+            "start": 216.0,
+            "end": 222.52,
+            "text": "Et je d\u00e9vore, je d\u00e9vore sous les couvertures, comme quand j'\u00e9tais enfant et que je lisais"
+          },
+          {
+            "start": 222.88000000000002,
+            "end": 227.96,
+            "text": "\u00e0 la pile \u00e9lectrique sous les couvertures et que parfois ma m\u00e8re me grondait."
+          },
+          {
+            "start": 227.96,
+            "end": 236.96,
+            "text": "Mais n'emp\u00eache que j'ai toujours eu ce plaisir, plaisir de lire et je lis tr\u00e8s souvent jusqu'\u00e0"
+          },
+          {
+            "start": 236.96,
+            "end": 237.96,
+            "text": "minuit."
+          },
+          {
+            "start": 237.96,
+            "end": 244.0,
+            "text": "Et quand j'ai un livre qui me pla\u00eet, que j'adore, je ne le l\u00e2che plus."
+          },
+          {
+            "start": 244.0,
+            "end": 250.44,
+            "text": "Voil\u00e0, je suis capable d'aller jusqu'au bout, jusqu'au moment o\u00f9 vraiment trop fatigu\u00e9e,"
+          },
+          {
+            "start": 250.44,
+            "end": 253.35999999999999,
+            "text": "je vais m'endort et l\u00e0 je l\u00e2che mon livre."
+          }
+        ]
+      },
+      "acoustic_features": {
+        "duration_s": 254.93,
+        "f0_mean": 196.38,
+        "f0_sd": 45.85,
+        "f0_range": 423.93,
+        "jitter_local": 0.016062,
+        "shimmer_local": 0.075407,
+        "hnr": 18.53,
+        "mfcc2_mean": 70.58,
+        "cpp": 1.5677,
+        "f1_mean": 639.29,
+        "f2_mean": 1903.42,
+        "spectral_harmonicity": 0.4852,
+        "energy_range": 63.26,
+        "articulation_rate": 0.6444,
+        "ppe": 1.2162,
+        "rpde": 0.9269,
+        "dfa": 0.5608,
+        "d2": 0.3318,
+        "vot": 135.11
+      }
+    }
+  ]
+}

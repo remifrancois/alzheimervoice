@@ -6,5 +6,7 @@ node_modules/
 .DS_Store
 dist/
 data/
+!apps/interface/src/data/
 research/
 .vercel
+.env*.local

@@ -18,13 +18,14 @@ const USERS_FILE = path.resolve(process.env.DATA_ROOT || './data', 'users.json')
  */
 
 const DEFAULT_USERS = [
-  { id: 'u1', name: 'Super Admin', email: 'admin@memovoice.ai', role: 'superadmin', avatar: 'SA', password: 'demo', plan: 'admin', assignedPatients: [] },
-  { id: 'u2', name: 'Dr. Remi Francois', email: 'remi@memovoice.ai', role: 'clinician', avatar: 'RF', password: 'demo', plan: 'clinical', assignedPatients: [] },
-  { id: 'u3', name: 'Dr. Sophie Martin', email: 'sophie@memovoice.ai', role: 'clinician', avatar: 'SM', password: 'demo', plan: 'clinical', assignedPatients: [] },
-  { id: 'u4', name: 'Pierre Dupont', email: 'pierre@famille.fr', role: 'family', avatar: 'PD', password: 'demo', plan: 'free', patientId: null },
-  { id: 'u5', name: 'Marie-Claire Petit', email: 'mc@famille.fr', role: 'family', avatar: 'MP', password: 'demo', plan: 'free', patientId: null },
-  { id: 'u6', name: 'Jean Administrateur', email: 'jean@memovoice.ai', role: 'admin', avatar: 'JA', password: 'demo', plan: 'admin', assignedPatients: [] },
-  { id: 'u-demo', name: 'Demo User', email: 'demo@memovoice.ai', role: 'clinician', avatar: 'DU', plan: 'clinical', assignedPatients: [] },
+  { id: 'remifran', name: 'Remi Francois', email: 'remifran@memovoice.ai', role: 'superadmin', avatar: 'RF', password: 'demo', plan: 'admin', assignedPatients: [] },
+  { id: 'u2', name: 'Dr. Remi Francois', email: 'remi@memovoice.ai', role: 'clinician', avatar: 'RF', password: 'demo', plan: 'clinical', assignedPatients: ['8613281f-dbd2-481c-9e01-05edd7fc188c', '6e2a3de1-1040-4a22-be15-30d6f40738b0', '85a94b4f-71e1-4a44-99b8-1c1017ab114c', '42395508-8cc9-48ac-9835-f9092898f230'] },
+  { id: 'u3', name: 'Dr. Sophie Martin', email: 'sophie@memovoice.ai', role: 'clinician', avatar: 'SM', password: 'demo', plan: 'clinical', assignedPatients: ['8613281f-dbd2-481c-9e01-05edd7fc188c', '6e2a3de1-1040-4a22-be15-30d6f40738b0'] },
+  { id: 'u4', name: 'Pierre Dupont', email: 'pierre@famille.fr', role: 'family', avatar: 'PD', password: 'demo', plan: 'free', patientId: '8613281f-dbd2-481c-9e01-05edd7fc188c' },
+  { id: 'u5', name: 'Marie-Claire Petit', email: 'mc@famille.fr', role: 'family', avatar: 'MP', password: 'demo', plan: 'free', patientId: '6e2a3de1-1040-4a22-be15-30d6f40738b0' },
+  { id: 'u6', name: 'Jean-Luc Bernard', email: 'jlbernard@famille.fr', role: 'family', avatar: 'JB', password: 'demo', plan: 'free', patientId: '85a94b4f-71e1-4a44-99b8-1c1017ab114c' },
+  { id: 'u7', name: 'Sarah Johnson', email: 'sarah@family.com', role: 'family', avatar: 'SJ', password: 'demo', plan: 'free', patientId: '42395508-8cc9-48ac-9835-f9092898f230' },
+  { id: 'u8', name: 'Jean Administrateur', email: 'jean@memovoice.ai', role: 'admin', avatar: 'JA', password: 'demo', plan: 'admin', assignedPatients: [] },
 ];
 
 let cachedUsers = null;

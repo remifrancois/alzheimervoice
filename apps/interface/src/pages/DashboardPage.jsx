@@ -106,25 +106,29 @@ export default function DashboardPage() {
 
         {timeline && <>
         {/* Patient banner */}
-        <div className={`rounded-xl border ${alertConfig.border} ${alertConfig.bg} p-5`}>
+        <div className={`rounded-xl border ${alertConfig.border} ${alertConfig.bg} p-6`}>
           <div className="flex items-start justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-400 to-blue-500 flex items-center justify-center text-white text-lg font-bold">
+            <div className="flex items-center gap-5">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-violet-400 to-blue-500 flex items-center justify-center text-white text-xl font-bold">
                 {selected.first_name?.[0]}
               </div>
               <div>
                 <div className="flex items-center gap-3">
-                  <h2 className="text-xl font-bold text-white">{selected.first_name}</h2>
+                  <h2 className="text-xl font-bold text-white">{selected.first_name}{selected.last_name ? ` ${selected.last_name}` : ''}{selected.age ? `, ${selected.age}` : ''}</h2>
                   <AlertBadge level={selected.alert_level} pulse />
                 </div>
-                <p className="text-sm text-slate-400 mt-0.5">
-                  {selected.language === 'fr' ? t('dashboard.francophone') : t('dashboard.english')} &middot; {timeline.sessions_count} {t('dashboard.sessions')} &middot; {timeline.baseline_established ? t('dashboard.monitoringActive') : t('dashboard.calibrating')}
-                </p>
+                <div className="flex items-center gap-3 mt-1.5 text-sm text-slate-400">
+                  <span>{selected.language === 'fr' ? t('dashboard.francophone') : t('dashboard.english')}</span>
+                  <span className="text-slate-600">&middot;</span>
+                  <span>{timeline.sessions_count} {t('dashboard.sessions')}</span>
+                  <span className="text-slate-600">&middot;</span>
+                  <span>{timeline.baseline_established ? t('dashboard.monitoringActive') : t('dashboard.calibrating')}</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <StatGrid cols={4} className="mt-4">
+          <StatGrid cols={4} className="mt-5">
             <Stat label={t('dashboard.compositeScore')} value={latest?.composite?.toFixed(2) || '-'} unit="z" trend={trend ? parseInt(trend) : null} />
             <Stat label={t('dashboard.sessionsLabel')} value={timeline.sessions_count} unit={t('dashboard.total')} />
             <Stat label={t('dashboard.baseline')} value={selected.baseline_sessions} unit={t('dashboard.sessions')} />

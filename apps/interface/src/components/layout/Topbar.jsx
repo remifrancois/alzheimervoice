@@ -1,28 +1,57 @@
 import { useState, useRef, useEffect } from 'react'
-import { Icon, useT, useAuth, ROLES } from '@azh/shared-ui'
+import { Icon, useT, useAuth, ROLES, api } from '@azh/shared-ui'
+
+function timeAgo(timestamp) {
+  const diff = Date.now() - new Date(timestamp).getTime()
+  const minutes = Math.floor(diff / 60000)
+  const hours = Math.floor(diff / 3600000)
+  const days = Math.floor(diff / 86400000)
+  if (minutes < 1) return 'Just now'
+  if (minutes < 60) return `${minutes}m ago`
+  if (hours < 24) return `${hours}h ago`
+  return `${days}d ago`
+}
 
 export default function Topbar({ title, subtitle }) {
   const { t, lang, changeLang, languages } = useT()
   const { currentUser, logout, mode } = useAuth()
   const [langOpen, setLangOpen] = useState(false)
+  const [notifOpen, setNotifOpen] = useState(false)
+  const [notifications, setNotifications] = useState([])
   const dropRef = useRef(null)
+  const notifRef = useRef(null)
 
   useEffect(() => {
     function handleClick(e) {
       if (dropRef.current && !dropRef.current.contains(e.target)) setLangOpen(false)
+      if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false)
     }
     document.addEventListener('mousedown', handleClick)
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
+  useEffect(() => {
+    if (api.getNotifications) {
+      api.getNotifications().then(setNotifications)
+    }
+  }, [])
+
   const currentLang = languages.find(l => l.code === lang)
   const role = currentUser ? ROLES[currentUser.role] : null
+  const unread = notifications.filter(n => !n.read).length
+
+  function markAllRead() {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+  }
 
   return (
     <header className="h-[var(--topbar-height)] border-b border-slate-800 bg-slate-950/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-10">
-      <div>
+      <div className="flex items-baseline gap-2.5">
         <h1 className="text-sm font-semibold text-white">{title}</h1>
-        {subtitle && <p className="text-xs text-slate-500">{subtitle}</p>}
+        {subtitle && <>
+          <span className="text-slate-700">&mdash;</span>
+          <p className="text-xs text-slate-500">{subtitle}</p>
+        </>}
       </div>
 
       <div className="flex items-center gap-3">
@@ -67,10 +96,62 @@ export default function Topbar({ title, subtitle }) {
         </div>
 
         {/* Notifications */}
-        <button className="relative p-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors">
-          <Icon name="bell" size={18} />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
-        </button>
+        <div className="relative" ref={notifRef}>
+          <button
+            onClick={() => setNotifOpen(!notifOpen)}
+            className="relative p-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
+          >
+            <Icon name="bell" size={18} />
+            {unread > 0 && (
+              <span className="absolute top-1 right-1 min-w-[16px] h-4 flex items-center justify-center bg-red-500 text-white text-[9px] font-bold rounded-full px-1">
+                {unread}
+              </span>
+            )}
+          </button>
+
+          {notifOpen && (
+            <div className="absolute right-0 top-full mt-1 w-96 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
+                <span className="text-sm font-semibold text-white">{t('notifications.title')}</span>
+                {unread > 0 && (
+                  <button onClick={markAllRead} className="text-[10px] text-violet-400 hover:text-violet-300">
+                    {t('notifications.markAllRead')}
+                  </button>
+                )}
+              </div>
+              <div className="max-h-96 overflow-y-auto">
+                {notifications.length === 0 ? (
+                  <div className="px-4 py-8 text-center text-sm text-slate-500">
+                    {t('notifications.noNotifications')}
+                  </div>
+                ) : (
+                  notifications.map(notif => (
+                    <div
+                      key={notif.id}
+                      className={`flex items-start gap-3 px-4 py-3 border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors ${!notif.read ? 'bg-slate-800/20' : ''}`}
+                    >
+                      <div className={`mt-0.5 shrink-0 ${notif.color}`}>
+                        <Icon name={notif.icon} size={16} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-xs font-semibold ${!notif.read ? 'text-white' : 'text-slate-300'}`}>{notif.title}</span>
+                          {!notif.read && <span className="w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" />}
+                        </div>
+                        <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2">{notif.desc}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-[10px] text-slate-600">{notif.patient_name}</span>
+                          <span className="text-[10px] text-slate-700">&middot;</span>
+                          <span className="text-[10px] text-slate-600">{timeAgo(notif.timestamp)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* User avatar + role */}
         <div className="flex items-center gap-2 pl-3 border-l border-slate-800">

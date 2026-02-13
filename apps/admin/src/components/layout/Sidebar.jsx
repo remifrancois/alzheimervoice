@@ -16,6 +16,7 @@ const ADMIN_NAV = [
   { id: 'admin-api',        labelKey: 'nav.apiKeys',       icon: 'key',         path: '/api-keys' },
   { id: 'admin-logs',       labelKey: 'nav.logs',          icon: 'log',         path: '/logs' },
   { id: 'admin-monitor',    labelKey: 'nav.monitoring',    icon: 'monitor',     path: '/monitoring' },
+  { id: 'admin-database',   labelKey: 'nav.database',      icon: 'database',    path: '/database' },
 ]
 
 const SETTINGS_NAV = [

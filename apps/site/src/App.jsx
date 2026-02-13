@@ -23,7 +23,7 @@ import CreatorsPage from './pages/CreatorsPage'
 import CoreVoiceFrameworkPage from './pages/CoreVoiceFrameworkPage'
 
 const pages = {
-  scientific: ScientificPage,
+  cognitivevoicefingerprint: ScientificPage,
   family: FamilyPage,
   opensource: OpenSourcePage,
   demo: DemoPage,

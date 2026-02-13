@@ -11,7 +11,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider
-        defaultUserId={isDemoMode ? 'u1' : undefined}
+        defaultUserId={isDemoMode ? 'remifran' : undefined}
         cognitoConfig={isDemoMode ? undefined : {
           userPoolId: import.meta.env.VITE_COGNITO_USER_POOL_ID,
           clientId: import.meta.env.VITE_COGNITO_ADMIN_CLIENT_ID,

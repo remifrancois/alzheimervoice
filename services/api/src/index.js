@@ -23,8 +23,18 @@ import gdprRoutes from './routes/gdpr.js';
 import adminRoutes from './routes/admin.js';
 import cognitoAdminRoutes from './routes/cognito-admin.js';
 import cvfProxyRoutes from './routes/cvf-proxy.js';
+import databaseStatusRoutes from './routes/database-status.js';
+import { initEmailService } from './lib/email.js';
 
 const app = Fastify({ logger: true });
+
+// --- Email service ---
+const emailEnabled = initEmailService();
+if (emailEnabled) {
+  console.log('Email: SES enabled');
+} else {
+  console.log('Email: disabled (no SES_FROM_ADDRESS)');
+}
 
 // --- Security middleware ---
 await app.register(helmet, { contentSecurityPolicy: false });
@@ -46,6 +56,7 @@ await app.register(gdprRoutes);
 await app.register(adminRoutes);
 await app.register(cognitoAdminRoutes);
 await app.register(cvfProxyRoutes);
+await app.register(databaseStatusRoutes);
 
 // --- Health Check (public) ---
 app.get('/health', async () => ({

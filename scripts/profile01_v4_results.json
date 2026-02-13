@@ -1,0 +1,641 @@
+{
+  "profile": "profile01",
+  "analysis_version": "v4",
+  "timestamp": "2026-02-13T03:41:16.880Z",
+  "detected_gender": "female",
+  "avg_f0": 201.14111111111112,
+  "sessions_analyzed": 9,
+  "aggregate": {
+    "composite": 3.7793842129948053e-17,
+    "alert_level": "green",
+    "domain_scores": {
+      "lexical": -1.410908427127803e-16,
+      "syntactic": 6.738436968905464e-16,
+      "semantic": -5.489436066202163e-16,
+      "temporal": -2.1433472280957883e-16,
+      "memory": null,
+      "discourse": 7.894919286223335e-16,
+      "affective": 5.921189464667501e-16,
+      "acoustic": -2.4363227484829826e-16,
+      "pd_motor": 6.044547578514741e-16
+    }
+  },
+  "differential": {
+    "probabilities": {
+      "alzheimer": 0,
+      "depression": 0.308,
+      "parkinson": 0,
+      "normal_aging": 0.692,
+      "medication": 0,
+      "grief": 0,
+      "msa": 0,
+      "psp": 0
+    },
+    "primary_hypothesis": "normal_aging",
+    "secondary_hypothesis": "depression",
+    "confidence": 0.67,
+    "evidence": {
+      "alzheimer": [],
+      "depression": [
+        "Referential coherence preserved (z=-0.00) — rules against AD"
+      ],
+      "parkinson": [],
+      "normal_aging": [
+        "All domains within normal range (>-0.3) — consistent with healthy aging",
+        "Self-correction preserved — metacognition intact"
+      ],
+      "medication": [],
+      "grief": [],
+      "msa": [],
+      "psp": []
+    },
+    "flags": [],
+    "rules_fired": 3,
+    "recommendation": [
+      "Continue standard monitoring. No concerns at this time."
+    ]
+  },
+  "cascade": {
+    "alzheimer": [],
+    "parkinson": [],
+    "depression": [],
+    "all": []
+  },
+  "sentinels": [],
+  "session_stability": {
+    "mean": 2.929755203871941e-17,
+    "std": 0.5789570407415255,
+    "cv": 0
+  },
+  "baseline_summary": {
+    "complete": true,
+    "sessions": 9,
+    "audio_available": true,
+    "high_variance": [
+      "PDM_PPE",
+      "PDM_RPDE",
+      "PDM_VOT"
+    ]
+  },
+  "per_session": [
+    {
+      "session_id": "session01",
+      "duration_s": 188.16,
+      "composite": 0.006926691834919442,
+      "alert_level": "green",
+      "domain_scores": {
+        "lexical": 0.008245059979331584,
+        "syntactic": 0.11735308971532778,
+        "semantic": 0.11355826466759439,
+        "temporal": -0.2645281306919468,
+        "memory": null,
+        "discourse": 0.07701600320891629,
+        "affective": -0.07119017468620621,
+        "acoustic": 0.08283970170760431,
+        "pd_motor": -0.11479214964595237
+      },
+      "indicator_count": 70,
+      "audio_available": true,
+      "sentinel_alerts": [
+        {
+          "condition": "alzheimer",
+          "triggered_count": 3,
+          "total_sentinels": 7,
+          "details": [
+            {
+              "indicator": "LEX_PRONOUN_NOUN",
+              "z_score": -0.78,
+              "name": "Pronoun-to-Noun Ratio"
+            },
+            {
+              "indicator": "SEM_EMBEDDING_COHERENCE",
+              "z_score": -0.55,
+              "name": "Embedding-Based Global Coherence"
+            },
+            {
+              "indicator": "TMP_WITHIN_CLAUSE",
+              "z_score": -0.5,
+              "name": "Within-Clause Pause Rate"
+            }
+          ],
+          "confidence": 0.42857142857142855
+        }
+      ],
+      "cascade": {
+        "alzheimer": [],
+        "parkinson": [],
+        "depression": [],
+        "all": []
+      }
+    },
+    {
+      "session_id": "session02",
+      "duration_s": 206.34,
+      "composite": -0.4655735275819076,
+      "alert_level": "green",
+      "domain_scores": {
+        "lexical": -0.3005421945353358,
+        "syntactic": -0.22427445813263944,
+        "semantic": -0.14798489599118939,
+        "temporal": -0.4250509462574182,
+        "memory": null,
+        "discourse": -0.681291946335276,
+        "affective": -0.6665813321425728,
+        "acoustic": 0.06227214798664516,
+        "pd_motor": -0.179409704194137
+      },
+      "indicator_count": 70,
+      "audio_available": true,
+      "sentinel_alerts": [
+        {
+          "condition": "alzheimer",
+          "triggered_count": 2,
+          "total_sentinels": 7,
+          "details": [
+            {
+              "indicator": "SEM_IDEA_DENSITY",
+              "z_score": -0.67,
+              "name": "Idea Density"
+            },
+            {
+              "indicator": "TMP_WITHIN_CLAUSE",
+              "z_score": -0.5,
+              "name": "Within-Clause Pause Rate"
+            }
+          ],
+          "confidence": 0.2857142857142857
+        },
+        {
+          "condition": "depression",
+          "triggered_count": 2,
+          "total_sentinels": 7,
+          "details": [
+            {
+              "indicator": "AFF_SELF_PRONOUN",
+              "z_score": -0.68,
+              "name": "Self-Referential Pronoun Ratio"
+            },
+            {
+              "indicator": "AFF_NEG_VALENCE",
+              "z_score": -0.84,
+              "name": "Negative Valence Word Ratio"
+            }
+          ],
+          "confidence": 0.2857142857142857
+        }
+      ],
+      "cascade": {
+        "alzheimer": [],
+        "parkinson": [],
+        "depression": [
+          {
+            "stage": 0,
+            "name": "affective_shift",
+            "cascade": "depression",
+            "description": "Affective language shift (self-focus, negative valence) — early depression signal (Zhang 2022)",
+            "confidence": 1,
+            "severity": 0.6665813321425728
+          },
+          {
+            "stage": 1,
+            "name": "temporal_retardation",
+            "cascade": "depression",
+            "description": "Speech rate and latency changes — psychomotor retardation (Yamamoto 2020)",
+            "confidence": 0.5458161391999955,
+            "severity": 0.5458161391999955
+          },
+          {
+            "stage": 2,
+            "name": "engagement_withdrawal",
+            "cascade": "depression",
+            "description": "Engagement withdrawal — reduced output, topic narrowing, flat prosody (Cohn 2009)",
+            "confidence": 0.3480354296190857,
+            "severity": 0.3480354296190857
+          }
+        ],
+        "all": [
+          {
+            "stage": 0,
+            "name": "affective_shift",
+            "cascade": "depression",
+            "description": "Affective language shift (self-focus, negative valence) — early depression signal (Zhang 2022)",
+            "confidence": 1,
+            "severity": 0.6665813321425728
+          },
+          {
+            "stage": 1,
+            "name": "temporal_retardation",
+            "cascade": "depression",
+            "description": "Speech rate and latency changes — psychomotor retardation (Yamamoto 2020)",
+            "confidence": 0.5458161391999955,
+            "severity": 0.5458161391999955
+          },
+          {
+            "stage": 2,
+            "name": "engagement_withdrawal",
+            "cascade": "depression",
+            "description": "Engagement withdrawal — reduced output, topic narrowing, flat prosody (Cohn 2009)",
+            "confidence": 0.3480354296190857,
+            "severity": 0.3480354296190857
+          }
+        ]
+      }
+    },
+    {
+      "session_id": "session03",
+      "duration_s": 337.89,
+      "composite": 0.9718119122669219,
+      "alert_level": "green",
+      "domain_scores": {
+        "lexical": 0.6323821285926207,
+        "syntactic": 1.4142530008829899,
+        "semantic": 0.9948482109085676,
+        "temporal": -0.13149410528409666,
+        "memory": null,
+        "discourse": 0.7015427752230641,
+        "affective": 0.04058890163039662,
+        "acoustic": 0.03651132139099677,
+        "pd_motor": 0.17929617046823693
+      },
+      "indicator_count": 70,
+      "audio_available": true,
+      "sentinel_alerts": [
+        {
+          "condition": "depression",
+          "triggered_count": 3,
+          "total_sentinels": 7,
+          "details": [
+            {
+              "indicator": "AFF_SELF_PRONOUN",
+              "z_score": -1.16,
+              "name": "Self-Referential Pronoun Ratio"
+            },
+            {
+              "indicator": "AFF_HEDONIC",
+              "z_score": -1.47,
+              "name": "Hedonic Language Score"
+            },
+            {
+              "indicator": "ACU_F0_SD",
+              "z_score": -0.59,
+              "name": "F0 Standard Deviation (Monopitch Index)"
+            }
+          ],
+          "confidence": 0.42857142857142855
+        },
+        {
+          "condition": "parkinson",
+          "triggered_count": 2,
+          "total_sentinels": 10,
+          "details": [
+            {
+              "indicator": "ACU_F0_SD",
+              "z_score": -0.59,
+              "name": "F0 Standard Deviation (Monopitch Index)"
+            },
+            {
+              "indicator": "PDM_MONOPITCH",
+              "z_score": -0.73,
+              "name": "Connected Speech Monopitch"
+            }
+          ],
+          "confidence": 0.2
+        }
+      ],
+      "cascade": {
+        "alzheimer": [],
+        "parkinson": [],
+        "depression": [],
+        "all": []
+      }
+    },
+    {
+      "session_id": "session04",
+      "duration_s": 273.53,
+      "composite": -0.16646994030612355,
+      "alert_level": "green",
+      "domain_scores": {
+        "lexical": -0.536463102414688,
+        "syntactic": -1.3615087529533507,
+        "semantic": -0.1527200950315365,
+        "temporal": 0.9517462145769924,
+        "memory": null,
+        "discourse": -0.13005171469164048,
+        "affective": -0.2825268855957941,
+        "acoustic": 0.15480404655820032,
+        "pd_motor": 0.5307280533584882
+      },
+      "indicator_count": 70,
+      "audio_available": true,
+      "sentinel_alerts": [
+        {
+          "condition": "alzheimer",
+          "triggered_count": 3,
+          "total_sentinels": 7,
+          "details": [
+            {
+              "indicator": "SEM_IDEA_DENSITY",
+              "z_score": -0.89,
+              "name": "Idea Density"
+            },
+            {
+              "indicator": "SEM_REF_COHERENCE",
+              "z_score": -0.76,
+              "name": "Referential Coherence"
+            },
+            {
+              "indicator": "LEX_PRONOUN_NOUN",
+              "z_score": -0.78,
+              "name": "Pronoun-to-Noun Ratio"
+            }
+          ],
+          "confidence": 0.42857142857142855
+        },
+        {
+          "condition": "depression",
+          "triggered_count": 2,
+          "total_sentinels": 7,
+          "details": [
+            {
+              "indicator": "AFF_SELF_PRONOUN",
+              "z_score": -0.68,
+              "name": "Self-Referential Pronoun Ratio"
+            },
+            {
+              "indicator": "AFF_NEG_VALENCE",
+              "z_score": -0.84,
+              "name": "Negative Valence Word Ratio"
+            }
+          ],
+          "confidence": 0.2857142857142857
+        }
+      ],
+      "cascade": {
+        "alzheimer": [],
+        "parkinson": [],
+        "depression": [],
+        "all": []
+      }
+    },
+    {
+      "session_id": "session05",
+      "duration_s": 405.63,
+      "composite": 0.812288574857411,
+      "alert_level": "green",
+      "domain_scores": {
+        "lexical": 0.5376540386389386,
+        "syntactic": 0.9777598379072805,
+        "semantic": 0.7207174721298523,
+        "temporal": 0.28718733820954223,
+        "memory": null,
+        "discourse": 0.13256713244445056,
+        "affective": 0.6550403486357317,
+        "acoustic": -0.18051350094547533,
+        "pd_motor": 0.3006979756602462
+      },
+      "indicator_count": 70,
+      "audio_available": true,
+      "sentinel_alerts": [],
+      "cascade": {
+        "alzheimer": [],
+        "parkinson": [],
+        "depression": [],
+        "all": []
+      }
+    },
+    {
+      "session_id": "session06",
+      "duration_s": 285.27,
+      "composite": 0.18341242054879628,
+      "alert_level": "green",
+      "domain_scores": {
+        "lexical": 0.24387752260936452,
+        "syntactic": 0.24802612320636788,
+        "semantic": 0.13915571968829066,
+        "temporal": 0.017778627233925905,
+        "memory": null,
+        "discourse": 0.14859196853601486,
+        "affective": 0.510323055580297,
+        "acoustic": -0.20288039383405512,
+        "pd_motor": -0.09728633274461676
+      },
+      "indicator_count": 70,
+      "audio_available": true,
+      "sentinel_alerts": [
+        {
+          "condition": "parkinson",
+          "triggered_count": 2,
+          "total_sentinels": 10,
+          "details": [
+            {
+              "indicator": "ACU_F0_SD",
+              "z_score": -0.95,
+              "name": "F0 Standard Deviation (Monopitch Index)"
+            },
+            {
+              "indicator": "PDM_MONOPITCH",
+              "z_score": -0.63,
+              "name": "Connected Speech Monopitch"
+            }
+          ],
+          "confidence": 0.2
+        }
+      ],
+      "cascade": {
+        "alzheimer": [],
+        "parkinson": [],
+        "depression": [],
+        "all": []
+      }
+    },
+    {
+      "session_id": "session07",
+      "duration_s": 225.92,
+      "composite": -0.4950299066076723,
+      "alert_level": "green",
+      "domain_scores": {
+        "lexical": -0.40345251597654336,
+        "syntactic": -0.8097411324055546,
+        "semantic": -0.36203048045256675,
+        "temporal": 0.20004581608169272,
+        "memory": null,
+        "discourse": -0.48571928810402515,
+        "affective": -0.4152343927700763,
+        "acoustic": 0.19016691180253328,
+        "pd_motor": -0.3053751699764762
+      },
+      "indicator_count": 70,
+      "audio_available": true,
+      "sentinel_alerts": [],
+      "cascade": {
+        "alzheimer": [],
+        "parkinson": [],
+        "depression": [
+          {
+            "stage": 0,
+            "name": "affective_shift",
+            "cascade": "depression",
+            "description": "Affective language shift (self-focus, negative valence) — early depression signal (Zhang 2022)",
+            "confidence": 0.8304687855401526,
+            "severity": 0.4152343927700763
+          }
+        ],
+        "all": [
+          {
+            "stage": 0,
+            "name": "affective_shift",
+            "cascade": "depression",
+            "description": "Affective language shift (self-focus, negative valence) — early depression signal (Zhang 2022)",
+            "confidence": 0.8304687855401526,
+            "severity": 0.4152343927700763
+          }
+        ]
+      }
+    },
+    {
+      "session_id": "session09",
+      "duration_s": 124.41,
+      "composite": -0.9385917256532617,
+      "alert_level": "yellow",
+      "domain_scores": {
+        "lexical": -0.24023812436104425,
+        "syntactic": -0.29875647104329406,
+        "semantic": -1.472255234721514,
+        "temporal": -0.556327595813472,
+        "memory": null,
+        "discourse": -0.2203177503881318,
+        "affective": 0.11189397289858863,
+        "acoustic": -0.060233790686367736,
+        "pd_motor": -0.2732171736550281
+      },
+      "indicator_count": 70,
+      "audio_available": true,
+      "sentinel_alerts": [
+        {
+          "condition": "alzheimer",
+          "triggered_count": 5,
+          "total_sentinels": 7,
+          "details": [
+            {
+              "indicator": "SEM_IDEA_DENSITY",
+              "z_score": -1.33,
+              "name": "Idea Density"
+            },
+            {
+              "indicator": "SEM_REF_COHERENCE",
+              "z_score": -2.04,
+              "name": "Referential Coherence"
+            },
+            {
+              "indicator": "TMP_LPR",
+              "z_score": -0.83,
+              "name": "Long Pause Ratio"
+            },
+            {
+              "indicator": "SEM_EMBEDDING_COHERENCE",
+              "z_score": -2.03,
+              "name": "Embedding-Based Global Coherence"
+            },
+            {
+              "indicator": "TMP_WITHIN_CLAUSE",
+              "z_score": -0.5,
+              "name": "Within-Clause Pause Rate"
+            }
+          ],
+          "confidence": 0.7142857142857143
+        },
+        {
+          "condition": "depression",
+          "triggered_count": 2,
+          "total_sentinels": 7,
+          "details": [
+            {
+              "indicator": "AFF_HEDONIC",
+              "z_score": -0.65,
+              "name": "Hedonic Language Score"
+            },
+            {
+              "indicator": "ACU_F0_SD",
+              "z_score": -1.54,
+              "name": "F0 Standard Deviation (Monopitch Index)"
+            }
+          ],
+          "confidence": 0.2857142857142857
+        },
+        {
+          "condition": "parkinson",
+          "triggered_count": 3,
+          "total_sentinels": 10,
+          "details": [
+            {
+              "indicator": "PDM_RPDE",
+              "z_score": -2.65,
+              "name": "Recurrence Period Density Entropy"
+            },
+            {
+              "indicator": "ACU_F0_SD",
+              "z_score": -1.54,
+              "name": "F0 Standard Deviation (Monopitch Index)"
+            },
+            {
+              "indicator": "PDM_MONOPITCH",
+              "z_score": -1.49,
+              "name": "Connected Speech Monopitch"
+            }
+          ],
+          "confidence": 0.3
+        }
+      ],
+      "cascade": {
+        "alzheimer": [
+          {
+            "stage": 3,
+            "name": "discourse_collapse",
+            "cascade": "alzheimer",
+            "description": "Coherence and fluency breakdown — AD Stage 3 (Fraser 2015)",
+            "confidence": 0.6761942768449954,
+            "severity": 1.0142914152674931
+          }
+        ],
+        "parkinson": [],
+        "depression": [],
+        "all": [
+          {
+            "stage": 3,
+            "name": "discourse_collapse",
+            "cascade": "alzheimer",
+            "description": "Coherence and fluency breakdown — AD Stage 3 (Fraser 2015)",
+            "confidence": 0.6761942768449954,
+            "severity": 1.0142914152674931
+          }
+        ]
+      }
+    },
+    {
+      "session_id": "session10",
+      "duration_s": 254.93,
+      "composite": 0.09122550064091677,
+      "alert_level": "green",
+      "domain_scores": {
+        "lexical": 0.058537187467354763,
+        "syntactic": -0.06311123717712123,
+        "semantic": 0.16671103880249677,
+        "temporal": -0.07935721805522149,
+        "memory": null,
+        "discourse": 0.4576628201066347,
+        "affective": 0.11768650644964077,
+        "acoustic": -0.08296644398008386,
+        "pd_motor": -0.040641669270755465
+      },
+      "indicator_count": 70,
+      "audio_available": true,
+      "sentinel_alerts": [],
+      "cascade": {
+        "alzheimer": [],
+        "parkinson": [],
+        "depression": [],
+        "all": []
+      }
+    }
+  ]
+}

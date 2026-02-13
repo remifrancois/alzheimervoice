@@ -27,7 +27,7 @@ export default function PatientsPage() {
           </div>
           <Button variant="primary" size="sm">
             <Icon name="plus" size={14} />
-            {t('patients.addPatient')}
+            Add Family Member
           </Button>
         </div>
 
@@ -63,11 +63,11 @@ function PatientCard({ patient, onClick, t, lang }) {
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-white truncate">{patient.first_name}</span>
+            <span className="text-sm font-semibold text-white truncate">{patient.first_name}{patient.last_name ? ` ${patient.last_name}` : ''}</span>
             <AlertBadge level={patient.alert_level || 'green'} />
           </div>
           <div className="text-xs text-slate-500 mt-0.5">
-            {patient.language === 'fr' ? t('dashboard.francophone') : t('dashboard.english')}
+            {patient.age ? `${patient.age} years old · ` : ''}{patient.language === 'fr' ? t('dashboard.francophone') : t('dashboard.english')}
           </div>
         </div>
       </div>

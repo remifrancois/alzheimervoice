@@ -2,6 +2,9 @@
   "nav": {
     "dashboard": "Dashboard",
     "patients": "Patients",
+    "family": "My Family",
+    "memories": "Memories",
+    "calls": "Calls",
     "analysis": "Analysis",
     "reports": "Reports",
     "settings": "Settings",
@@ -23,11 +26,12 @@
     "billing": "Billing",
     "clinicalGov": "Clinical Gov.",
     "incidents": "Incidents",
-    "compliance": "Compliance"
+    "compliance": "Compliance",
+    "database": "Database"
   },
   "sidebar": {
-    "brand": "MemoVoice",
-    "version": "CVF Engine v0.1",
+    "brand": "AlzheimerVoice",
+    "version": "CVF Engine V5",
     "hackathon": "Hackathon Build",
     "hackathonOrg": "Cerebral Valley x Anthropic",
     "hackathonDate": "Feb 10-16, 2026"
@@ -55,19 +59,75 @@
     "total": "total"
   },
   "patients": {
-    "title": "Patients",
-    "subtitle": "Manage patient profiles and monitoring",
-    "registered": "{{count}} patient(s) registered",
-    "addPatient": "Add Patient",
-    "noPatients": "No patients yet",
-    "noPatientsDesc": "Add your first patient to start cognitive monitoring.",
+    "title": "My Family",
+    "subtitle": "Family members under cognitive monitoring",
+    "registered": "{{count}} member(s) registered",
+    "addPatient": "Add Family Member",
+    "noPatients": "No family members yet",
+    "noPatientsDesc": "Add your first family member to start cognitive monitoring.",
     "sessionsLabel": "Sessions",
     "baselineLabel": "Baseline",
     "sinceLabel": "Since",
     "yes": "Yes",
     "no": "No",
     "monitoringStatus": "Monitoring",
-    "calibratingStatus": "Calibrating"
+    "calibratingStatus": "Calibrating",
+    "yearsOld": "years old"
+  },
+  "memories": {
+    "title": "Memories",
+    "subtitle": "Life memories for {{name}}",
+    "loading": "Loading memories...",
+    "stats": "{{count}} memories",
+    "coreMemories": "{{count}} core memories",
+    "categories": "{{count}} categories",
+    "addMemory": "Add Memory",
+    "addFirstMemory": "Add First Memory",
+    "noMemories": "No memories yet",
+    "noMemoriesDesc": "Add life memories so the AI can have meaningful, personalized conversations.",
+    "readMore": "Read more",
+    "showLess": "Show less",
+    "all": "All",
+    "coreMemory": "Core Memory",
+    "important": "Important",
+    "routine": "Routine",
+    "family": "Family",
+    "career": "Career",
+    "childhood": "Childhood",
+    "hobby": "Hobby",
+    "travel": "Travel",
+    "military": "Military",
+    "health": "Health",
+    "daily": "Daily Life",
+    "community": "Community",
+    "pet": "Pets"
+  },
+  "calls": {
+    "title": "Upcoming Calls",
+    "subtitle": "Call schedule for {{name}}",
+    "loading": "Loading schedule...",
+    "noCalls": "No calls scheduled",
+    "noCallsDesc": "Calls are automatically scheduled based on the patient's call preferences.",
+    "dailyCallAt": "Daily call at",
+    "callsScheduled": "{{count}} calls scheduled",
+    "today": "Today",
+    "next2Days": "Next 2 Days",
+    "thisWeekNext": "This Week & Next",
+    "at": "at",
+    "listView": "List",
+    "calendarView": "Calendar",
+    "freeRecall": "Free Recall",
+    "freeRecallDesc": "Open-ended memory retrieval",
+    "cuedRecall": "Cued Recall",
+    "cuedRecallDesc": "Prompted memory retrieval",
+    "emotionalEngagement": "Emotional Engagement",
+    "emotionalEngagementDesc": "Emotional response assessment"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all read",
+    "noNotifications": "No new notifications",
+    "viewAll": "View all"
   },
   "analysis": {
     "title": "Analysis",
@@ -111,7 +171,7 @@
     "title": "Settings",
     "subtitle": "System configuration and administration",
     "systemStatus": "System Status",
-    "systemStatusDesc": "MemoVoice CVF Engine health",
+    "systemStatusDesc": "AlzheimerVoice CVF Engine health",
     "apiServer": "API Server",
     "online": "Online",
     "checking": "Checking...",
@@ -197,45 +257,16 @@
     "alert": "Alert"
   },
   "footer": {
-    "version": "MemoVoice CVF Engine v0.1.0",
+    "version": "AlzheimerVoice CVF Engine V5",
     "changelog": "Changelog",
     "privacy": "Privacy",
-    "copyright": "Cerebral Valley x Anthropic Hackathon 2026"
+    "copyright": "© 2026 AlzheimerVoice"
   },
   "changelog": {
     "title": "Changelog",
-    "subtitle": "Release history and updates",
-    "v020": "v0.2.0 — Admin Engine Dashboard",
-    "v020date": "February 12, 2026",
-    "v020items": [
-      "Admin engine metrics dashboard with real-time V4 CVF performance tracking",
-      "GET /cvf/v4/metrics endpoint exposing uptime, capacity, throughput, and execution times",
-      "Performance instrumentation on session processing, audio extraction, and weekly analysis pipelines",
-      "Alert distribution, pipeline health, and capacity gauge visualizations",
-      "Recent activity log with last 50 processing events (color-coded by duration)",
-      "Auto-refreshing dashboard (10-second interval) with live engine status",
-      "Admin-only sidebar navigation and route guard (admin/superadmin roles)"
-    ],
-    "v010": "v0.1.0 — Initial Release",
-    "v010date": "February 11, 2026",
-    "v010items": [
-      "25-dimension Cognitive Voice Fingerprint (CVF) engine",
-      "Real-time patient monitoring dashboard",
-      "5-domain linguistic analysis (Lexical, Syntactic, Coherence, Fluency, Memory)",
-      "AD linguistic cascade tracker (Fraser 2016 taxonomy)",
-      "Weekly clinical reports with family and medical narratives",
-      "Automatic alert system with 4-tier severity levels",
-      "Confounder-adjusted session weighting",
-      "Multi-language interface support (10 languages)"
-    ],
-    "coming": "Coming Soon",
-    "comingItems": [
-      "Voice recording integration via Twilio",
-      "PDF report export",
-      "Multi-patient comparative analysis",
-      "Longitudinal trend predictions",
-      "HIPAA-compliant cloud deployment"
-    ]
+    "subtitle": "AlzheimerVoice release history",
+    "latest": "Latest",
+    "comingSoon": "Coming Soon"
   },
   "admin": {
     "title": "Engine Dashboard",
@@ -287,20 +318,20 @@
   "privacy": {
     "title": "Privacy Policy",
     "subtitle": "How we protect your data",
-    "lastUpdated": "Last updated: February 11, 2026",
+    "lastUpdated": "Last updated: February 2026",
     "introTitle": "Introduction",
-    "introText": "MemoVoice is a cognitive voice fingerprint engine designed for early detection of Alzheimer's disease through linguistic analysis. We take data privacy and patient confidentiality extremely seriously. This policy outlines how we collect, use, and protect information.",
+    "introText": "AlzheimerVoice is a cognitive voice fingerprint engine designed for early detection of Alzheimer's disease through linguistic analysis. We take data privacy and patient confidentiality extremely seriously. This policy outlines how we collect, use, and protect information.",
     "dataCollectedTitle": "Data Collected",
     "dataCollectedText": "We collect voice conversation recordings and derived linguistic features for cognitive analysis. All patient data is pseudonymized and stored with encryption. We extract 25-dimension feature vectors from voice data — raw audio is processed and not retained after feature extraction.",
     "dataUsageTitle": "Data Usage",
     "dataUsageText": "Patient data is used exclusively for cognitive monitoring and clinical reporting. Feature vectors are compared against individual baselines to detect cognitive drift. No data is sold, shared with third parties, or used for advertising purposes.",
     "dataStorageTitle": "Data Storage & Security",
-    "dataStorageText": "All data is stored locally on secure servers. API communications are encrypted via TLS. Access is restricted to authorized clinical personnel with role-based permissions. Session data is retained for the duration of the monitoring period.",
+    "dataStorageText": "All data is stored locally on secure servers. API communications are encrypted via TLS. Access is restricted to authorized personnel with role-based permissions. Session data is retained for the duration of the monitoring period.",
     "aiProcessingTitle": "AI Processing",
-    "aiProcessingText": "We use Claude AI (Anthropic) for linguistic feature extraction and weekly clinical narrative generation. Voice data sent to the AI is processed in real-time and not stored by the AI provider. All AI outputs are reviewed by clinical staff before being shared with families.",
+    "aiProcessingText": "We use Claude AI (Anthropic) for linguistic feature extraction and weekly clinical narrative generation. Voice data sent to the AI is processed in real-time and not stored by the AI provider. All AI outputs are reviewed before being shared with families.",
     "patientRightsTitle": "Patient Rights",
-    "patientRightsText": "Patients and their families have the right to access all collected data, request data deletion, opt out of monitoring at any time, and receive explanations of all AI-generated assessments. Contact the clinical team to exercise these rights.",
+    "patientRightsText": "Patients and their families have the right to access all collected data, request data deletion, opt out of monitoring at any time, and receive explanations of all AI-generated assessments. Contact the team to exercise these rights.",
     "contactTitle": "Contact",
-    "contactText": "For privacy concerns or data requests, contact your clinical administrator or reach out to the MemoVoice team."
+    "contactText": "For privacy concerns or data requests, contact your administrator or reach out to the AlzheimerVoice team."
   }
 }

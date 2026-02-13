@@ -90,14 +90,16 @@ export const ROLES = {
   },
 }
 
-// Demo users for development
+// Demo users for development — must match data/users.json
 export const DEMO_USERS = [
-  { id: 'u1', name: 'Super Admin', email: 'admin@memovoice.ai', role: 'superadmin', avatar: 'SA' },
+  { id: 'remifran', name: 'Remi Francois', email: 'remifran@memovoice.ai', role: 'superadmin', avatar: 'RF' },
   { id: 'u2', name: 'Dr. Remi Francois', email: 'remi@memovoice.ai', role: 'clinician', avatar: 'RF' },
   { id: 'u3', name: 'Dr. Sophie Martin', email: 'sophie@memovoice.ai', role: 'clinician', avatar: 'SM' },
-  { id: 'u4', name: 'Pierre Dupont', email: 'pierre@famille.fr', role: 'family', avatar: 'PD', patientId: null },
-  { id: 'u5', name: 'Marie-Claire Petit', email: 'mc@famille.fr', role: 'family', avatar: 'MP', patientId: null },
-  { id: 'u6', name: 'Jean Administrateur', email: 'jean@memovoice.ai', role: 'admin', avatar: 'JA' },
+  { id: 'u4', name: 'Pierre Dupont', email: 'pierre@famille.fr', role: 'family', avatar: 'PD', patientId: '8613281f-dbd2-481c-9e01-05edd7fc188c' },
+  { id: 'u5', name: 'Marie-Claire Petit', email: 'mc@famille.fr', role: 'family', avatar: 'MP', patientId: '6e2a3de1-1040-4a22-be15-30d6f40738b0' },
+  { id: 'u6', name: 'Jean-Luc Bernard', email: 'jlbernard@famille.fr', role: 'family', avatar: 'JB', patientId: '85a94b4f-71e1-4a44-99b8-1c1017ab114c' },
+  { id: 'u7', name: 'Sarah Johnson', email: 'sarah@family.com', role: 'family', avatar: 'SJ', patientId: '42395508-8cc9-48ac-9835-f9092898f230' },
+  { id: 'u8', name: 'Jean Administrateur', email: 'jean@memovoice.ai', role: 'admin', avatar: 'JA' },
 ]
 
 const AuthContext = createContext(null)
@@ -160,6 +162,9 @@ export function AuthProvider({
   const demoLogin = useCallback(async (userId) => {
     try {
       const result = await api.login(userId)
+      // Set tokenRef synchronously so child effects can use it immediately
+      tokenRef.current = result.token
+      setTokenGetter(() => tokenRef.current)
       setToken(result.token)
       setCurrentUser(result.user)
       setAuthError(null)
@@ -169,6 +174,7 @@ export function AuthProvider({
       const localUser = (users || DEMO_USERS).find(u => u.id === userId)
       if (localUser) {
         setToken(null)
+        tokenRef.current = null
         setCurrentUser(localUser)
         return localUser
       }

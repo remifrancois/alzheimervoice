@@ -20,6 +20,7 @@
 import { signJWT, verifyJWT } from '@azh/shared-auth/jwt';
 import { initCognito, verifyCognitoToken, normalizeCognitoUser } from '@azh/shared-auth/cognito';
 import { findUser, getUserPatientIds, loadUsers, saveUsers } from '@azh/shared-models/users';
+import { isEmailEnabled, sendWelcomeEmail } from '../lib/email.js';
 
 // ── Input sanitization ──
 const EMAIL_RE = /^[^\s@]{1,64}@[^\s@]{1,255}$/;
@@ -161,6 +162,19 @@ export default async function authPlugin(fastify) {
       users.push(localUser);
       await saveUsers(users);
       fastify.log.info({ email: request.user.email, plan: 'free' }, 'Auto-provisioned new user');
+
+      // Send welcome email to new self-registered user
+      if (isEmailEnabled()) {
+        try {
+          await sendWelcomeEmail(request.user.email, {
+            name: request.user.name,
+            email: request.user.email,
+            plan: 'free',
+          });
+        } catch (err) {
+          fastify.log.warn({ err: err.message }, 'Failed to send welcome email');
+        }
+      }
     }
 
     return {
@@ -190,6 +204,7 @@ export default async function authPlugin(fastify) {
 
     const auth = request.headers.authorization;
     if (!auth || !auth.startsWith('Bearer ')) {
+      fastify.log.warn({ url: request.url, hasAuth: !!auth, authPrefix: auth?.slice(0, 20) }, 'AUTH DEBUG: missing or malformed Authorization header');
       return reply.code(401).send({ error: 'Authentication required' });
     }
 

@@ -57,15 +57,4 @@ export default async function adminRoutes(app) {
     return { consents: [], agreements: [], gdprArticles: [], message: 'Compliance management stub' };
   });
 
-  // Audit log endpoint used by frontend
-  app.get('/api/admin/audit-logs', {
-    preHandler: [requireRole('admin')],
-  }, async (request) => {
-    return {
-      entries: [],
-      total: 0,
-      limit: parseInt(request.query.limit || '100'),
-      offset: parseInt(request.query.offset || '0'),
-    };
-  });
 }

@@ -17,6 +17,7 @@ import ClinicalPage from './pages/ClinicalPage'
 import IncidentsPage from './pages/IncidentsPage'
 import CompliancePage from './pages/CompliancePage'
 import SettingsPage from './pages/SettingsPage'
+import DatabaseStatusPage from './pages/DatabaseStatusPage'
 import AccountPage from './pages/AccountPage'
 
 function AuthLoadingGuard({ children }) {
@@ -100,6 +101,7 @@ function App() {
           <Route path="/api-keys" element={<AdminGuard><ApiKeysPage /></AdminGuard>} />
           <Route path="/logs" element={<AdminGuard><LogsPage /></AdminGuard>} />
           <Route path="/monitoring" element={<AdminGuard><MonitoringPage /></AdminGuard>} />
+          <Route path="/database" element={<AdminGuard><DatabaseStatusPage /></AdminGuard>} />
           <Route path="/gdpr" element={<AdminGuard><GdprPage /></AdminGuard>} />
           <Route path="/account" element={<AdminGuard><AccountPage /></AdminGuard>} />
           <Route path="/settings" element={<AdminGuard><SettingsPage /></AdminGuard>} />
