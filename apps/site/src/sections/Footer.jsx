@@ -43,7 +43,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><a href={buildPath(lang, 'family')} onClick={(e) => handleNav(e, 'family')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkFamily')}</a></li>
               <li><a href={buildPath(lang, 'demo')} onClick={(e) => handleNav(e, 'demo')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkDemo')}</a></li>
-              <li><a href="https://demo.alzheimervoice.org" className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkPlatform')}</a></li>
+              <li><a href="https://demo.alzheimervoice.org" target="_blank" rel="noopener noreferrer" className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkPlatform')}</a></li>
             </ul>
           </div>
 

@@ -1,5 +1,6 @@
 import { useInView } from '../hooks/useInView'
 import { useT } from '../lib/i18n'
+import { sanitizeHTML } from '../lib/sanitize'
 
 function ModeCard({ mode, index }) {
   const [ref, inView] = useInView()
@@ -126,7 +127,7 @@ export default function Modes() {
                 <div className="w-1.5 h-1.5 rounded-full bg-violet-400 mt-2 shrink-0" />
                 <p
                   className="text-sm text-slate-400 leading-relaxed rich-text"
-                  dangerouslySetInnerHTML={{ __html: point }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHTML(point) }}
                 />
               </div>
             ))}

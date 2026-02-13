@@ -1,5 +1,6 @@
 import { useInView } from '../hooks/useInView'
 import { useT } from '../lib/i18n'
+import { sanitizeHTML } from '../lib/sanitize'
 
 function PipelineStep({ step, index, total }) {
   const [ref, inView] = useInView()
@@ -65,11 +66,11 @@ export default function Technology() {
           <div ref={contentRef} className="space-y-6">
             <div
               className={`text-slate-400 leading-relaxed rich-text transition-all duration-700 ${contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-              dangerouslySetInnerHTML={{ __html: t('technology.p1') }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHTML(t('technology.p1')) }}
             />
             <div
               className={`text-slate-400 leading-relaxed rich-text transition-all duration-700 delay-100 ${contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-              dangerouslySetInnerHTML={{ __html: t('technology.p2') }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHTML(t('technology.p2')) }}
             />
             <p className={`text-slate-400 leading-relaxed transition-all duration-700 delay-200 ${contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               {t('technology.p3')}

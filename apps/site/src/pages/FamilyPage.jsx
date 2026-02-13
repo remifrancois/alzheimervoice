@@ -1,5 +1,6 @@
 import { useT } from '../lib/i18n'
 import { useRouter } from '../lib/router'
+import { sanitizeHTML } from '../lib/sanitize'
 
 function Section({ children, className = '' }) {
   return <section className={`py-20 ${className}`}><div className="max-w-7xl mx-auto px-6">{children}</div></section>
@@ -36,7 +37,7 @@ export default function FamilyPage() {
         <SectionHeader label={t('familyPage.storyLabel')} title={t('familyPage.storyTitle')} highlight={t('familyPage.storyHighlight')} />
         <div className="max-w-3xl mx-auto space-y-6">
           <p className="text-slate-400 leading-relaxed">{t('familyPage.storyP1')}</p>
-          <p className="text-slate-400 leading-relaxed" dangerouslySetInnerHTML={{ __html: t('familyPage.storyP2') }} />
+          <p className="text-slate-400 leading-relaxed" dangerouslySetInnerHTML={{ __html: sanitizeHTML(t('familyPage.storyP2')) }} />
           <p className="text-slate-400 leading-relaxed">{t('familyPage.storyP3')}</p>
         </div>
       </Section>

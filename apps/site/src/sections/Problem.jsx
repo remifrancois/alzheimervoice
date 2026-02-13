@@ -1,5 +1,6 @@
 import { useInView } from '../hooks/useInView'
 import { useT } from '../lib/i18n'
+import { sanitizeHTML } from '../lib/sanitize'
 
 export default function Problem() {
   const { t } = useT()
@@ -60,15 +61,15 @@ export default function Problem() {
           <div ref={contentRef} className="space-y-6">
             <div
               className={`text-slate-400 leading-relaxed rich-text transition-all duration-700 ${contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-              dangerouslySetInnerHTML={{ __html: t('problem.p1') }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHTML(t('problem.p1')) }}
             />
             <div
               className={`text-slate-400 leading-relaxed rich-text transition-all duration-700 delay-100 ${contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-              dangerouslySetInnerHTML={{ __html: t('problem.p2') }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHTML(t('problem.p2')) }}
             />
             <div
               className={`text-slate-400 leading-relaxed rich-text transition-all duration-700 delay-200 ${contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-              dangerouslySetInnerHTML={{ __html: t('problem.p3') }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHTML(t('problem.p3')) }}
             />
           </div>
 

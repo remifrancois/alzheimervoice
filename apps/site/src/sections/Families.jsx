@@ -1,5 +1,6 @@
 import { useInView } from '../hooks/useInView'
 import { useT } from '../lib/i18n'
+import { sanitizeHTML } from '../lib/sanitize'
 
 export default function Families() {
   const { t } = useT()
@@ -37,7 +38,7 @@ export default function Families() {
         <div ref={quoteRef} className={`mt-16 max-w-3xl mx-auto text-center transition-all duration-700 ${quoteInView ? 'opacity-100' : 'opacity-0'}`}>
           <blockquote
             className="text-xl sm:text-2xl text-slate-300 font-light italic leading-relaxed rich-text"
-            dangerouslySetInnerHTML={{ __html: t('families.quote') }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHTML(t('families.quote')) }}
           />
           <p className="mt-4 text-sm text-slate-600">{t('families.quoteAttribution')}</p>
         </div>
