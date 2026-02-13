@@ -3,14 +3,161 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="MemoVoice — Detecting Alzheimer's through voice pattern drift. The world's first Cognitive Voice Fingerprint engine for early detection." />
-    <title>MemoVoice — Early Alzheimer's Detection Through Voice</title>
+
+    <!-- Primary Meta -->
+    <title>AlzheimerVoice.org — The world's first Cognitive Voice Fingerprint engine</title>
+    <meta name="description" content="AlzheimerVoice identifies subtle linguistic drift years before clinical diagnosis — through natural conversation analysis powered by Claude AI. 85 indicators, 9 cognitive domains, fully open source." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://alzheimervoice.org/" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="AlzheimerVoice.org — The world's first Cognitive Voice Fingerprint engine" />
+    <meta property="og:description" content="AlzheimerVoice identifies subtle linguistic drift years before clinical diagnosis — through natural conversation analysis powered by Claude AI. 85 indicators, 9 cognitive domains, fully open source." />
+    <meta property="og:url" content="https://alzheimervoice.org/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AlzheimerVoice.org" />
+    <meta property="og:image" content="https://alzheimervoice.org/og-image.png" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="hi_IN" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="ar_SA" />
+    <meta property="og:locale:alternate" content="bn_BD" />
+    <meta property="og:locale:alternate" content="pt_BR" />
+    <meta property="og:locale:alternate" content="ru_RU" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AlzheimerVoice.org — The world's first Cognitive Voice Fingerprint engine" />
+    <meta name="twitter:description" content="AlzheimerVoice identifies subtle linguistic drift years before clinical diagnosis — through natural conversation analysis powered by Claude AI. 85 indicators, 9 cognitive domains, fully open source." />
+    <meta name="twitter:image" content="https://alzheimervoice.org/og-image.png" />
+    <meta name="twitter:site" content="@AlzheimerVoice" />
+
+    <!-- Hreflang -->
+    <link rel="alternate" hreflang="en" href="https://alzheimervoice.org/" />
+    <link rel="alternate" hreflang="hi" href="https://alzheimervoice.org/hi" />
+    <link rel="alternate" hreflang="es" href="https://alzheimervoice.org/es" />
+    <link rel="alternate" hreflang="fr" href="https://alzheimervoice.org/fr" />
+    <link rel="alternate" hreflang="ar" href="https://alzheimervoice.org/ar" />
+    <link rel="alternate" hreflang="bn" href="https://alzheimervoice.org/bn" />
+    <link rel="alternate" hreflang="pt" href="https://alzheimervoice.org/pt" />
+    <link rel="alternate" hreflang="ru" href="https://alzheimervoice.org/ru" />
+    <link rel="alternate" hreflang="ja" href="https://alzheimervoice.org/ja" />
+    <link rel="alternate" hreflang="x-default" href="https://alzheimervoice.org/" />
+
+    <!-- Favicon & Manifest -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#8b5cf6" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- Static JSON-LD for non-JS crawlers -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "AlzheimerVoice",
+        "url": "https://alzheimervoice.org",
+        "logo": "https://alzheimervoice.org/icon-512.png",
+        "sameAs": ["https://github.com/remifrancois/cognitivevoicefingerprint"],
+        "description": "The world's first Cognitive Voice Fingerprint engine for early Alzheimer's detection through natural conversation analysis. Open source, powered by Claude AI."
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "AlzheimerVoice.org",
+        "url": "https://alzheimervoice.org",
+        "description": "AlzheimerVoice identifies subtle linguistic drift years before clinical diagnosis — through natural conversation analysis powered by Claude AI.",
+        "inLanguage": ["en","hi","es","fr","ar","bn","pt","ru","ja"]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is AlzheimerVoice?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "AlzheimerVoice is the world's first Cognitive Voice Fingerprint (CVF) engine. It detects early signs of Alzheimer's disease by analyzing 85 vocal and linguistic indicators across 9 cognitive domains during natural conversations. It is fully open source under the MIT license and powered by Claude AI."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does the Cognitive Voice Fingerprint work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The Cognitive Voice Fingerprint analyzes natural speech across 9 domains: memory recall, temporal orientation, semantic fluency, syntactic complexity, pragmatic coherence, phonemic stability, lexical diversity, prosodic patterns, and discourse organization. Each conversation produces scores for 85 indicators that track cognitive health over time."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is AlzheimerVoice open source?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. AlzheimerVoice is fully open source under the MIT license. All source code is available on GitHub at github.com/remifrancois/cognitivevoicefingerprint."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can AlzheimerVoice detect Alzheimer's early?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "AlzheimerVoice is designed to identify subtle linguistic drift that research shows can appear 5-10 years before clinical diagnosis. It is a screening and monitoring tool, not a diagnostic device. Results should be discussed with healthcare providers."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What languages does AlzheimerVoice support?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "AlzheimerVoice supports 9 languages: English, Hindi, Spanish, French, Arabic, Bengali, Portuguese, Russian, and Japanese."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does AlzheimerVoice protect voice data privacy?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "AlzheimerVoice is designed with privacy-by-default. Voice data can be processed entirely locally without transmission to external servers. When cloud processing is used, data is encrypted in transit and at rest and deleted after analysis."
+            }
+          }
+        ]
+      }
+    ]
+    </script>
   </head>
   <body class="bg-slate-950 text-white antialiased">
     <div id="root"></div>
+    <noscript>
+      <div style="max-width:800px;margin:40px auto;padding:20px;font-family:Inter,sans-serif;color:#e2e8f0">
+        <h1>AlzheimerVoice.org</h1>
+        <p>The world's first Cognitive Voice Fingerprint engine for early Alzheimer's detection through natural conversation analysis. 85 indicators, 9 cognitive domains, fully open source, powered by Claude AI.</p>
+        <nav>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/cognitivevoicefingerprint">Cognitive Voice Fingerprint</a></li>
+            <li><a href="/corevoiceframework">Core Voice Framework</a></li>
+            <li><a href="/family">For Families</a></li>
+            <li><a href="/opensource">Open Source</a></li>
+            <li><a href="/demo">Live Demo</a></li>
+            <li><a href="/privacy">Privacy</a></li>
+            <li><a href="/legal">Legal</a></li>
+            <li><a href="/compliance">Compliance</a></li>
+            <li><a href="/creators">Creators</a></li>
+          </ul>
+        </nav>
+        <p>Source code: <a href="https://github.com/remifrancois/cognitivevoicefingerprint">github.com/remifrancois/cognitivevoicefingerprint</a></p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -1,4 +1,5 @@
 import { useRouter } from './lib/router'
+import { useSEO } from './hooks/useSEO'
 import Navbar from './sections/Navbar'
 import Hero from './sections/Hero'
 import Stats from './sections/Stats'
@@ -53,7 +54,8 @@ function HomePage() {
 }
 
 export default function App() {
-  const { page } = useRouter()
+  const { page, lang } = useRouter()
+  useSEO(page, lang)
   const PageComponent = pages[page] || HomePage
 
   return (

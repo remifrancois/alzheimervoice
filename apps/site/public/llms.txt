@@ -1,0 +1,36 @@
+# AlzheimerVoice.org
+
+> The world's first Cognitive Voice Fingerprint (CVF) engine for early Alzheimer's detection through natural conversation analysis.
+
+AlzheimerVoice identifies subtle linguistic drift years before clinical diagnosis by analyzing 85 vocal and linguistic indicators across 9 cognitive domains. Powered by Claude AI. Fully open source under MIT license.
+
+## Key Facts
+
+- 85 vocal and linguistic indicators analyzed per conversation
+- 9 cognitive domains: memory recall, temporal orientation, semantic fluency, syntactic complexity, pragmatic coherence, phonemic stability, lexical diversity, prosodic patterns, discourse organization
+- Non-invasive: works through natural conversation (no blood draws, no brain scans)
+- Powered by Claude AI (Anthropic)
+- MIT open source license
+- Available in 9 languages: English, Hindi, Spanish, French, Arabic, Bengali, Portuguese, Russian, Japanese
+
+## Pages
+
+- [Home](https://alzheimervoice.org/)
+- [Cognitive Voice Fingerprint](https://alzheimervoice.org/cognitivevoicefingerprint)
+- [Core Voice Framework](https://alzheimervoice.org/corevoiceframework)
+- [For Families](https://alzheimervoice.org/family)
+- [Open Source](https://alzheimervoice.org/opensource)
+- [Live Demo](https://alzheimervoice.org/demo)
+- [Privacy](https://alzheimervoice.org/privacy)
+- [Legal](https://alzheimervoice.org/legal)
+- [Compliance](https://alzheimervoice.org/compliance)
+- [Creators](https://alzheimervoice.org/creators)
+
+## Source Code
+
+- GitHub: https://github.com/remifrancois/cognitivevoicefingerprint
+
+## Languages
+
+All pages available in: en, hi, es, fr, ar, bn, pt, ru, ja
+URL pattern: https://alzheimervoice.org/{lang}/{page}

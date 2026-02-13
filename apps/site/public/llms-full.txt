@@ -1,0 +1,112 @@
+# AlzheimerVoice.org — Full Description
+
+> The world's first Cognitive Voice Fingerprint (CVF) engine for early Alzheimer's detection through natural conversation analysis.
+
+AlzheimerVoice identifies subtle linguistic drift years before clinical diagnosis by analyzing 85 vocal and linguistic indicators across 9 cognitive domains. Powered by Claude AI. Fully open source under MIT license.
+
+## Key Facts
+
+- 85 vocal and linguistic indicators analyzed per conversation
+- 9 cognitive domains: memory recall, temporal orientation, semantic fluency, syntactic complexity, pragmatic coherence, phonemic stability, lexical diversity, prosodic patterns, discourse organization
+- Non-invasive: works through natural conversation (no blood draws, no brain scans)
+- Powered by Claude AI (Anthropic)
+- MIT open source license
+- Available in 9 languages: English, Hindi, Spanish, French, Arabic, Bengali, Portuguese, Russian, Japanese
+
+---
+
+## Page Details
+
+### Home
+https://alzheimervoice.org/
+
+AlzheimerVoice is the world's first Cognitive Voice Fingerprint engine, designed to detect early signs of Alzheimer's disease through natural voice conversation. The system analyzes 85 vocal and linguistic indicators across 9 cognitive domains, identifying patterns of cognitive decline that may appear years before a clinical diagnosis.
+
+The approach is non-invasive and requires no special equipment — just a natural conversation. Unlike traditional screening methods that require blood draws, brain scans, or lengthy clinical assessments, AlzheimerVoice works by analyzing the subtle patterns in how a person speaks, recalls information, and organizes their thoughts.
+
+The technology is powered by Claude AI from Anthropic and is fully open source under the MIT license, making it accessible to researchers, healthcare providers, and families worldwide.
+
+### Cognitive Voice Fingerprint (CVF)
+https://alzheimervoice.org/cognitivevoicefingerprint
+
+The Cognitive Voice Fingerprint is the scientific foundation of AlzheimerVoice. It defines the 85 indicators organized into 9 cognitive domains that the system analyzes during a conversation. Each indicator maps to well-established neuropsychological markers of cognitive decline.
+
+The 9 domains include memory recall patterns, temporal orientation accuracy, semantic fluency scores, syntactic complexity measures, pragmatic coherence indicators, phonemic stability metrics, lexical diversity calculations, prosodic pattern analysis, and discourse organization assessment. Together, these provide a comprehensive fingerprint of cognitive health that can be tracked over time.
+
+Research in computational linguistics and speech pathology has demonstrated that language patterns change measurably during the preclinical stages of Alzheimer's, often 5-10 years before diagnosis. CVF systematically captures these changes.
+
+### Core Voice Framework
+https://alzheimervoice.org/corevoiceframework
+
+The Core Voice Framework is the technical implementation layer of the Cognitive Voice Fingerprint. It provides the APIs, data models, and processing pipeline that developers and researchers use to integrate voice-based cognitive analysis into their own applications.
+
+The framework handles audio processing, natural language analysis, indicator extraction, domain scoring, and longitudinal tracking. It is designed to be modular — developers can use the full pipeline or individual components as needed.
+
+The framework supports real-time analysis during live conversations as well as batch processing of recorded audio. All processing can run locally for maximum privacy, with no requirement to send voice data to external servers.
+
+### For Families
+https://alzheimervoice.org/family
+
+AlzheimerVoice provides tools specifically designed for families monitoring loved ones for early signs of cognitive decline. The family interface allows regular voice check-ins through natural conversations — no clinical setting required.
+
+Family members can track cognitive indicators over time through a simple dashboard, share results with healthcare providers, and receive notifications when significant changes are detected. The system is designed to be non-threatening and conversational, making it easy for elderly family members to participate.
+
+The family tools support 9 languages, enabling use across diverse families and communities worldwide. Calendar scheduling, family member management, and notification preferences are all configurable.
+
+### Open Source
+https://alzheimervoice.org/opensource
+
+AlzheimerVoice is fully open source under the MIT license. All source code, including the Cognitive Voice Fingerprint engine, Core Voice Framework, family interface, and administration tools, is available on GitHub at https://github.com/remifrancois/cognitivevoicefingerprint.
+
+The open source approach ensures transparency in how cognitive assessments are performed, allows researchers to validate and extend the methodology, and enables healthcare organizations to deploy the system within their own infrastructure with full control over data privacy.
+
+Contributions are welcome from developers, researchers, linguists, and healthcare professionals. The project follows standard open source practices with issues, pull requests, and community discussion on GitHub.
+
+### Live Demo
+https://alzheimervoice.org/demo
+
+The live demo allows visitors to experience the Cognitive Voice Fingerprint analysis in real time. Users can interact with the system through a voice conversation and see how the 85 indicators are extracted and scored across the 9 cognitive domains.
+
+The demo provides a simplified version of the full analysis pipeline, designed to illustrate the core concepts and capabilities. It processes speech in real time, shows indicator extraction as it happens, and generates a sample cognitive profile at the end of the conversation.
+
+No data from demo sessions is stored or used for any purpose beyond the immediate demonstration. The demo supports multiple languages.
+
+### Privacy
+https://alzheimervoice.org/privacy
+
+AlzheimerVoice takes privacy seriously given the sensitive nature of health-related voice data. The privacy policy details how voice data is processed, stored, and protected. The system is designed with privacy-by-default principles.
+
+Voice data can be processed entirely locally without transmission to external servers. When cloud processing is used, data is encrypted in transit and at rest, and is deleted after analysis is complete. No voice recordings are retained unless explicitly opted in by the user.
+
+### Legal
+https://alzheimervoice.org/legal
+
+The legal page covers terms of service, disclaimers, and important notices about the use of AlzheimerVoice. The system is designed as a screening and monitoring tool, not a diagnostic device. It does not replace professional medical evaluation.
+
+Results from AlzheimerVoice should be discussed with qualified healthcare providers. The system provides indicators and trends that may be useful for early detection conversations, but definitive diagnosis requires comprehensive clinical assessment.
+
+### Compliance
+https://alzheimervoice.org/compliance
+
+AlzheimerVoice is designed with healthcare compliance requirements in mind, including HIPAA, GDPR, and other regional data protection regulations. The compliance page details the technical and organizational measures in place.
+
+The system architecture supports data residency requirements, access controls, audit logging, and encryption standards required by healthcare regulations. Organizations deploying AlzheimerVoice can configure the system to meet their specific compliance requirements.
+
+### Creators
+https://alzheimervoice.org/creators
+
+The creators page introduces the team behind AlzheimerVoice, their backgrounds, and their motivation for building an open source tool for early Alzheimer's detection. The project was created to make cognitive screening accessible to everyone, regardless of geography or economic status.
+
+---
+
+## Source Code
+
+GitHub: https://github.com/remifrancois/cognitivevoicefingerprint
+License: MIT
+
+## Languages
+
+All pages available in 9 languages: English (en), Hindi (hi), Spanish (es), French (fr), Arabic (ar), Bengali (bn), Portuguese (pt), Russian (ru), Japanese (ja).
+
+URL pattern: https://alzheimervoice.org/{lang}/{page}
+English uses no language prefix: https://alzheimervoice.org/{page}

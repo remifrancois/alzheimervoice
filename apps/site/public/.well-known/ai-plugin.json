@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "AlzheimerVoice",
+  "name_for_model": "alzheimervoice",
+  "description_for_human": "The world's first Cognitive Voice Fingerprint engine for early Alzheimer's detection through natural conversation analysis.",
+  "description_for_model": "AlzheimerVoice is an open source (MIT license) Cognitive Voice Fingerprint engine that detects early signs of Alzheimer's disease by analyzing 85 vocal and linguistic indicators across 9 cognitive domains during natural conversations. Powered by Claude AI.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://alzheimervoice.org/openapi.yaml"
+  },
+  "logo_url": "https://alzheimervoice.org/icon-512.png",
+  "contact_email": "contact@alzheimervoice.org",
+  "legal_info_url": "https://alzheimervoice.org/legal"
+}
