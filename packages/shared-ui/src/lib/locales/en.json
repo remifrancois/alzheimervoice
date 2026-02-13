@@ -58,6 +58,24 @@
     "lastSession": "Last Session",
     "total": "total"
   },
+  "summary": {
+    "situation": "Current Situation",
+    "status_stable": "Stable",
+    "status_monitor": "Monitor",
+    "status_attention": "Attention Needed",
+    "status_critical": "Critical",
+    "observations": "Key Observations",
+    "observationsDesc": "What we've noticed from recent conversations",
+    "trend": "Trend Analysis",
+    "riskAssessment": "Risk Assessment",
+    "nextSteps": "Recommended Next Steps",
+    "nextStepsDesc": "Actions prioritized by urgency",
+    "urgent": "Urgent",
+    "recommended": "Recommended",
+    "suggested": "Suggested",
+    "routine": "Routine",
+    "doctorNote": "Clinical Note"
+  },
   "patients": {
     "title": "My Family",
     "subtitle": "Family members under cognitive monitoring",
@@ -73,6 +91,22 @@
     "monitoringStatus": "Monitoring",
     "calibratingStatus": "Calibrating",
     "yearsOld": "years old"
+  },
+  "addMember": {
+    "title": "Add Family Member",
+    "subtitle": "Register a new family member for cognitive monitoring",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "age": "Age",
+    "language": "Language",
+    "phone": "Phone Number",
+    "callTime": "Daily Call Time",
+    "hint": "After registration, the AI will begin daily conversations to establish a cognitive baseline. This typically takes 14 sessions over 2-3 weeks.",
+    "cancel": "Cancel",
+    "submit": "Add Member",
+    "success": "Family member added!",
+    "successDesc": "{{name}} has been registered. The AI will begin baseline conversations within 24 hours.",
+    "close": "Close"
   },
   "memories": {
     "title": "Memories",
@@ -101,6 +135,25 @@
     "daily": "Daily Life",
     "community": "Community",
     "pet": "Pets"
+  },
+  "addMemory": {
+    "title": "Add Memory",
+    "subtitle": "Add a life memory for {{name}}",
+    "memoryTitle": "Memory Title",
+    "titlePlaceholder": "e.g., Wedding day with Harold",
+    "description": "Description",
+    "descPlaceholder": "Describe the memory in detail — who was there, what happened, how it felt...",
+    "category": "Category",
+    "year": "Year",
+    "emotionalWeight": "Emotional Significance",
+    "people": "People Involved",
+    "peoplePlaceholder": "e.g., Harold Mitchell, Claire (daughter)",
+    "hint": "The more detail you provide, the richer the AI's conversations will be. Include names, places, emotions, and sensory details when possible.",
+    "cancel": "Cancel",
+    "submit": "Save Memory",
+    "success": "Memory saved!",
+    "successDesc": "This memory will be woven into future conversations to create meaningful dialogue.",
+    "close": "Close"
   },
   "calls": {
     "title": "Upcoming Calls",
@@ -260,7 +313,7 @@
     "version": "AlzheimerVoice CVF Engine V5",
     "changelog": "Changelog",
     "privacy": "Privacy",
-    "copyright": "© 2026 AlzheimerVoice"
+    "copyright": "\u00a9 2026 AlzheimerVoice"
   },
   "changelog": {
     "title": "Changelog",
@@ -322,7 +375,7 @@
     "introTitle": "Introduction",
     "introText": "AlzheimerVoice is a cognitive voice fingerprint engine designed for early detection of Alzheimer's disease through linguistic analysis. We take data privacy and patient confidentiality extremely seriously. This policy outlines how we collect, use, and protect information.",
     "dataCollectedTitle": "Data Collected",
-    "dataCollectedText": "We collect voice conversation recordings and derived linguistic features for cognitive analysis. All patient data is pseudonymized and stored with encryption. We extract 25-dimension feature vectors from voice data — raw audio is processed and not retained after feature extraction.",
+    "dataCollectedText": "We collect voice conversation recordings and derived linguistic features for cognitive analysis. All patient data is pseudonymized and stored with encryption. We extract 25-dimension feature vectors from voice data \u2014 raw audio is processed and not retained after feature extraction.",
     "dataUsageTitle": "Data Usage",
     "dataUsageText": "Patient data is used exclusively for cognitive monitoring and clinical reporting. Feature vectors are compared against individual baselines to detect cognitive drift. No data is sold, shared with third parties, or used for advertising purposes.",
     "dataStorageTitle": "Data Storage & Security",

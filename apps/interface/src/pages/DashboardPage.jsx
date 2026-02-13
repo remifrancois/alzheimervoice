@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Topbar from '../components/layout/Topbar'
-import { Card, CardHeader, Stat, StatGrid, AlertBadge, EmptyState, api, ALERT_LEVELS, useT } from '@azh/shared-ui'
+import { Card, CardHeader, Stat, StatGrid, AlertBadge, EmptyState, Icon, api, ALERT_LEVELS, useT } from '@azh/shared-ui'
 import CompositeTimeline from '../components/charts/CompositeTimeline'
 import DomainChart from '../components/charts/DomainChart'
 import WeeklyReport from '../components/charts/WeeklyReport'
@@ -14,6 +14,7 @@ export default function DashboardPage() {
   const [patients, setPatients] = useState([])
   const [selected, setSelected] = useState(null)
   const [timeline, setTimeline] = useState(null)
+  const [summary, setSummary] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -23,6 +24,7 @@ export default function DashboardPage() {
       if (valid.length > 0) {
         setSelected(valid[0])
         api.getTimeline(valid[0].patient_id).then(setTimeline)
+        api.getPatientSummary(valid[0].patient_id).then(setSummary)
       }
     }).finally(() => setLoading(false))
   }, [])
@@ -31,7 +33,9 @@ export default function DashboardPage() {
     if (patient.patient_id === selected?.patient_id) return
     setSelected(patient)
     setTimeline(null)
+    setSummary(null)
     api.getTimeline(patient.patient_id).then(setTimeline)
+    api.getPatientSummary(patient.patient_id).then(setSummary)
   }
 
   if (loading) {
@@ -136,6 +140,9 @@ export default function DashboardPage() {
           </StatGrid>
         </div>
 
+        {/* Patient Situation Summary */}
+        {summary && <PatientSummaryCard summary={summary} patient={selected} t={t} />}
+
         {/* Charts */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           <div className="xl:col-span-2">
@@ -160,5 +167,117 @@ export default function DashboardPage() {
         </>}
       </div>
     </>
+  )
+}
+
+const PRIORITY_STYLES = {
+  urgent:      { bg: 'bg-red-500/10', border: 'border-red-500/20', text: 'text-red-400', icon: 'alert-circle', label: 'summary.urgent' },
+  recommended: { bg: 'bg-orange-500/10', border: 'border-orange-500/20', text: 'text-orange-400', icon: 'alert-triangle', label: 'summary.recommended' },
+  suggested:   { bg: 'bg-blue-500/10', border: 'border-blue-500/20', text: 'text-blue-400', icon: 'brain', label: 'summary.suggested' },
+  routine:     { bg: 'bg-slate-500/10', border: 'border-slate-500/20', text: 'text-slate-400', icon: 'clock', label: 'summary.routine' },
+}
+
+const STATUS_STYLES = {
+  stable:    { bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', text: 'text-emerald-400', icon: 'check-circle' },
+  monitor:   { bg: 'bg-yellow-500/10', border: 'border-yellow-500/20', text: 'text-yellow-400', icon: 'activity' },
+  attention: { bg: 'bg-orange-500/10', border: 'border-orange-500/20', text: 'text-orange-400', icon: 'alert-triangle' },
+  critical:  { bg: 'bg-red-500/10', border: 'border-red-500/20', text: 'text-red-400', icon: 'alert-circle' },
+}
+
+function PatientSummaryCard({ summary, patient, t }) {
+  const [expandedDoc, setExpandedDoc] = useState(false)
+  const statusStyle = STATUS_STYLES[summary.status] || STATUS_STYLES.stable
+
+  return (
+    <div className="space-y-4">
+      {/* Headline card */}
+      <Card>
+        <div className="flex items-start gap-4">
+          <div className={`w-10 h-10 rounded-xl ${statusStyle.bg} ${statusStyle.border} border flex items-center justify-center shrink-0`}>
+            <Icon name={statusStyle.icon} size={20} className={statusStyle.text} />
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="text-sm font-bold text-white">{t('summary.situation')}</h3>
+              <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${statusStyle.bg} ${statusStyle.border} border ${statusStyle.text}`}>
+                {t(`summary.status_${summary.status}`)}
+              </span>
+            </div>
+            <p className="text-sm text-slate-300 leading-relaxed">{summary.headline}</p>
+          </div>
+        </div>
+      </Card>
+
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        {/* Key Observations */}
+        <Card>
+          <CardHeader title={t('summary.observations')} subtitle={t('summary.observationsDesc')} />
+          <ul className="space-y-2 mt-3">
+            {summary.keyObservations.map((obs, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-slate-400 leading-relaxed">
+                <span className={`mt-1.5 w-1 h-1 rounded-full shrink-0 ${statusStyle.text.replace('text-', 'bg-')}`} />
+                {obs}
+              </li>
+            ))}
+          </ul>
+
+          {/* Trend */}
+          <div className="mt-4 pt-3 border-t border-slate-800">
+            <div className="flex items-center gap-2 mb-1.5">
+              <Icon name="activity" size={12} className="text-violet-400" />
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-violet-400">{t('summary.trend')}</span>
+            </div>
+            <p className="text-xs text-slate-400 leading-relaxed">{summary.trendSummary}</p>
+          </div>
+
+          {/* Risk */}
+          <div className="mt-3 pt-3 border-t border-slate-800">
+            <div className="flex items-center gap-2 mb-1.5">
+              <Icon name="shield" size={12} className={statusStyle.text} />
+              <span className={`text-[10px] font-semibold uppercase tracking-wider ${statusStyle.text}`}>{t('summary.riskAssessment')}</span>
+            </div>
+            <p className="text-xs text-slate-400">{summary.riskLevel}</p>
+          </div>
+        </Card>
+
+        {/* Next Steps */}
+        <Card>
+          <CardHeader title={t('summary.nextSteps')} subtitle={t('summary.nextStepsDesc')} />
+          <div className="space-y-2 mt-3">
+            {summary.nextSteps.map((step, i) => {
+              const ps = PRIORITY_STYLES[step.priority] || PRIORITY_STYLES.routine
+              return (
+                <div key={i} className={`flex items-start gap-2.5 p-2.5 rounded-lg ${ps.bg} border ${ps.border}`}>
+                  <Icon name={ps.icon} size={14} className={`${ps.text} shrink-0 mt-0.5`} />
+                  <div className="flex-1 min-w-0">
+                    <span className={`text-[10px] font-semibold uppercase tracking-wider ${ps.text}`}>
+                      {t(ps.label)}
+                    </span>
+                    <p className="text-xs text-slate-300 mt-0.5 leading-relaxed">{step.text}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Doctor's note */}
+          <div className="mt-4 pt-3 border-t border-slate-800">
+            <button
+              onClick={() => setExpandedDoc(!expandedDoc)}
+              className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500 hover:text-slate-300 transition-colors w-full"
+            >
+              <Icon name="stethoscope" size={12} />
+              {t('summary.doctorNote')}
+              <Icon name="chevronDown" size={10} className={`ml-auto transition-transform ${expandedDoc ? 'rotate-180' : ''}`} />
+            </button>
+            {expandedDoc && (
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed italic bg-slate-800/30 rounded-lg p-3 border border-slate-700/50">
+                {summary.doctorNote}
+              </p>
+            )}
+          </div>
+        </Card>
+      </div>
+    </div>
   )
 }

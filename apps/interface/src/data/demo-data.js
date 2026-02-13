@@ -775,6 +775,121 @@ function generateNotifications(patient) {
   return notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
 }
 
+// ─── Patient Situation Summaries ──────────────────────────────────────
+
+const PATIENT_SUMMARIES = {
+  'p1-dorothy-mitchell-00a1': {
+    status: 'stable',
+    statusColor: 'emerald',
+    headline: 'Dorothy is doing well. All cognitive indicators are within normal range.',
+    keyObservations: [
+      'Rich vocabulary and detailed storytelling maintained across all sessions',
+      'Excellent recall of grandchildren\'s activities and recent family events',
+      'Rose garden descriptions remain vivid and emotionally engaged',
+      'No word-finding difficulties or unusual pauses detected',
+    ],
+    trendSummary: 'Composite score has been stable for 18 monitoring sessions with no downward drift. All 5 cognitive domains remain within healthy baseline variation.',
+    riskLevel: 'Low risk — 8% probability of early cognitive changes based on cohort matching',
+    nextSteps: [
+      { priority: 'routine', text: 'Continue standard monitoring — daily calls at 9:00 AM EST' },
+      { priority: 'routine', text: 'Next weekly report available in 3 days' },
+      { priority: 'suggested', text: 'Add recent memories about Lily\'s school activities to keep conversations fresh' },
+      { priority: 'suggested', text: 'Annual cognitive screening recommended (last: 6 months ago)' },
+    ],
+    doctorNote: 'No clinical concerns at this time. Dorothy\'s linguistic profile is consistent with healthy aging. Continue routine monitoring.',
+  },
+  'p2-robert-henderson-00b2': {
+    status: 'monitor',
+    statusColor: 'yellow',
+    headline: 'Robert shows subtle changes in speech patterns. Close monitoring recommended.',
+    keyObservations: [
+      'Slight increase in word-finding pauses during history discussions',
+      'Occasional repetition of the Gettysburg teaching story (told 3 times this month)',
+      'Response latency has increased by ~15% from baseline over 6 weeks',
+      'Still highly engaged with family topics — Barbara and Emily discussions remain rich',
+      'Chess strategies described with less precision than baseline',
+    ],
+    trendSummary: 'Composite z-score has drifted from -0.35 to -0.65 over the past 8 weeks. Memory domain showing the earliest deviation (-0.65 SD) while lexical diversity is beginning to decrease.',
+    riskLevel: 'Moderate risk — 22% probability of early Alzheimer\'s indicators based on linguistic cascade model',
+    nextSteps: [
+      { priority: 'recommended', text: 'Schedule follow-up with Robert\'s primary care physician within 2 weeks' },
+      { priority: 'recommended', text: 'Increase monitoring sensitivity — add extra recall probes to daily calls' },
+      { priority: 'suggested', text: 'Consider adding more recent memory prompts to detect short-term recall changes' },
+      { priority: 'routine', text: 'Review weekly report trends with family — subtle changes may be noticeable at home' },
+      { priority: 'suggested', text: 'Encourage continued chess and tutoring activities — cognitive engagement is protective' },
+    ],
+    doctorNote: 'Pre-symptomatic fluency markers detected (Stage 0 per Fraser taxonomy). Memory domain z-score at -0.65 warrants baseline neuropsychological testing. Not yet clinically significant but trending.',
+  },
+  'p3-margaret-sullivan-00c3': {
+    status: 'attention',
+    statusColor: 'orange',
+    headline: 'Margaret shows significant cognitive changes. Medical consultation recommended.',
+    keyObservations: [
+      'Word-finding difficulty has increased substantially — frequent use of "thing" and "that place"',
+      'Wedding day story with Patrick repeated 5 times this month in near-verbatim form',
+      'Crossword puzzle completion time has doubled (self-reported)',
+      'Sentence structure becoming simpler — fewer subordinate clauses than baseline',
+      'Still recognizes family members but occasionally confuses grandchildren\'s ages',
+      'Watercolor painting descriptions less detailed than 3 months ago',
+    ],
+    trendSummary: 'Composite z-score at -0.95 with consistent downward drift of -0.03 per week. Lexical diversity and memory domains most affected. Semantic coherence showing Stage 1 cascade pattern.',
+    riskLevel: 'Elevated risk — 42% probability of Alzheimer\'s disease based on multi-domain linguistic analysis',
+    nextSteps: [
+      { priority: 'urgent', text: 'Schedule appointment with neurologist — multi-domain decline pattern requires clinical evaluation' },
+      { priority: 'recommended', text: 'Request formal neuropsychological assessment (MMSE + comprehensive battery)' },
+      { priority: 'recommended', text: 'Discuss findings with Sophie and Karen — coordinated family support important' },
+      { priority: 'suggested', text: 'Simplify conversation prompts — reduce open-ended questions, use more cued recall' },
+      { priority: 'routine', text: 'Monitor for daily living changes — cooking, medication management, navigation' },
+    ],
+    doctorNote: 'AD linguistic cascade Stage 1 criteria met: lexical diversity decline (-0.6 SD) combined with coherence deficit (-0.55 SD). Syntactic simplification emerging. Recommend formal diagnostic workup including neuroimaging.',
+  },
+  'p4-henry-carpenter-00d4': {
+    status: 'critical',
+    statusColor: 'red',
+    headline: 'Henry shows severe cognitive decline across multiple domains. Urgent medical attention needed.',
+    keyObservations: [
+      'War memories repeated verbatim 8 times this month without self-awareness of repetition',
+      'Cannot reliably place events in correct decade — confuses Korean War with childhood',
+      'Proper noun retrieval severely impaired — refers to Philip as "my boy" more often than by name',
+      'Sentence fragments and incomplete thoughts increasing — discourse coherence breaking down',
+      'Emotional engagement with Eleanor memories remains strong but facts are increasingly confused',
+      'Model train descriptions, once extremely detailed, are now vague and repetitive',
+    ],
+    trendSummary: 'Composite z-score at -1.75 with accelerating decline (-0.04 per week). All 5 cognitive domains below -0.6 SD. Memory domain at critical -1.5 SD. Full AD linguistic cascade progression documented.',
+    riskLevel: 'High risk — 58% probability of Alzheimer\'s disease. Multiple cascade stages active (0, 1, 2).',
+    nextSteps: [
+      { priority: 'urgent', text: 'Immediate consultation with neurologist or geriatric psychiatrist required' },
+      { priority: 'urgent', text: 'Discuss care planning with Philip and Catherine — may need increased daily support' },
+      { priority: 'recommended', text: 'Evaluate medication options with physician — early intervention may slow progression' },
+      { priority: 'recommended', text: 'Assess daily living safety — driving, cooking, medication self-management' },
+      { priority: 'suggested', text: 'Prioritize emotional engagement in calls over factual recall to reduce frustration' },
+      { priority: 'routine', text: 'Continue monitoring to track treatment response if medication started' },
+    ],
+    doctorNote: 'Critical: Composite z = -1.75 with full cascade progression (Stages 0-2). Multi-domain collapse affecting discourse coherence, lexical access, and temporal orientation. Urgent comprehensive neurological evaluation required. Consider AD pharmacotherapy (cholinesterase inhibitors).',
+  },
+  'p5-jean-parker-00e5': {
+    status: 'stable',
+    statusColor: 'emerald',
+    headline: 'Jean is in excellent cognitive health. No concerns detected.',
+    keyObservations: [
+      'Vocabulary richness above average for age group — banking career vocabulary well-preserved',
+      'Recent events recalled with precise detail — marathon training, Emma\'s pregnancy, food bank',
+      'Bilingual advantage observed — switches between English and Greek references naturally',
+      'High emotional engagement scores — particularly around upcoming grandchild',
+      'No repetition patterns, no word-finding difficulty, no temporal confusion',
+    ],
+    trendSummary: 'Composite z-score stable at -0.08 across 15 monitoring sessions. All domains within or above baseline. Youngest participant in cohort with strongest baseline profile.',
+    riskLevel: 'Very low risk — 8% probability of any cognitive changes. Enrolled preventatively by daughter Emma.',
+    nextSteps: [
+      { priority: 'routine', text: 'Continue standard monitoring — daily calls at 3:00 PM EST' },
+      { priority: 'routine', text: 'Next quarterly summary available in 6 weeks' },
+      { priority: 'suggested', text: 'Add new memories about the upcoming grandchild to enrich conversation topics' },
+      { priority: 'suggested', text: 'Encourage Jean to continue running and yoga — physical activity supports cognitive health' },
+    ],
+    doctorNote: 'No clinical concerns. Jean\'s cognitive-linguistic profile is excellent for age 67. All markers consistent with healthy cognition. Recommend continued annual screening per standard guidelines.',
+  },
+}
+
 // ─── Pre-generate all data ───────────────────────────────────────────
 
 const _cache = {}
@@ -795,7 +910,9 @@ function getPatientData(patientId) {
   const calls = generateUpcomingCalls(patient, memories)
   const notifications = generateNotifications(patient)
 
-  _cache[patientId] = { patient, timeline, reports, differential, twin, cohort, semantic, memories, calls, notifications }
+  const summary = PATIENT_SUMMARIES[patientId] || null
+
+  _cache[patientId] = { patient, timeline, reports, differential, twin, cohort, semantic, memories, calls, notifications, summary }
   return _cache[patientId]
 }
 
@@ -906,6 +1023,12 @@ export const demoApi = {
       return data ? data.notifications : []
     }).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
     return Promise.resolve(all)
+  },
+
+  // Patient summary
+  getPatientSummary: (id) => {
+    const data = getPatientData(id)
+    return Promise.resolve(data ? data.summary : null)
   },
 
   // Calls

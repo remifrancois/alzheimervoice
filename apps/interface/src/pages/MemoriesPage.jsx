@@ -15,6 +15,8 @@ const CATEGORY_STYLES = {
   pet:       { color: 'text-orange-400',  bg: 'bg-orange-500/10',  border: 'border-orange-500/20',  icon: 'activity' },
 }
 
+const CATEGORIES = ['family', 'career', 'childhood', 'hobby', 'travel', 'military', 'health', 'daily', 'community', 'pet']
+
 export default function MemoriesPage() {
   const { t } = useT()
   const [patients, setPatients] = useState([])
@@ -22,6 +24,7 @@ export default function MemoriesPage() {
   const [selected, setSelected] = useState(null)
   const [filter, setFilter] = useState('all')
   const [loading, setLoading] = useState(true)
+  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     api.getPatients().then(data => {
@@ -89,7 +92,7 @@ export default function MemoriesPage() {
             <span className="text-slate-600">|</span>
             <span>{t('memories.categories', { count: stats.categories })}</span>
           </div>
-          <Button variant="primary" size="sm">
+          <Button variant="primary" size="sm" onClick={() => setShowModal(true)}>
             <Icon name="plus" size={14} />
             {t('memories.addMemory')}
           </Button>
@@ -120,7 +123,7 @@ export default function MemoriesPage() {
             icon="brain"
             title={t('memories.noMemories')}
             description={t('memories.noMemoriesDesc')}
-            action={<Button variant="primary" size="sm"><Icon name="plus" size={14} /> {t('memories.addFirstMemory')}</Button>}
+            action={<Button variant="primary" size="sm" onClick={() => setShowModal(true)}><Icon name="plus" size={14} /> {t('memories.addFirstMemory')}</Button>}
           />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -130,6 +133,8 @@ export default function MemoriesPage() {
           </div>
         )}
       </div>
+
+      {showModal && <AddMemoryModal onClose={() => setShowModal(false)} t={t} patientName={selected?.first_name} />}
     </>
   )
 }
@@ -183,5 +188,142 @@ function MemoryCard({ memory, t, weightBadge }) {
         </div>
       )}
     </Card>
+  )
+}
+
+function AddMemoryModal({ onClose, t, patientName }) {
+  const [form, setForm] = useState({
+    title: '', description: '', category: 'family', year: '', emotionalWeight: 'medium', people: '',
+  })
+  const [submitted, setSubmitted] = useState(false)
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    setSubmitted(true)
+  }
+
+  const set = (key) => (e) => setForm({ ...form, [key]: e.target.value })
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <div className="relative bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+        {/* Header */}
+        <div className="flex items-center justify-between p-5 border-b border-slate-800 sticky top-0 bg-slate-900 z-10">
+          <div>
+            <h2 className="text-lg font-bold text-white">{t('addMemory.title')}</h2>
+            <p className="text-xs text-slate-400 mt-0.5">{t('addMemory.subtitle', { name: patientName || '' })}</p>
+          </div>
+          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
+            <Icon name="x" size={20} />
+          </button>
+        </div>
+
+        {submitted ? (
+          <div className="p-8 text-center">
+            <div className="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto mb-3">
+              <Icon name="check-circle" size={24} className="text-emerald-400" />
+            </div>
+            <h3 className="text-base font-semibold text-white mb-1">{t('addMemory.success')}</h3>
+            <p className="text-sm text-slate-400 mb-4">{t('addMemory.successDesc')}</p>
+            <Button variant="primary" size="sm" onClick={onClose}>{t('addMemory.close')}</Button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="p-5 space-y-4">
+            <Field label={t('addMemory.memoryTitle')} required>
+              <input value={form.title} onChange={set('title')} required className="input-field" placeholder={t('addMemory.titlePlaceholder')} />
+            </Field>
+
+            <Field label={t('addMemory.description')} required>
+              <textarea value={form.description} onChange={set('description')} required rows={3} className="input-field resize-none" placeholder={t('addMemory.descPlaceholder')} />
+            </Field>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Field label={t('addMemory.category')}>
+                <select value={form.category} onChange={set('category')} className="input-field">
+                  {CATEGORIES.map(cat => (
+                    <option key={cat} value={cat}>{t(`memories.${cat}`) || cat}</option>
+                  ))}
+                </select>
+              </Field>
+              <Field label={t('addMemory.year')}>
+                <input type="number" value={form.year} onChange={set('year')} min="1920" max="2026" className="input-field" placeholder="1985" />
+              </Field>
+            </div>
+
+            <Field label={t('addMemory.emotionalWeight')}>
+              <div className="flex gap-2">
+                {['high', 'medium', 'low'].map(w => (
+                  <button
+                    key={w}
+                    type="button"
+                    onClick={() => setForm({ ...form, emotionalWeight: w })}
+                    className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium border transition-all ${
+                      form.emotionalWeight === w
+                        ? w === 'high' ? 'bg-rose-500/20 text-rose-300 border-rose-500/30'
+                          : w === 'medium' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+                          : 'bg-slate-700/50 text-slate-300 border-slate-600'
+                        : 'bg-slate-800/30 text-slate-500 border-slate-700/50 hover:text-slate-300'
+                    }`}
+                  >
+                    {w === 'high' ? t('memories.coreMemory') : w === 'medium' ? t('memories.important') : t('memories.routine')}
+                  </button>
+                ))}
+              </div>
+            </Field>
+
+            <Field label={t('addMemory.people')}>
+              <input value={form.people} onChange={set('people')} className="input-field" placeholder={t('addMemory.peoplePlaceholder')} />
+            </Field>
+
+            <div className="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+              <p className="text-xs text-slate-400">
+                <Icon name="heart" size={12} className="inline mr-1 text-rose-400" />
+                {t('addMemory.hint')}
+              </p>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="ghost" size="sm" onClick={onClose}>{t('addMemory.cancel')}</Button>
+              <Button variant="primary" size="sm" type="submit">
+                <Icon name="plus" size={14} />
+                {t('addMemory.submit')}
+              </Button>
+            </div>
+          </form>
+        )}
+      </div>
+
+      <style>{`
+        .input-field {
+          width: 100%;
+          background: rgb(15 23 42 / 0.5);
+          border: 1px solid rgb(51 65 85);
+          border-radius: 0.5rem;
+          padding: 0.5rem 0.75rem;
+          font-size: 0.8125rem;
+          color: white;
+          outline: none;
+          transition: border-color 0.15s;
+        }
+        .input-field:focus {
+          border-color: rgb(139 92 246);
+        }
+        .input-field::placeholder {
+          color: rgb(71 85 105);
+        }
+      `}</style>
+    </div>
+  )
+}
+
+function Field({ label, required, children }) {
+  return (
+    <label className="block">
+      <span className="text-xs font-medium text-slate-300">
+        {label}{required && <span className="text-rose-400 ml-0.5">*</span>}
+      </span>
+      <div className="mt-1">{children}</div>
+    </label>
   )
 }
