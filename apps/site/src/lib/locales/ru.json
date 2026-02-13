@@ -4,10 +4,9 @@
     "technology": "Технология",
     "families": "Для семей",
     "cta": "Доступ к платформе",
-    "scientific": "Научная часть",
-    "family": "Семья",
-    "opensource": "Открытый код",
-    "demo": "Демо"
+    "scientific": "Когнитивный голосовой отпечаток",
+    "family": "Как это работает для семьи",
+    "opensource": "Открытый код"
   },
   "hero": {
     "badge": "Хакатон Cerebral Valley x Anthropic 2026",
