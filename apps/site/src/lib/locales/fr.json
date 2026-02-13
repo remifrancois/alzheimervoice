@@ -200,9 +200,9 @@
   "cta": {
     "title1": "Commencez a proteger vos",
     "title2": "proches des aujourd'hui",
-    "subtitle": "MemoVoice est actuellement en phase de developpement clinique. Rejoignez notre programme d'acces anticipe pour etre parmi les premiers a decouvrir l'avenir de la surveillance cognitive.",
-    "primary": "Demander un acces anticipe",
-    "secondary": "Lire la recherche"
+    "subtitle": "AlzheimerVoice est entierement open source. Explorez le moteur Cognitive Voice Fingerprint sur GitHub, forkez-le et creez vos propres outils de surveillance cognitive.",
+    "primary": "Open Source sur GitHub",
+    "secondary": "Decouvrez comment il a ete construit"
   },
   "footer": {
     "brandDesc": "Moteur d'empreinte vocale cognitive pour la detection precoce de la maladie d'Alzheimer par analyse linguistique.",
@@ -214,7 +214,7 @@
     "projectOrg": "Cerebral Valley x Anthropic",
     "projectEvent": "Hackathon fevrier 2026",
     "projectVersion": "CVF Engine v0.1.0",
-    "bottomLine": "MemoVoice CVF Engine v0.1.0 — Concu lors du hackathon Cerebral Valley x Anthropic, fevrier 2026",
+    "bottomLine": "Alzheimer Cognitive Voice Fingerprint Engine V5 — Construit lors du hackathon Cerebral Valley x Anthropic, fevrier 2026",
     "disclaimer": "A des fins de recherche et de demonstration",
     "linkPrivacy": "Confidentialite et HIPAA",
     "linkLegal": "Mentions legales"
@@ -355,8 +355,8 @@
     "quoteAttribution": "La motivation derriere MemoVoice",
     "ctaTitle": "Offrez a votre famille le cadeau de",
     "ctaHighlight": "la detection precoce",
-    "ctaDesc": "Rejoignez notre programme d'acces anticipe et soyez parmi les premieres familles a decouvrir la surveillance cognitive proactive.",
-    "ctaButton": "Demander un acces anticipe",
+    "ctaDesc": "Explorez le moteur Cognitive Voice Fingerprint entierement open source sur GitHub et creez vos propres outils de surveillance cognitive.",
+    "ctaButton": "Open Source sur GitHub",
     "backToHome": "Retour a l'accueil"
   },
   "opensource": {

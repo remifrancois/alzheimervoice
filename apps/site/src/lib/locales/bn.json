@@ -200,9 +200,9 @@
   "cta": {
     "title1": "আজই আপনার প্রিয়জনদের",
     "title2": "সুরক্ষা শুরু করুন",
-    "subtitle": "MemoVoice বর্তমানে ক্লিনিক্যাল উন্নয়নে রয়েছে। জ্ঞানীয় পর্যবেক্ষণের ভবিষ্যৎ প্রথমদের মধ্যে অনুভব করতে আমাদের আর্লি অ্যাক্সেস প্রোগ্রামে যোগ দিন।",
-    "primary": "আর্লি অ্যাক্সেসের জন্য আবেদন করুন",
-    "secondary": "গবেষণা পড়ুন"
+    "subtitle": "AlzheimerVoice সম্পূর্ণ ওপেন সোর্স। GitHub-এ Cognitive Voice Fingerprint ইঞ্জিন অন্বেষণ করুন, ফর্ক করুন এবং আপনার নিজের জ্ঞানীয় পর্যবেক্ষণ সরঞ্জাম তৈরি করুন।",
+    "primary": "GitHub-এ ওপেন সোর্স",
+    "secondary": "জানুন কিভাবে তৈরি হয়েছে"
   },
   "footer": {
     "brandDesc": "ভাষাগত বিশ্লেষণের মাধ্যমে প্রাথমিক আল্জ্হেইমার্স শনাক্তকরণের জন্য Cognitive Voice Fingerprint ইঞ্জিন।",
@@ -214,7 +214,7 @@
     "projectOrg": "Cerebral Valley x Anthropic",
     "projectEvent": "হ্যাকাথন ফেব্রুয়ারি 2026",
     "projectVersion": "CVF Engine v0.1.0",
-    "bottomLine": "MemoVoice CVF Engine v0.1.0 — Cerebral Valley x Anthropic হ্যাকাথনে নির্মিত, ফেব্রুয়ারি 2026",
+    "bottomLine": "Alzheimer Cognitive Voice Fingerprint Engine V5 — Cerebral Valley x Anthropic হ্যাকাথনে নির্মিত, ফেব্রুয়ারি 2026",
     "disclaimer": "গবেষণা ও প্রদর্শনের উদ্দেশ্যে",
     "linkPrivacy": "গোপনীয়তা ও HIPAA",
     "linkLegal": "আইনি"
@@ -355,8 +355,8 @@
     "quoteAttribution": "MemoVoice-এর পেছনের অনুপ্রেরণা",
     "ctaTitle": "আপনার পরিবারকে দিন",
     "ctaHighlight": "প্রাথমিক সচেতনতার উপহার",
-    "ctaDesc": "আমাদের আর্লি অ্যাক্সেস প্রোগ্রামে যোগ দিন এবং সক্রিয় জ্ঞানীয় পর্যবেক্ষণ অনুভব করা প্রথম পরিবারগুলোর মধ্যে থাকুন।",
-    "ctaButton": "আর্লি অ্যাক্সেসের জন্য আবেদন করুন",
+    "ctaDesc": "GitHub-এ সম্পূর্ণ ওপেন সোর্স Cognitive Voice Fingerprint ইঞ্জিন অন্বেষণ করুন এবং আপনার নিজের জ্ঞানীয় পর্যবেক্ষণ সরঞ্জাম তৈরি করুন।",
+    "ctaButton": "GitHub-এ ওপেন সোর্স",
     "backToHome": "হোমে ফিরে যান"
   },
   "opensource": {

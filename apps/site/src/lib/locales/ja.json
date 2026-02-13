@@ -200,9 +200,9 @@
   "cta": {
     "title1": "今日から大切な方を",
     "title2": "守り始めましょう",
-    "subtitle": "MemoVoice は現在臨床開発段階にあります。アーリーアクセスプログラムに参加して、認知モニタリングの未来をいち早く体験してください。",
-    "primary": "アーリーアクセスを申請",
-    "secondary": "研究論文を読む"
+    "subtitle": "AlzheimerVoice は完全にオープンソースです。GitHub で Cognitive Voice Fingerprint エンジンを探索し、フォークして、独自の認知モニタリングツールを構築してください。",
+    "primary": "GitHub でオープンソース",
+    "secondary": "どのように構築されたかを知る"
   },
   "footer": {
     "brandDesc": "言語分析によるアルツハイマー病早期検出のための認知音声フィンガープリントエンジン。",
@@ -214,7 +214,7 @@
     "projectOrg": "Cerebral Valley x Anthropic",
     "projectEvent": "ハッカソン 2026年2月",
     "projectVersion": "CVF Engine v0.1.0",
-    "bottomLine": "MemoVoice CVF Engine v0.1.0 — Cerebral Valley x Anthropic ハッカソン 2026年2月開発",
+    "bottomLine": "Alzheimer Cognitive Voice Fingerprint Engine V5 — Cerebral Valley x Anthropic ハッカソン 2026年2月開発",
     "disclaimer": "研究およびデモンストレーション目的",
     "linkPrivacy": "プライバシーとHIPAA",
     "linkLegal": "法的情報"
@@ -355,8 +355,8 @@
     "quoteAttribution": "MemoVoice の開発動機",
     "ctaTitle": "ご家族に贈る",
     "ctaHighlight": "早期認識",
-    "ctaDesc": "アーリーアクセスプログラムに参加して、予防的認知モニタリングをいち早く体験するご家族の一員になりましょう。",
-    "ctaButton": "アーリーアクセスを申請",
+    "ctaDesc": "GitHub で完全にオープンソースの Cognitive Voice Fingerprint エンジンを探索し、独自の認知モニタリングツールを構築してください。",
+    "ctaButton": "GitHub でオープンソース",
     "backToHome": "ホームに戻る"
   },
   "opensource": {

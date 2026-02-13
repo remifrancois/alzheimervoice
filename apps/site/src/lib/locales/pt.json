@@ -200,9 +200,9 @@
   "cta": {
     "title1": "Comece a Proteger Seus",
     "title2": "Entes Queridos Hoje",
-    "subtitle": "O MemoVoice esta atualmente em desenvolvimento clinico. Participe do nosso programa de acesso antecipado para ser um dos primeiros a vivenciar o futuro do monitoramento cognitivo.",
-    "primary": "Solicitar Acesso Antecipado",
-    "secondary": "Leia a Pesquisa"
+    "subtitle": "O AlzheimerVoice e totalmente open source. Explore o motor Cognitive Voice Fingerprint no GitHub, faca um fork e crie suas proprias ferramentas de monitoramento cognitivo.",
+    "primary": "Open Source no GitHub",
+    "secondary": "Descubra como foi construido"
   },
   "footer": {
     "brandDesc": "Motor de Impressao Digital Cognitiva da Voz para deteccao precoce de Alzheimer por meio de analise linguistica.",
@@ -214,7 +214,7 @@
     "projectOrg": "Cerebral Valley x Anthropic",
     "projectEvent": "Hackathon Fevereiro 2026",
     "projectVersion": "CVF Engine v0.1.0",
-    "bottomLine": "MemoVoice CVF Engine v0.1.0 — Construido no Cerebral Valley x Anthropic Hackathon, Fevereiro 2026",
+    "bottomLine": "Alzheimer Cognitive Voice Fingerprint Engine V5 — Construido no Cerebral Valley x Anthropic Hackathon, Fevereiro 2026",
     "disclaimer": "Para fins de pesquisa e demonstracao",
     "linkPrivacy": "Privacidade & HIPAA",
     "linkLegal": "Legal"
@@ -355,8 +355,8 @@
     "quoteAttribution": "A motivacao por tras do MemoVoice",
     "ctaTitle": "De a Sua Familia o Presente da",
     "ctaHighlight": "Consciencia Precoce",
-    "ctaDesc": "Participe do nosso programa de acesso antecipado e esteja entre as primeiras familias a vivenciar o monitoramento cognitivo proativo.",
-    "ctaButton": "Solicitar Acesso Antecipado",
+    "ctaDesc": "Explore o motor Cognitive Voice Fingerprint totalmente open source no GitHub e crie suas proprias ferramentas de monitoramento cognitivo.",
+    "ctaButton": "Open Source no GitHub",
     "backToHome": "Voltar para Inicio"
   },
   "opensource": {

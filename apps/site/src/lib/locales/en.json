@@ -211,15 +211,15 @@
   "cta": {
     "title1": "Start Protecting Your",
     "title2": "Loved Ones Today",
-    "subtitle": "AlzheimerVoice is currently in clinical development. Join our early access program to be among the first to experience the future of cognitive monitoring.",
-    "primary": "Request Early Access",
-    "secondary": "Read the Research"
+    "subtitle": "AlzheimerVoice is fully open source. Explore the Cognitive Voice Fingerprint engine on GitHub, fork it, and build your own cognitive monitoring tools.",
+    "primary": "Open Source on GitHub",
+    "secondary": "Discover how it was built"
   },
   "footer": {
     "brandDesc": "Cognitive Voice Fingerprint Engine for early Alzheimer\u2019s detection through linguistic analysis. Open source, privacy-first, built for families.",
     "researchHeader": "Research",
     "linkScience": "Scientific Foundation",
-    "linkCvf": "CVF Engine V4",
+    "linkCvf": "CVF Engine V5",
     "linkOpenSource": "Open Source",
     "familyHeader": "For Families",
     "linkFamily": "Family Guide",
@@ -230,7 +230,7 @@
     "linkCompliance": "Compliance",
     "linkLegal": "Legal & Licensing",
     "linkCreators": "Meet the Creators",
-    "bottomLine": "AlzheimerVoice CVF Engine V4 \u2014 Built at the Cerebral Valley x Anthropic Hackathon, February 2026",
+    "bottomLine": "Alzheimer Cognitive Voice Fingerprint Engine V5 \u2014 Built at the Cerebral Valley x Anthropic Hackathon, February 2026",
     "disclaimer": "For research and demonstration purposes. Not a medical device.",
     "affiliation": "AlzheimerVoice is not affiliated with Anthropic, Claude, Cerebral Valley, or any other organization, website, or research paper mentioned on this site. All trademarks belong to their respective owners."
   },
@@ -428,8 +428,8 @@
     "quoteAttribution": "The motivation behind AlzheimerVoice",
     "ctaTitle": "Give Your Family the Gift of",
     "ctaHighlight": "Early Awareness",
-    "ctaDesc": "Join our early access program and be among the first families to experience proactive cognitive monitoring.",
-    "ctaButton": "Request Early Access",
+    "ctaDesc": "Explore the full open source Cognitive Voice Fingerprint engine on GitHub and build your own cognitive monitoring tools.",
+    "ctaButton": "Open Source on GitHub",
     "backToHome": "Back to Home"
   },
   "opensource": {
@@ -447,7 +447,7 @@
     "coreLabel": "Core Engine",
     "coreTitle": "What's",
     "coreHighlight": "Included",
-    "core1Title": "CVF Engine V4 Core",
+    "core1Title": "CVF Engine V5 Core",
     "core1Desc": "The complete 85-indicator two-stream pipeline across 9 domains. Analyze speech audio and transcripts to generate cognitive vectors using acoustic processing and any compatible LLM.",
     "core2Title": "Baseline System",
     "core2Desc": "Individual baseline computation (14-21 sessions) and z-score drift detection algorithms. Statistical comparison engine with configurable sensitivity thresholds.",

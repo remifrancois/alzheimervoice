@@ -20,7 +20,7 @@ export default function CTA() {
           {t('cta.subtitle')}
         </p>
         <div className={`flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-700 delay-200 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <a href="#" className="px-10 py-4 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-500 hover:to-blue-500 text-base font-semibold text-white transition-all shadow-lg shadow-violet-600/25 hover:shadow-violet-600/40">
+          <a href="https://github.com/remifrancois/cognitivevoicefingerprint" className="px-10 py-4 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-500 hover:to-blue-500 text-base font-semibold text-white transition-all shadow-lg shadow-violet-600/25 hover:shadow-violet-600/40">
             {t('cta.primary')}
           </a>
           <a href="#science" className="px-10 py-4 rounded-xl border border-slate-700 hover:border-slate-600 text-base font-medium text-slate-300 hover:text-white transition-all">

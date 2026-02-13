@@ -200,9 +200,9 @@
   "cta": {
     "title1": "ابدأ بحماية",
     "title2": "أحبائك اليوم",
-    "subtitle": "يخضع MemoVoice حاليًا للتطوير السريري. انضم إلى برنامج الوصول المبكر لتكون من أوائل من يختبرون مستقبل المراقبة الإدراكية.",
-    "primary": "اطلب الوصول المبكر",
-    "secondary": "اقرأ البحث"
+    "subtitle": "AlzheimerVoice مفتوح المصدر بالكامل. استكشف محرك Cognitive Voice Fingerprint على GitHub، وانسخه، وابنِ أدوات المراقبة الإدراكية الخاصة بك.",
+    "primary": "مفتوح المصدر على GitHub",
+    "secondary": "اكتشف كيف تم بناؤه"
   },
   "footer": {
     "brandDesc": "محرك بصمة الصوت الإدراكية للكشف المبكر عن الزهايمر من خلال التحليل اللغوي.",
@@ -214,7 +214,7 @@
     "projectOrg": "Cerebral Valley x Anthropic",
     "projectEvent": "هاكاثون فبراير 2026",
     "projectVersion": "CVF Engine v0.1.0",
-    "bottomLine": "MemoVoice CVF Engine v0.1.0 — بُني في هاكاثون Cerebral Valley x Anthropic، فبراير 2026",
+    "bottomLine": "Alzheimer Cognitive Voice Fingerprint Engine V5 — بُني في هاكاثون Cerebral Valley x Anthropic، فبراير 2026",
     "disclaimer": "لأغراض البحث والعرض التوضيحي",
     "linkPrivacy": "الخصوصية و HIPAA",
     "linkLegal": "قانوني"
@@ -355,8 +355,8 @@
     "quoteAttribution": "الدافع وراء MemoVoice",
     "ctaTitle": "امنح عائلتك هدية",
     "ctaHighlight": "الوعي المبكر",
-    "ctaDesc": "انضم إلى برنامج الوصول المبكر وكن من أوائل العائلات التي تختبر المراقبة الإدراكية الاستباقية.",
-    "ctaButton": "اطلب الوصول المبكر",
+    "ctaDesc": "استكشف محرك Cognitive Voice Fingerprint مفتوح المصدر بالكامل على GitHub وابنِ أدوات المراقبة الإدراكية الخاصة بك.",
+    "ctaButton": "مفتوح المصدر على GitHub",
     "backToHome": "العودة إلى الرئيسية"
   },
   "opensource": {

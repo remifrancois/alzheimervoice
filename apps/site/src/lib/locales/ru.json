@@ -200,9 +200,9 @@
   "cta": {
     "title1": "Начните защищать своих",
     "title2": "Близких уже сегодня",
-    "subtitle": "MemoVoice находится на стадии клинической разработки. Присоединяйтесь к программе раннего доступа, чтобы одними из первых испытать будущее когнитивного мониторинга.",
-    "primary": "Запросить ранний доступ",
-    "secondary": "Читать исследования"
+    "subtitle": "AlzheimerVoice полностью открыт. Исследуйте движок Cognitive Voice Fingerprint на GitHub, сделайте форк и создайте собственные инструменты когнитивного мониторинга.",
+    "primary": "Открытый код на GitHub",
+    "secondary": "Узнайте, как он был создан"
   },
   "footer": {
     "brandDesc": "Движок когнитивного голосового отпечатка для раннего выявления болезни Альцгеймера посредством лингвистического анализа.",
@@ -214,7 +214,7 @@
     "projectOrg": "Cerebral Valley x Anthropic",
     "projectEvent": "Хакатон, февраль 2026",
     "projectVersion": "CVF Engine v0.1.0",
-    "bottomLine": "MemoVoice CVF Engine v0.1.0 \u2014 Создано на хакатоне Cerebral Valley x Anthropic, февраль 2026",
+    "bottomLine": "Alzheimer Cognitive Voice Fingerprint Engine V5 — Создано на хакатоне Cerebral Valley x Anthropic, февраль 2026",
     "disclaimer": "Для исследовательских и демонстрационных целей",
     "linkPrivacy": "Конфиденциальность и HIPAA",
     "linkLegal": "Правовая информация"
@@ -355,8 +355,8 @@
     "quoteAttribution": "Мотивация, стоящая за MemoVoice",
     "ctaTitle": "Подарите своей семье",
     "ctaHighlight": "Раннюю осведомлённость",
-    "ctaDesc": "Присоединяйтесь к программе раннего доступа и станьте одной из первых семей, испытавших проактивный когнитивный мониторинг.",
-    "ctaButton": "Запросить ранний доступ",
+    "ctaDesc": "Исследуйте полностью открытый движок Cognitive Voice Fingerprint на GitHub и создайте собственные инструменты когнитивного мониторинга.",
+    "ctaButton": "Открытый код на GitHub",
     "backToHome": "Вернуться на главную"
   },
   "opensource": {
