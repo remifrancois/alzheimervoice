@@ -409,7 +409,7 @@ Based on Fraser 2015's finding that AD decline factors are only weakly correlate
 
 ## API Endpoints
 
-14 endpoints under `/cvf/v4/`:
+15 endpoints under `/cvf/v4/`:
 
 | Method | Path | Purpose |
 |--------|------|---------|
@@ -427,6 +427,7 @@ Based on Fraser 2015's finding that AD decline factors are only weakly correlate
 | GET | `/indicators` | Full 85-indicator catalog |
 | GET | `/baseline/:patientId` | Baseline calibration status |
 | GET | `/meta` | V4 version info and capabilities |
+| GET | `/metrics` | **Engine performance metrics** (uptime, throughput, execution times, recent activity) |
 
 ---
 
@@ -642,7 +643,7 @@ services/cvf/src/
 │   ├── pd-engine.js             847 lines   PD detection, staging, differential
 │   ├── differential.js          612 lines   23 rules, 8 conditions
 │   ├── algorithm.js             559 lines   9-domain scoring, 3 cascades
-│   ├── api.js                   576 lines   14 Fastify endpoints
+│   ├── api.js                   740 lines   15 Fastify endpoints + performance metrics
 │   ├── weekly-deep.js           553 lines   Opus analysis + acoustic + PD
 │   ├── trajectory.js            491 lines   8-condition prediction
 │   ├── micro-tasks.js           314 lines   4 embedded clinical tasks

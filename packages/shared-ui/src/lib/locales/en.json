@@ -205,6 +205,17 @@
   "changelog": {
     "title": "Changelog",
     "subtitle": "Release history and updates",
+    "v020": "v0.2.0 — Admin Engine Dashboard",
+    "v020date": "February 12, 2026",
+    "v020items": [
+      "Admin engine metrics dashboard with real-time V4 CVF performance tracking",
+      "GET /cvf/v4/metrics endpoint exposing uptime, capacity, throughput, and execution times",
+      "Performance instrumentation on session processing, audio extraction, and weekly analysis pipelines",
+      "Alert distribution, pipeline health, and capacity gauge visualizations",
+      "Recent activity log with last 50 processing events (color-coded by duration)",
+      "Auto-refreshing dashboard (10-second interval) with live engine status",
+      "Admin-only sidebar navigation and route guard (admin/superadmin roles)"
+    ],
     "v010": "v0.1.0 — Initial Release",
     "v010date": "February 11, 2026",
     "v010items": [

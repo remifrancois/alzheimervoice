@@ -4,6 +4,7 @@ import { Card, Badge, useT } from '@azh/shared-ui'
 export default function ChangelogPage() {
   const { t } = useT()
 
+  const v020Items = t('changelog.v020items')
   const v010Items = t('changelog.v010items')
   const comingItems = t('changelog.comingItems')
 
@@ -12,6 +13,25 @@ export default function ChangelogPage() {
       <Topbar title={t('changelog.title')} subtitle={t('changelog.subtitle')} />
 
       <div className="p-6 space-y-6 max-w-3xl">
+        {/* v0.2.0 */}
+        <Card>
+          <div className="flex items-center gap-3 mb-4">
+            <Badge variant="brand">{t('changelog.v020').split('—')[0].trim()}</Badge>
+            <span className="text-xs text-slate-500">{t('changelog.v020date')}</span>
+          </div>
+          <h3 className="text-sm font-semibold text-slate-200 mb-3">
+            {t('changelog.v020')}
+          </h3>
+          <ul className="space-y-2">
+            {(Array.isArray(v020Items) ? v020Items : []).map((item, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-slate-400">
+                <span className="text-emerald-500 mt-0.5 shrink-0">+</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </Card>
+
         {/* v0.1.0 */}
         <Card>
           <div className="flex items-center gap-3 mb-4">
