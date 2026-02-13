@@ -105,6 +105,18 @@ export const DEMO_USERS = [
 const AuthContext = createContext(null)
 
 /**
+ * Security event logger — logs to console in dev, can be wired to an API endpoint in production.
+ */
+function securityLog(event, details = {}) {
+  const entry = { timestamp: new Date().toISOString(), event, ...details }
+  if (import.meta.env?.DEV) {
+    console.info('[security]', event, details)
+  }
+  // Production: send to API endpoint (e.g., api.postSecurityEvent(entry))
+  return entry
+}
+
+/**
  * AuthProvider — Dual-mode authentication context.
  *
  * Cognito mode: set cognitoConfig.userPoolId + cognitoConfig.clientId
@@ -115,6 +127,7 @@ export function AuthProvider({
   cognitoConfig: cognitoConfigProp,
   defaultUserId = null,
   users,
+  idleTimeoutMs = 0,
 }) {
   const cognitoConfig = cognitoConfigProp || {
     userPoolId: typeof import.meta !== 'undefined' ? import.meta.env?.VITE_COGNITO_USER_POOL_ID : undefined,
@@ -157,6 +170,30 @@ export function AuthProvider({
     window.addEventListener('azh:auth-expired', handleExpired)
     return () => window.removeEventListener('azh:auth-expired', handleExpired)
   }, [mode])
+
+  // ── Idle timeout (HIPAA §164.312(a)(2)(iii) automatic logoff) ──
+  useEffect(() => {
+    if (!idleTimeoutMs || idleTimeoutMs <= 0) return
+    let timer
+    function resetTimer() {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        if (!currentUser) return
+        securityLog('idle-timeout', { userId: currentUser.id })
+        if (mode === 'cognito') cognitoSignOut()
+        setToken(null)
+        setCurrentUser(null)
+        tokenRef.current = null
+      }, idleTimeoutMs)
+    }
+    const events = ['mousemove', 'keydown', 'touchstart', 'scroll']
+    events.forEach(e => window.addEventListener(e, resetTimer, { passive: true }))
+    resetTimer()
+    return () => {
+      clearTimeout(timer)
+      events.forEach(e => window.removeEventListener(e, resetTimer))
+    }
+  }, [idleTimeoutMs, currentUser, mode]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Demo mode login ──
   const demoLogin = useCallback(async (userId) => {
@@ -213,6 +250,7 @@ export function AuthProvider({
   // ── Login ──
   const login = useCallback(async (emailOrUserId, password) => {
     setAuthError(null)
+    securityLog('login-attempt', { email: emailOrUserId, mode })
     if (mode === 'demo') return demoLogin(emailOrUserId)
 
     try {
@@ -294,11 +332,12 @@ export function AuthProvider({
 
   // ── Logout ──
   const logout = useCallback(() => {
+    securityLog('logout', { userId: currentUser?.id, mode })
     if (mode === 'cognito') cognitoSignOut()
     setToken(null)
     setCurrentUser(null)
     tokenRef.current = null
-  }, [mode])
+  }, [mode, currentUser])
 
   // ── Switch user (demo mode only) ──
   const switchUser = useCallback(async (userId) => {

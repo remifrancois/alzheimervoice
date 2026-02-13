@@ -10,3 +10,9 @@ data/
 research/
 .vercel
 .env*.local
+
+# Security — prevent accidental credential commits
+*.pem
+*.key
+credentials*.json
+*secret*

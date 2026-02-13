@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Topbar from '../components/layout/Topbar'
-import { Card, Badge, Button, Icon, EmptyState, api, useT } from '@azh/shared-ui'
+import { Card, Badge, Button, Icon, EmptyState, api, useT, sanitizeText, sanitizeName, createRateLimiter } from '@azh/shared-ui'
 
 const CATEGORY_STYLES = {
   family:    { color: 'text-rose-400',    bg: 'bg-rose-500/10',    border: 'border-rose-500/20',    icon: 'users' },
@@ -191,14 +191,43 @@ function MemoryCard({ memory, t, weightBadge }) {
   )
 }
 
+const memoryFormLimiter = createRateLimiter(5, 60000)
+
 function AddMemoryModal({ onClose, t, patientName }) {
   const [form, setForm] = useState({
     title: '', description: '', category: 'family', year: '', emotionalWeight: 'medium', people: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
   function handleSubmit(e) {
     e.preventDefault()
+    setError('')
+
+    if (!memoryFormLimiter.check()) {
+      setError(t('validation.rateLimited') || 'Too many attempts. Please wait a moment.')
+      return
+    }
+
+    const title = sanitizeText(form.title, 200)
+    const description = sanitizeText(form.description, 2000)
+    const people = form.people.split(',').map(p => sanitizeName(p)).filter(Boolean).join(', ')
+    const year = Number(form.year)
+
+    if (!title) {
+      setError(t('validation.titleRequired') || 'A valid title is required.')
+      return
+    }
+    if (!description) {
+      setError(t('validation.descRequired') || 'A valid description is required.')
+      return
+    }
+    if (form.year && (year < 1920 || year > 2026)) {
+      setError(t('validation.yearRange') || 'Year must be between 1920 and 2026.')
+      return
+    }
+
+    setForm({ ...form, title, description, people })
     setSubmitted(true)
   }
 
@@ -282,6 +311,12 @@ function AddMemoryModal({ onClose, t, patientName }) {
                 {t('addMemory.hint')}
               </p>
             </div>
+
+            {error && (
+              <div className="bg-rose-500/10 border border-rose-500/30 rounded-lg p-3">
+                <p className="text-xs text-rose-400">{error}</p>
+              </div>
+            )}
 
             <div className="flex justify-end gap-2 pt-2">
               <Button variant="ghost" size="sm" onClick={onClose}>{t('addMemory.cancel')}</Button>

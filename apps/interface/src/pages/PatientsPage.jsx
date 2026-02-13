@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Topbar from '../components/layout/Topbar'
-import { Card, Button, AlertBadge, Badge, Icon, EmptyState, api, useT } from '@azh/shared-ui'
+import { Card, Button, AlertBadge, Badge, Icon, EmptyState, api, useT, sanitizeName, sanitizePhone, createRateLimiter } from '@azh/shared-ui'
 
 export default function PatientsPage() {
   const { t, lang } = useT()
@@ -105,14 +105,39 @@ function MiniStat({ label, value }) {
   )
 }
 
+const patientFormLimiter = createRateLimiter(5, 60000)
+
 function AddFamilyMemberModal({ onClose, t }) {
   const [form, setForm] = useState({
     firstName: '', lastName: '', age: '', language: 'en', phone: '', callTime: '09:00',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
   function handleSubmit(e) {
     e.preventDefault()
+    setError('')
+
+    if (!patientFormLimiter.check()) {
+      setError(t('validation.rateLimited') || 'Too many attempts. Please wait a moment.')
+      return
+    }
+
+    const firstName = sanitizeName(form.firstName)
+    const lastName = sanitizeName(form.lastName)
+    const phone = sanitizePhone(form.phone)
+    const age = Number(form.age)
+
+    if (!firstName || !lastName) {
+      setError(t('validation.nameRequired') || 'Valid first and last name are required.')
+      return
+    }
+    if (form.age && (age < 50 || age > 110)) {
+      setError(t('validation.ageRange') || 'Age must be between 50 and 110.')
+      return
+    }
+
+    setForm({ ...form, firstName, lastName, phone })
     setSubmitted(true)
   }
 
@@ -176,6 +201,12 @@ function AddFamilyMemberModal({ onClose, t }) {
                 {t('addMember.hint')}
               </p>
             </div>
+
+            {error && (
+              <div className="bg-rose-500/10 border border-rose-500/30 rounded-lg p-3">
+                <p className="text-xs text-rose-400">{error}</p>
+              </div>
+            )}
 
             <div className="flex justify-end gap-2 pt-2">
               <Button variant="ghost" size="sm" onClick={onClose}>{t('addMember.cancel')}</Button>

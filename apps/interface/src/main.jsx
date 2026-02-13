@@ -17,6 +17,7 @@ createRoot(document.getElementById('root')).render(
       <AuthProvider
         defaultUserId="f1"
         users={FAMILY_DEMO_USERS}
+        idleTimeoutMs={30 * 60 * 1000}
       >
         <I18nProvider>
           <App />

@@ -30,3 +30,4 @@ export {
 } from './lib/cognito.js'
 export { ALERT_LEVELS, DOMAIN_COLORS, DOMAIN_LABELS, NAV_ITEMS } from './lib/constants.js'
 export { I18nProvider, useT, LANGUAGES } from './lib/i18n.jsx'
+export { sanitizeText, sanitizeName, sanitizePhone, createRateLimiter } from './lib/security.js'
