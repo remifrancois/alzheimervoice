@@ -275,7 +275,7 @@ export default function DemoPage() {
 
       {/* ── ANALYSIS PROTOCOL ── */}
       <section className="py-20 bg-white/[0.01]">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
             <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 mb-4">Better Analysis</span>
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
@@ -284,18 +284,39 @@ export default function DemoPage() {
             <p className="text-slate-400 max-w-2xl mx-auto leading-relaxed">
               For a more accurate cognitive voice fingerprint, complete the full protocol below. It takes 60 to 90 minutes total and we will guide you through each session.
             </p>
+            <p className="text-xs text-slate-500 mt-3">Below is an example protocol — sessions are personalized based on the patient's history and family-provided memories.</p>
           </div>
 
-          <div className="space-y-2">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {SESSIONS.map((s) => (
-              <div key={s.id} className={`flex items-start gap-3 p-3 rounded-lg ${s.type === 'test' ? 'bg-violet-500/5 border border-violet-500/10' : s.type === 'free' ? 'bg-blue-500/5 border border-blue-500/10' : 'bg-white/[0.02] border border-white/5'}`}>
-                <span className={`text-sm shrink-0 mt-0.5 ${s.type === 'test' ? 'text-violet-400' : s.type === 'free' ? 'text-blue-400' : 'text-emerald-400'}`}>{s.icon}</span>
-                <div className="min-w-0">
-                  <p className={`text-sm font-medium ${s.type === 'test' ? 'text-violet-300' : s.type === 'free' ? 'text-blue-300' : 'text-slate-200'}`}>{s.title}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{s.desc}</p>
-                </div>
+              <div key={s.id} className={`p-3 rounded-lg ${s.type === 'test' ? 'bg-violet-500/5 border border-violet-500/10' : s.type === 'free' ? 'bg-blue-500/5 border border-blue-500/10' : 'bg-white/[0.02] border border-white/5'}`}>
+                <span className={`text-sm ${s.type === 'test' ? 'text-violet-400' : s.type === 'free' ? 'text-blue-400' : 'text-emerald-400'}`}>{s.icon}</span>
+                <p className={`text-xs font-medium mt-1 ${s.type === 'test' ? 'text-violet-300' : s.type === 'free' ? 'text-blue-300' : 'text-slate-200'}`}>{s.title}</p>
+                <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">{s.desc}</p>
               </div>
             ))}
+          </div>
+
+          {/* Family memories + Mobile app */}
+          <div className="grid sm:grid-cols-2 gap-4 mt-10">
+            <div className="p-6 rounded-xl bg-violet-500/5 border border-violet-500/10">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">💜</span>
+                <h3 className="text-sm font-semibold text-white">Family Memories Power the Conversation</h3>
+              </div>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                Families can add personal memories — childhood stories, favorite holidays, career milestones, family traditions. The AI weaves them into warm, natural conversations so your loved one never feels tested. They simply enjoy reminiscing about their own life while the CVF Engine silently monitors 85 cognitive indicators.
+              </p>
+            </div>
+            <div className="p-6 rounded-xl bg-blue-500/5 border border-blue-500/10">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">📱</span>
+                <h3 className="text-sm font-semibold text-white">Mobile Application Under Development</h3>
+              </div>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                A dedicated mobile application for iOS and Android is currently under development. It will allow families to manage memories, schedule AI-guided phone calls, receive real-time alerts, and review weekly cognitive reports — all from their phone.
+              </p>
+            </div>
           </div>
         </div>
       </section>
