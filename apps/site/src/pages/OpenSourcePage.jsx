@@ -34,13 +34,40 @@ export default function OpenSourcePage() {
       {/* Repository */}
       <Section>
         <SectionHeader label={t('opensource.repoLabel')} title={t('opensource.repoTitle')} highlight={t('opensource.repoHighlight')} desc={t('opensource.repoDesc')} />
-        <div className="max-w-lg mx-auto p-6 rounded-xl bg-white/[0.02] border border-white/5 text-center">
-          <p className="text-sm text-slate-400 mb-4 font-mono">{t('opensource.repoUrl')}</p>
-          <div className="flex items-center justify-center gap-3">
-            <span className="px-4 py-2 rounded-lg bg-violet-600/20 border border-violet-500/30 text-sm font-medium text-violet-300">{t('opensource.repoStars')}</span>
-            <span className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium text-slate-300">{t('opensource.repoFork')}</span>
-            <span className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium text-slate-300">{t('opensource.repoDocs')}</span>
-          </div>
+        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {/* Full Hackathon Source */}
+          <a href="https://github.com/remifrancois/alzheimervoice" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl bg-white/[0.02] border border-white/5 hover:border-violet-500/30 transition-colors">
+            <div className="flex items-center gap-3 mb-4">
+              <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              <div>
+                <p className="text-sm font-semibold text-white group-hover:text-violet-300 transition-colors">Full Hackathon Source Code</p>
+                <p className="text-xs text-slate-500">Complete AlzheimerVoice platform</p>
+              </div>
+            </div>
+            <p className="text-xs text-slate-400 font-mono mb-4">github.com/remifrancois/alzheimervoice</p>
+            <p className="text-xs text-slate-500 leading-relaxed">All apps (site, demo, SaaS, admin), shared UI, data models, deployment configs, and documentation. The full monorepo built at the Cerebral Valley x Anthropic Hackathon.</p>
+            <div className="mt-4 flex items-center gap-2 text-xs text-violet-400 group-hover:text-violet-300 transition-colors">
+              <span>View on GitHub</span>
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+            </div>
+          </a>
+
+          {/* Core CVF Engine */}
+          <a href="https://github.com/remifrancois/cognitivevoicefingerprint" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl bg-white/[0.02] border border-white/5 hover:border-violet-500/30 transition-colors">
+            <div className="flex items-center gap-3 mb-4">
+              <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              <div>
+                <p className="text-sm font-semibold text-white group-hover:text-violet-300 transition-colors">CVF Engine V5 — Core Engine</p>
+                <p className="text-xs text-slate-500">Cognitive Voice Fingerprint engine</p>
+              </div>
+            </div>
+            <p className="text-xs text-slate-400 font-mono mb-4">github.com/remifrancois/cognitivevoicefingerprint</p>
+            <p className="text-xs text-slate-500 leading-relaxed">The standalone dual-pass analysis engine. 85 indicators, 9 domains, 35 differential rules, 3 cascade types. Acoustic pipeline + LLM linguistic analysis. MIT licensed.</p>
+            <div className="mt-4 flex items-center gap-2 text-xs text-violet-400 group-hover:text-violet-300 transition-colors">
+              <span>View on GitHub</span>
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+            </div>
+          </a>
         </div>
       </Section>
 
