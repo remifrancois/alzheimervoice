@@ -75,8 +75,56 @@ export default function ScientificPage() {
         </div>
       </Section>
 
-      {/* 47 Indicators across 7 Domains */}
+      {/* Dual-Pass Algorithm */}
       <Section className="bg-white/[0.01]">
+        <SectionHeader label="V5 Algorithm" title="Dual-Pass" highlight="Analysis Architecture" desc="The V5 engine processes every conversation through two independent analysis passes that cross-validate each other, dramatically reducing false positives and enabling condition-specific pattern detection that single-pass systems miss." />
+        <div className="grid md:grid-cols-2 gap-6 mb-10">
+          <div className="p-6 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                <span className="text-sm font-bold text-emerald-400">P1</span>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-emerald-300">Pass 1: Real-Time Extraction</p>
+                <p className="text-xs text-slate-500">Claude Sonnet 4.5 + Acoustic Pipeline</p>
+              </div>
+            </div>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li className="flex items-start gap-2"><span className="text-emerald-400 shrink-0">→</span>Audio stream processed by parselmouth + librosa + nolds (21 acoustic indicators)</li>
+              <li className="flex items-start gap-2"><span className="text-emerald-400 shrink-0">→</span>Transcript analyzed by Claude Sonnet 4.5 (64 linguistic indicators across 7 domains)</li>
+              <li className="flex items-start gap-2"><span className="text-emerald-400 shrink-0">→</span>Both streams merge into an 85-indicator cognitive vector</li>
+              <li className="flex items-start gap-2"><span className="text-emerald-400 shrink-0">→</span>Deterministic scoring engine: z-scores, 9 domain scores, composite, cascade detection</li>
+              <li className="flex items-start gap-2"><span className="text-emerald-400 shrink-0">→</span>35-rule differential diagnosis across 8 conditions runs in real-time</li>
+            </ul>
+          </div>
+          <div className="p-6 rounded-xl bg-violet-500/5 border border-violet-500/10">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
+                <span className="text-sm font-bold text-violet-400">P2</span>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-violet-300">Pass 2: Deep Clinical Reasoning</p>
+                <p className="text-xs text-slate-500">Claude Opus 4.6 — Extended Thinking</p>
+              </div>
+            </div>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li className="flex items-start gap-2"><span className="text-violet-400 shrink-0">→</span>Weekly analysis with 16,000-token thinking budget for deep reasoning</li>
+              <li className="flex items-start gap-2"><span className="text-violet-400 shrink-0">→</span>Cross-validates Pass 1 differential against multi-session trajectory</li>
+              <li className="flex items-start gap-2"><span className="text-violet-400 shrink-0">→</span>Discovers micro-patterns invisible to rule-based scoring</li>
+              <li className="flex items-start gap-2"><span className="text-violet-400 shrink-0">→</span>Generates family-friendly and clinical narrative reports</li>
+              <li className="flex items-start gap-2"><span className="text-violet-400 shrink-0">→</span>Designs next week's conversation probes targeting detected weaknesses</li>
+            </ul>
+          </div>
+        </div>
+        <div className="p-5 rounded-xl bg-white/[0.02] border border-white/5 max-w-3xl mx-auto">
+          <p className="text-sm text-slate-300 text-center leading-relaxed">
+            The dual-pass architecture means no single analysis point determines a diagnosis. Pass 1 provides fast, deterministic scoring grounded in 80 research papers. Pass 2 applies deep clinical reasoning to validate, refine, and contextualize those scores across the patient's full history. When both passes agree, confidence is high. When they diverge, the system flags uncertainty rather than guessing.
+          </p>
+        </div>
+      </Section>
+
+      {/* 85 Indicators across 9 Domains */}
+      <Section>
         <SectionHeader label={t('scientific.dimensionsLabel')} title={t('scientific.dimensionsTitle')} highlight={t('scientific.dimensionsHighlight')} desc={t('scientific.dimensionsDesc')} />
         <div className="space-y-10">
           {DOMAINS.map(({ label, prefix, count }) => (
@@ -96,7 +144,7 @@ export default function ScientificPage() {
       </Section>
 
       {/* Claude Integration */}
-      <Section>
+      <Section className="bg-white/[0.01]">
         <SectionHeader label={t('scientific.claudeLabel')} title={t('scientific.claudeTitle')} highlight={t('scientific.claudeHighlight')} desc={t('scientific.claudeDesc')} />
         <div className="max-w-2xl mx-auto">
           <ul className="space-y-3">
@@ -111,7 +159,7 @@ export default function ScientificPage() {
       </Section>
 
       {/* Validation */}
-      <Section className="bg-white/[0.01]">
+      <Section>
         <SectionHeader label={t('scientific.validationLabel')} title={t('scientific.validationTitle')} highlight={t('scientific.validationHighlight')} desc={t('scientific.validationDesc')} />
         <div className="max-w-3xl mx-auto">
           <h3 className="text-lg font-semibold text-white mb-6">{t('scientific.validationStudies')}</h3>

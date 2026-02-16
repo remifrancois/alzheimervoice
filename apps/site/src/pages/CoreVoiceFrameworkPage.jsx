@@ -40,17 +40,17 @@ const DOMAIN_COLORS = [
 ]
 
 const COMPARISON = [
-  { label: 'Modality', v3: 'Text only', v4: 'Text + Audio (two-stream)' },
-  { label: 'Indicators', v3: '47', v4: '85' },
-  { label: 'Domains', v3: '7', v4: '9 (+acoustic, +pd_motor)' },
-  { label: 'Conditions', v3: '6', v4: '8 (+MSA, +PSP)' },
-  { label: 'Differential rules', v3: '14', v4: '23' },
-  { label: 'PD detection', v3: '3 indicators', v4: '10 sentinels + nonlinear dynamics' },
-  { label: 'Audio features', v3: '0', v4: '21 (jitter, shimmer, HNR, MFCCs...)' },
-  { label: 'Cascade types', v3: '1 (AD)', v4: '3 (AD, PD, Depression)' },
-  { label: 'Micro-tasks', v3: 'None', v4: '4 embedded clinical tasks' },
-  { label: 'Code', v3: '2,012 lines', v4: '5,956 lines' },
-  { label: 'Research base', v3: '60+ studies', v4: '80 papers (74 PDFs + 6 summaries)' },
+  { label: 'Modality', v4: 'Text + Audio (two-stream)', v5: 'Dual-pass: Text + Audio + Deep Reasoning' },
+  { label: 'Indicators', v4: '85', v5: '85 (refined weights + dual-pass validation)' },
+  { label: 'Domains', v4: '9', v5: '9 (enhanced acoustic + PD motor)' },
+  { label: 'Conditions', v4: '8', v5: '8 (improved differential accuracy)' },
+  { label: 'Differential rules', v4: '23', v5: '35' },
+  { label: 'Analysis passes', v4: '1 (real-time)', v5: '2 (real-time + weekly deep reasoning)' },
+  { label: 'Pass 1 model', v4: 'Sonnet 4.5', v5: 'Sonnet 4.5 + acoustic pipeline' },
+  { label: 'Pass 2 model', v4: 'Opus (basic)', v5: 'Opus 4.6 extended thinking (16K tokens)' },
+  { label: 'Cascade types', v4: '3 (AD, PD, Depression)', v5: '3 (refined detection thresholds)' },
+  { label: 'Micro-tasks', v4: '4 embedded', v5: '4 embedded + adaptive scheduling' },
+  { label: 'Research base', v4: '80 papers', v5: '80 papers (74 PDFs + 6 summaries)' },
 ]
 
 export default function CoreVoiceFrameworkPage() {
@@ -69,21 +69,21 @@ export default function CoreVoiceFrameworkPage() {
         </div>
       </Section>
 
-      {/* V3 → V4 Comparison */}
+      {/* V4 → V5 Comparison */}
       <Section>
-        <SectionHeader label="V3 → V4" title="The Paradigm" highlight="Shift" desc="V3's text-only approach left 75% of the diagnostic signal on the table. V4 closes this gap with multimodal audio + text analysis." />
+        <SectionHeader label="V4 → V5" title="The Dual-Pass" highlight="Evolution" desc="V4's single-pass approach left deep clinical reasoning on the table. V5 adds a second pass with Claude Opus 4.6 extended thinking for weekly deep analysis." />
         <div className="max-w-3xl mx-auto">
           <div className="rounded-xl border border-white/10 overflow-hidden">
             <div className="grid grid-cols-3 bg-white/[0.05] px-4 py-3 border-b border-white/5">
               <span className="text-xs font-semibold text-slate-400 uppercase"></span>
-              <span className="text-xs font-semibold text-slate-500 uppercase text-center">V3</span>
-              <span className="text-xs font-semibold text-violet-400 uppercase text-center">V4</span>
+              <span className="text-xs font-semibold text-slate-500 uppercase text-center">V4</span>
+              <span className="text-xs font-semibold text-violet-400 uppercase text-center">V5</span>
             </div>
             {COMPARISON.map((row, i) => (
               <div key={i} className={`grid grid-cols-3 px-4 py-3 ${i % 2 === 0 ? 'bg-white/[0.01]' : 'bg-white/[0.03]'}`}>
                 <span className="text-xs font-medium text-slate-300">{row.label}</span>
-                <span className="text-xs text-slate-500 text-center">{row.v3}</span>
-                <span className="text-xs text-violet-300 text-center font-medium">{row.v4}</span>
+                <span className="text-xs text-slate-500 text-center">{row.v4}</span>
+                <span className="text-xs text-violet-300 text-center font-medium">{row.v5}</span>
               </div>
             ))}
           </div>
