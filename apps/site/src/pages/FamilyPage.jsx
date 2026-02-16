@@ -149,8 +149,8 @@ export default function FamilyPage() {
           <h2 className="text-3xl font-bold text-white mb-4">{t('familyPage.ctaTitle')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-blue-400">{t('familyPage.ctaHighlight')}</span></h2>
           <p className="text-slate-400 mb-8 max-w-xl mx-auto">Start protecting your loved ones today. Explore the open source engine on GitHub or register for the managed SaaS platform.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="https://app.alzheimervoice.org/register" target="_blank" rel="noopener noreferrer" className="px-8 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors inline-flex items-center gap-2">
-              Register as a Family
+            <a href="https://demo.alzheimervoice.org" target="_blank" rel="noopener noreferrer" className="px-8 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors inline-flex items-center gap-2">
+              Family Access Demo
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
             </a>
             <a href="https://github.com/remifrancois/cognitivevoicefingerprint" target="_blank" rel="noopener noreferrer" className="px-8 py-3 rounded-lg border border-white/10 hover:border-white/20 text-sm font-medium text-slate-300 transition-colors inline-flex items-center gap-2">

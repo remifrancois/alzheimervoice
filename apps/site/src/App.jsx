@@ -22,6 +22,7 @@ import LegalPage from './pages/LegalPage'
 import CompliancePage from './pages/CompliancePage'
 import CreatorsPage from './pages/CreatorsPage'
 import CoreVoiceFrameworkPage from './pages/CoreVoiceFrameworkPage'
+import DemoResultsPage from './pages/DemoResultsPage'
 
 const pages = {
   science: ScientificPage,
@@ -29,6 +30,7 @@ const pages = {
   family: FamilyPage,
   opensource: OpenSourcePage,
   demo: DemoPage,
+  demoresults: DemoResultsPage,
   privacy: PrivacyPage,
   legal: LegalPage,
   compliance: CompliancePage,

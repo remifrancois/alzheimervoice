@@ -922,6 +922,17 @@ export default async function v5Routes(app) {
   });
 
   // ────────────────────────────────────────────
+  // DEMO QUEUE — Track concurrent demo analyses
+  // ────────────────────────────────────────────
+  let demoActiveCount = 0;
+  let demoQueuedCount = 0;
+
+  app.get('/demo-queue', async () => ({
+    active: demoActiveCount,
+    queued: demoQueuedCount,
+  }));
+
+  // ────────────────────────────────────────────
   // 18. POST /demo-analyze — Hackathon live demo (single-session instant analysis)
   //     Accepts raw audio (base64 WebM/WAV), runs acoustic + Whisper + NLP anchors,
   //     returns a full V5 report. No baseline, no patient ID needed.
@@ -939,6 +950,7 @@ export default async function v5Routes(app) {
       }
     }
   }, async (request, reply) => {
+    demoActiveCount++;
     const { audioBase64, audioFormat, language } = request.body;
     const start = performance.now();
 
@@ -1069,6 +1081,8 @@ export default async function v5Routes(app) {
     } catch (err) {
       console.error('[V5 demo-analyze] Error:', err.message);
       return reply.code(500).send({ error: 'Analysis failed: ' + err.message });
+    } finally {
+      demoActiveCount = Math.max(0, demoActiveCount - 1);
     }
   });
 }
