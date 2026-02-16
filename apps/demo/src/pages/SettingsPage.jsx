@@ -122,8 +122,8 @@ export default function SettingsPage() {
                 </tr>
               </thead>
               <tbody>
-                <UserRow name="Dr. Sophie Martin" email="sophie@memovoice.ai" role="Clinician" active t={t} />
-                <UserRow name="Pierre Dupont" email="pierre@family.com" role="Family" active={false} t={t} />
+                <UserRow name="Dr. Sophie Martin" email="sophie@alzheimervoice.org" role="Clinician" active t={t} />
+                <UserRow name="Pierre Dupont" email="pierre@alzheimervoice.org" role="Family" active={false} t={t} />
               </tbody>
             </table>
           </div>
