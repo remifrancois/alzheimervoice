@@ -1,0 +1,37 @@
+; ══════════════════════════════════════════════════════════════
+; AlzheimerVoice — DNS Zone File for alzheimervoice.org
+; AWS Route 53 / Cloudflare / Any DNS provider
+; Generated: 2026-02-16
+; ══════════════════════════════════════════════════════════════
+
+; ── Apex domain (Vercel) ──
+alzheimervoice.org.          300  IN  A      76.76.21.21
+
+; ── Frontend apps (Vercel) ──
+www.alzheimervoice.org.      300  IN  CNAME  cname.vercel-dns.com.
+trydemo.alzheimervoice.org.  300  IN  CNAME  cname.vercel-dns.com.
+demo.alzheimervoice.org.     300  IN  CNAME  cname.vercel-dns.com.
+app.alzheimervoice.org.      300  IN  CNAME  cname.vercel-dns.com.
+admin.alzheimervoice.org.    300  IN  CNAME  cname.vercel-dns.com.
+
+; ── Backend services (your server — replace with actual hostname) ──
+api.alzheimervoice.org.      300  IN  CNAME  <YOUR-API-SERVER>.compute.amazonaws.com.
+cvf.alzheimervoice.org.      300  IN  CNAME  <YOUR-CVF-SERVER>.compute.amazonaws.com.
+
+; ── Email (optional — add if using custom email) ──
+; alzheimervoice.org.        300  IN  MX     10 mail.alzheimervoice.org.
+
+; ══════════════════════════════════════════════════════════════
+; Vercel project → domain mapping:
+;
+;   alzheimervoice-site   → alzheimervoice.org
+;                         → www.alzheimervoice.org
+;                         → trydemo.alzheimervoice.org (alias)
+;   alzheimervoice-demo   → demo.alzheimervoice.org
+;   alzheimervoice-saas   → app.alzheimervoice.org
+;   alzheimervoice-admin  → admin.alzheimervoice.org
+;
+; Backend (not Vercel — Node.js/Fastify on EC2/ECS):
+;   API Gateway (3001)    → api.alzheimervoice.org
+;   CVF Engine  (3002)    → cvf.alzheimervoice.org
+; ══════════════════════════════════════════════════════════════
