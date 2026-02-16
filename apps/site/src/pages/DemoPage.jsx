@@ -95,36 +95,39 @@ export default function DemoPage() {
     }
   }, [])
 
-  const stopAndAnalyze = useCallback(async () => {
-    if (!mediaRef.current) return
-    const { recorder, stream } = mediaRef.current
-    clearInterval(timerRef.current)
-    await new Promise(resolve => { recorder.onstop = resolve; recorder.stop() })
-    stream.getTracks().forEach(t => t.stop())
-    mediaRef.current = null
+  // Simulated progress bar — models the real pipeline timing
+  const startProgress = useCallback(() => {
+    setProgress(0)
+    setProgressStage(PROGRESS_STAGES[0].label)
+    let elapsed = 0
+    clearInterval(progressRef.current)
+    progressRef.current = setInterval(() => {
+      elapsed += 0.5
+      const pct = Math.min(98, Math.round(100 * (1 - Math.exp(-elapsed / 18))))
+      setProgress(pct)
+      for (let i = PROGRESS_STAGES.length - 1; i >= 0; i--) {
+        if (pct >= PROGRESS_STAGES[i].at) { setProgressStage(PROGRESS_STAGES[i].label); break }
+      }
+    }, 500)
+  }, [])
+  const stopProgress = useCallback(() => {
+    clearInterval(progressRef.current)
+    setProgress(100)
+    setProgressStage('Done!')
+  }, [])
 
-    // Check queue before submitting
-    const queueStatus = await checkQueue()
-    if (queueStatus.active > 0) {
-      setState(STATE.QUEUED)
-      setQueuePosition(queueStatus.queued + 1)
-      setQueueTotal(queueStatus.active + queueStatus.queued + 1)
-      // Poll queue until our turn
-      pollRef.current = setInterval(async () => {
-        const status = await checkQueue()
-        if (status.active === 0) {
-          clearInterval(pollRef.current)
-          submitAudio()
-        } else {
-          setQueuePosition(Math.max(1, status.queued))
-          setQueueTotal(status.active + status.queued)
-        }
-      }, 3000)
-      return
-    }
-
-    submitAudio()
-  }, [language, checkQueue])
+  const reset = useCallback(() => {
+    setState(STATE.IDLE)
+    setError(null)
+    setSeconds(0)
+    setQueuePosition(0)
+    setUploadedFile(null)
+    setProgress(0)
+    setProgressStage('')
+    chunksRef.current = []
+    clearInterval(pollRef.current)
+    clearInterval(progressRef.current)
+  }, [])
 
   const submitAudio = useCallback(async () => {
     setState(STATE.PROCESSING)
@@ -154,9 +157,7 @@ export default function DemoPage() {
         throw new Error(errData.error || `Server error ${resp.status}`)
       }
       const data = await resp.json()
-      // Remove transcript from stored results for privacy
       const { transcript, nlp_anchors, ...safeResult } = data
-      // Store in sessionStorage and navigate to results page
       sessionStorage.setItem('cvf_demo_result', JSON.stringify(safeResult))
       stopProgress()
       navigate('demoresults')
@@ -167,84 +168,6 @@ export default function DemoPage() {
       chunksRef.current = []
     }
   }, [language, navigate, startProgress, stopProgress])
-
-  const reset = useCallback(() => {
-    setState(STATE.IDLE)
-    setError(null)
-    setSeconds(0)
-    setQueuePosition(0)
-    setUploadedFile(null)
-    setProgress(0)
-    setProgressStage('')
-    chunksRef.current = []
-    clearInterval(pollRef.current)
-    clearInterval(progressRef.current)
-  }, [])
-
-  // Simulated progress bar — models the real pipeline timing
-  const startProgress = useCallback(() => {
-    setProgress(0)
-    setProgressStage(PROGRESS_STAGES[0].label)
-    let elapsed = 0
-    clearInterval(progressRef.current)
-    progressRef.current = setInterval(() => {
-      elapsed += 0.5
-      const pct = Math.min(98, Math.round(100 * (1 - Math.exp(-elapsed / 18))))
-      setProgress(pct)
-      for (let i = PROGRESS_STAGES.length - 1; i >= 0; i--) {
-        if (pct >= PROGRESS_STAGES[i].at) { setProgressStage(PROGRESS_STAGES[i].label); break }
-      }
-    }, 500)
-  }, [])
-  const stopProgress = useCallback(() => {
-    clearInterval(progressRef.current)
-    setProgress(100)
-    setProgressStage('Done!')
-  }, [])
-
-  const handleFileSelect = useCallback((e) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    // Validate size
-    if (file.size > MAX_FILE_SIZE) {
-      setError(`File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum is 10MB.`)
-      setState(STATE.ERROR)
-      return
-    }
-    // Detect format from MIME type or extension
-    const ext = file.name.split('.').pop()?.toLowerCase()
-    const format = ACCEPTED_FORMATS[file.type] || ACCEPTED_EXTENSIONS[ext]
-    if (!format) {
-      setError(`Unsupported format. Please use WAV, MP3, OGG, WebM, or FLAC.`)
-      setState(STATE.ERROR)
-      return
-    }
-    setUploadedFile({ file, format })
-    setError(null)
-  }, [])
-
-  const submitUploadedFile = useCallback(async () => {
-    if (!uploadedFile) return
-    // Check queue first
-    const queueStatus = await checkQueue()
-    if (queueStatus.active > 0) {
-      setState(STATE.QUEUED)
-      setQueuePosition(queueStatus.queued + 1)
-      setQueueTotal(queueStatus.active + queueStatus.queued + 1)
-      pollRef.current = setInterval(async () => {
-        const status = await checkQueue()
-        if (status.active === 0) {
-          clearInterval(pollRef.current)
-          doSubmitFile()
-        } else {
-          setQueuePosition(Math.max(1, status.queued))
-          setQueueTotal(status.active + status.queued)
-        }
-      }, 3000)
-      return
-    }
-    doSubmitFile()
-  }, [uploadedFile, language, checkQueue])
 
   const doSubmitFile = useCallback(async () => {
     if (!uploadedFile) return
@@ -286,6 +209,76 @@ export default function DemoPage() {
       setUploadedFile(null)
     }
   }, [uploadedFile, language, navigate, startProgress, stopProgress])
+
+  const stopAndAnalyze = useCallback(async () => {
+    if (!mediaRef.current) return
+    const { recorder, stream } = mediaRef.current
+    clearInterval(timerRef.current)
+    await new Promise(resolve => { recorder.onstop = resolve; recorder.stop() })
+    stream.getTracks().forEach(t => t.stop())
+    mediaRef.current = null
+
+    const queueStatus = await checkQueue()
+    if (queueStatus.active > 0) {
+      setState(STATE.QUEUED)
+      setQueuePosition(queueStatus.queued + 1)
+      setQueueTotal(queueStatus.active + queueStatus.queued + 1)
+      pollRef.current = setInterval(async () => {
+        const status = await checkQueue()
+        if (status.active === 0) {
+          clearInterval(pollRef.current)
+          submitAudio()
+        } else {
+          setQueuePosition(Math.max(1, status.queued))
+          setQueueTotal(status.active + status.queued)
+        }
+      }, 3000)
+      return
+    }
+
+    submitAudio()
+  }, [language, checkQueue, submitAudio])
+
+  const handleFileSelect = useCallback((e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > MAX_FILE_SIZE) {
+      setError(`File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum is 10MB.`)
+      setState(STATE.ERROR)
+      return
+    }
+    const ext = file.name.split('.').pop()?.toLowerCase()
+    const format = ACCEPTED_FORMATS[file.type] || ACCEPTED_EXTENSIONS[ext]
+    if (!format) {
+      setError(`Unsupported format. Please use WAV, MP3, OGG, WebM, or FLAC.`)
+      setState(STATE.ERROR)
+      return
+    }
+    setUploadedFile({ file, format })
+    setError(null)
+  }, [])
+
+  const submitUploadedFile = useCallback(async () => {
+    if (!uploadedFile) return
+    const queueStatus = await checkQueue()
+    if (queueStatus.active > 0) {
+      setState(STATE.QUEUED)
+      setQueuePosition(queueStatus.queued + 1)
+      setQueueTotal(queueStatus.active + queueStatus.queued + 1)
+      pollRef.current = setInterval(async () => {
+        const status = await checkQueue()
+        if (status.active === 0) {
+          clearInterval(pollRef.current)
+          doSubmitFile()
+        } else {
+          setQueuePosition(Math.max(1, status.queued))
+          setQueueTotal(status.active + status.queued)
+        }
+      }, 3000)
+      return
+    }
+    doSubmitFile()
+  }, [uploadedFile, language, checkQueue, doSubmitFile])
 
   useEffect(() => () => { clearInterval(timerRef.current); clearInterval(pollRef.current); clearInterval(progressRef.current); chunksRef.current = [] }, [])
   const formatTime = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
