@@ -5,8 +5,7 @@ node_modules/
 *.log
 .DS_Store
 dist/
-data/
-!apps/interface/src/data/
+/data/
 records/
 research/
 docs/
