@@ -1017,16 +1017,15 @@ export default async function v5Routes(app) {
         if (value != null && Number.isFinite(value)) fullVector[id] = value;
       }
 
-      // 6. Single-session analysis — build self-referencing baseline so z-scores
-      //    stay near 0 (no drift from self). Use a generous std to avoid extreme z-scores.
-      const selfBaseline = { complete: true, sessions: 1, vector: {} };
+      // 6. Single-session analysis — use population norms as baseline (mean=0.5, std=0.12)
+      //    Since acoustic values are already normalized to 0-1 scale (0.5 = population mean),
+      //    we use 0.5 as baseline mean. This way z-scores reflect how the person's voice
+      //    compares to the general population rather than to themselves.
+      const popBaseline = { complete: true, sessions: 1, vector: {} };
       for (const id of ALL_INDICATOR_IDS) {
-        const val = fullVector[id];
-        selfBaseline.vector[id] = val != null
-          ? { mean: val, std: Math.max(0.15, Math.abs(val) * 0.3), n: 1 }
-          : { mean: 0.5, std: 0.15, n: 0 };
+        popBaseline.vector[id] = { mean: 0.5, std: 0.12, n: 100 };
       }
-      const result = analyzeSession(fullVector, selfBaseline, {}, [], topicResult.genre);
+      const result = analyzeSession(fullVector, popBaseline, {}, [], topicResult.genre);
 
       // Clamp domain scores to [-3, 3] for demo display (single-session can produce outliers)
       for (const [domain, score] of Object.entries(result.domain_scores)) {
