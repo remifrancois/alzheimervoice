@@ -165,6 +165,7 @@ export default function DemoPage() {
             Record yourself speaking for 30-60 seconds. Our V5 engine analyzes 107 cognitive indicators across 11 domains in real-time.
           </p>
           <p className="text-xs text-slate-500 mt-3">Currently available in English and French only.</p>
+          <p className="text-xs text-slate-600 mt-2">🔒 All recordings, data, and results are deleted immediately once the test is completed. Nothing is stored.</p>
         </div>
       </section>
 
