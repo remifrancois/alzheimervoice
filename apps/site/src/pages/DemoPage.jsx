@@ -229,11 +229,11 @@ export default function DemoPage() {
               <div className="py-8">
                 <div className="w-12 h-12 mx-auto border-4 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mb-4" />
                 <p className="text-sm text-slate-400">Analyzing your voice...</p>
-                <p className="text-xs text-slate-600 mt-1">Acoustic extraction + Whisper transcription + NLP analysis</p>
+                <p className="text-xs text-slate-600 mt-1">Acoustic extraction + Claude transcription + NLP analysis</p>
                 <p className="text-xs text-slate-600 mt-1">This may take 20-40 seconds on our Graviton server.</p>
                 <div className="mt-4 flex items-center justify-center gap-3 text-[11px] text-slate-600">
                   <span>🔊 Acoustic</span><span>→</span>
-                  <span>🗣️ Whisper</span><span>→</span>
+                  <span>🗣️ Claude</span><span>→</span>
                   <span>🧠 NLP</span><span>→</span>
                   <span>📊 Scoring</span>
                 </div>
@@ -294,7 +294,7 @@ export default function DemoPage() {
                 <li className="flex items-start gap-2"><span className="text-blue-400 mt-0.5">1.</span> ffmpeg converts WebM → 16kHz WAV</li>
                 <li className="flex items-start gap-2"><span className="text-blue-400 mt-0.5">2.</span> Python parselmouth (Praat) extracts F0, jitter, shimmer, HNR, CPP, formants</li>
                 <li className="flex items-start gap-2"><span className="text-blue-400 mt-0.5">3.</span> nolds computes nonlinear dynamics (PPE, RPDE, DFA, D2)</li>
-                <li className="flex items-start gap-2"><span className="text-blue-400 mt-0.5">4.</span> OpenAI Whisper transcribes with word-level timestamps</li>
+                <li className="flex items-start gap-2"><span className="text-blue-400 mt-0.5">4.</span> Claude transcribes with word-level timestamps</li>
                 <li className="flex items-start gap-2"><span className="text-blue-400 mt-0.5">5.</span> 27 acoustic + 5 temporal indicators extracted</li>
               </ul>
             </div>
@@ -315,7 +315,7 @@ export default function DemoPage() {
             <span className="text-lg mt-0.5">⚡</span>
             <div>
               <p className="text-sm text-white font-medium">Serverless Lambda Version in Development</p>
-              <p className="text-xs text-slate-400 mt-1">A fully serverless architecture using AWS Lambda + Lambda Layers (ffmpeg, Whisper, Python audio stack) is currently in development. This will enable auto-scaling, zero idle cost, and sub-second cold starts — removing the single-server bottleneck of the current Graviton deployment.</p>
+              <p className="text-xs text-slate-400 mt-1">A fully serverless architecture using AWS Lambda + Lambda Layers (ffmpeg, Claude, Python audio stack) is currently in development. This will enable auto-scaling, zero idle cost, and sub-second cold starts — removing the single-server bottleneck of the current Graviton deployment.</p>
             </div>
           </div>
 
@@ -324,7 +324,7 @@ export default function DemoPage() {
             {[
               { icon: '🎤', title: 'Record', desc: 'Audio captured in your browser via WebRTC. Never leaves until you click Analyze.' },
               { icon: '📡', title: 'Send', desc: 'Base64-encoded audio sent via HTTPS directly to our Graviton server. No S3, no intermediary storage.' },
-              { icon: '🧠', title: 'Analyze', desc: 'Whisper transcribes, Praat extracts acoustics, NLP scores 107 indicators. All in-memory on the server.' },
+              { icon: '🧠', title: 'Analyze', desc: 'Claude transcribes, Praat extracts acoustics, NLP scores 107 indicators. All in-memory on the server.' },
               { icon: '🗑️', title: 'Delete', desc: 'Audio buffer and transcript deleted from server memory immediately. Only computed scores returned.' },
             ].map(s => (
               <div key={s.title} className="p-4 rounded-xl bg-white/[0.02] border border-white/5 text-center">

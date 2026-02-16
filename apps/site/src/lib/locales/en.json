@@ -462,7 +462,7 @@
     "custom1Title": "Voice API Flexibility",
     "custom1Desc": "Switch between voice providers \u2014 Twilio, Vonage, or any SIP-compatible service. The engine is voice-API agnostic.",
     "custom2Title": "LLM Provider Switching",
-    "custom2Desc": "While optimized for Claude, the engine supports any OpenAI-compatible API. Use GPT-4, Llama, Mistral, or your own fine-tuned models.",
+    "custom2Desc": "While optimized for Claude, the engine supports any LLM-compatible API. Use Llama, Mistral, or your own fine-tuned models.",
     "custom3Title": "Local Deployment",
     "custom3Desc": "Run entirely on your own infrastructure. No external API calls required if you use a local LLM. Full data sovereignty guaranteed.",
     "custom4Title": "Custom Indicators",

@@ -389,7 +389,7 @@
     "custom1Title": "音声APIの柔軟性",
     "custom1Desc": "音声プロバイダを切り替え可能 — Twilio、Vonage、または任意のSIP互換サービス。エンジンは音声APIに依存しません。",
     "custom2Title": "LLMプロバイダの切り替え",
-    "custom2Desc": "Claude に最適化されていますが、任意の OpenAI 互換APIをサポートします。GPT-4、Llama、Mistral、または独自のファインチューニング済みモデルをご利用ください。",
+    "custom2Desc": "Claude に最適化されていますが、任意のLLM互換APIをサポートします。Llama、Mistral、または独自のファインチューニング済みモデルをご利用ください。",
     "custom3Title": "ローカルデプロイ",
     "custom3Desc": "自社のインフラストラクチャで完全に実行可能。ローカルLLMを使用すれば外部APIコールは不要です。完全なデータ主権を保証します。",
     "custom4Title": "カスタム次元",

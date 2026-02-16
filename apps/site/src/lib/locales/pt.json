@@ -389,7 +389,7 @@
     "custom1Title": "Flexibilidade de API de Voz",
     "custom1Desc": "Alterne entre provedores de voz — Twilio, Vonage ou qualquer servico compativel com SIP. O motor e agnostico em relacao a API de voz.",
     "custom2Title": "Troca de Provedor de LLM",
-    "custom2Desc": "Embora otimizado para Claude, o motor suporta qualquer API compativel com OpenAI. Use GPT-4, Llama, Mistral ou seus proprios modelos ajustados.",
+    "custom2Desc": "Embora otimizado para Claude, o motor suporta qualquer API LLM compatível. Use Llama, Mistral ou seus próprios modelos ajustados.",
     "custom3Title": "Implantacao Local",
     "custom3Desc": "Execute inteiramente em sua propria infraestrutura. Nenhuma chamada de API externa necessaria se voce usar um LLM local. Soberania total dos dados garantida.",
     "custom4Title": "Dimensoes Personalizadas",
