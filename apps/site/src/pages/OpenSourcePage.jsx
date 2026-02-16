@@ -110,9 +110,9 @@ export default function OpenSourcePage() {
             ))}
           </ul>
           <div className="text-center">
-            <button onClick={() => navigate('demo')} className="px-6 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors">
+            <a href="https://app.alzheimervoice.org/register" target="_blank" rel="noopener noreferrer" className="px-6 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors inline-block">
               {t('opensource.saasButton')}
-            </button>
+            </a>
           </div>
         </div>
       </Section>

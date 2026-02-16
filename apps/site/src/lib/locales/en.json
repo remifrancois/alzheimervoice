@@ -474,8 +474,8 @@
     "saasFeature1": "Managed infrastructure with 99.9% uptime SLA",
     "saasFeature2": "Automatic updates and security patches",
     "saasFeature3": "HIPAA-compliant hosting and data handling",
-    "saasFeature4": "Dedicated onboarding and clinical support team",
-    "saasButton": "Contact for SaaS Pricing",
+    "saasFeature4": "Dedicated onboarding and support team",
+    "saasButton": "Register as a Family",
     "backToHome": "Back to Home"
   },
   "demo": {
