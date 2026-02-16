@@ -204,6 +204,12 @@ export default function DemoResultsPage() {
             {/* Explain what the alert level means */}
             <p className="text-xs text-slate-400 mt-4 max-w-xl mx-auto leading-relaxed">{a.desc}</p>
           </div>
+
+          {/* Single-test notice */}
+          <div className="mt-6 p-4 rounded-xl bg-blue-500/5 border border-blue-500/10 flex items-start gap-3">
+            <span className="text-lg mt-0.5">📌</span>
+            <p className="text-xs text-slate-400 leading-relaxed">This is a single-test snapshot. The V5 Engine is designed for deviation comparison over time — it becomes significantly more accurate with a 90-minute training baseline (approximately 18 sessions) and weekly recordings to track cognitive drift.</p>
+          </div>
         </div>
       </section>
 
