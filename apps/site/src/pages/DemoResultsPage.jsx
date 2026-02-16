@@ -24,20 +24,24 @@ const ALERT_COLORS = {
 function DomainBar({ domain, score }) {
   const info = DOMAIN_LABELS[domain] || { name: domain, icon: '📊', desc: '' }
   if (score == null) return null
+  const isExtreme = Math.abs(score) > 2.5
   const pct = Math.max(0, Math.min(100, (score + 2) * 25))
-  const color = score > 0.3 ? 'bg-emerald-500' : score < -0.5 ? 'bg-red-500' : score < -0.3 ? 'bg-yellow-500' : 'bg-blue-500'
+  const color = isExtreme ? 'bg-slate-500' : score > 0.3 ? 'bg-emerald-500' : score < -0.5 ? 'bg-red-500' : score < -0.3 ? 'bg-yellow-500' : 'bg-blue-500'
   return (
     <div className="flex items-center gap-3 py-2.5">
       <span className="text-lg w-7">{info.icon}</span>
       <div className="flex-1 min-w-0">
         <div className="flex justify-between text-xs mb-1">
           <span className="text-slate-300 font-medium">{info.name}</span>
-          <span className="text-slate-500">{score.toFixed(2)}</span>
+          <span className={isExtreme ? 'text-slate-600' : 'text-slate-500'}>{score.toFixed(2)}</span>
         </div>
         <div className="h-2.5 rounded-full bg-white/5 overflow-hidden">
           <div className={`h-full rounded-full ${color} transition-all duration-1000`} style={{ width: `${pct}%` }} />
         </div>
         <p className="text-[10px] text-slate-600 mt-0.5">{info.desc}</p>
+        {isExtreme && (
+          <p className="text-[10px] text-yellow-500/70 mt-0.5">⚠️ Insufficient data for this domain in demo mode — score may not be reliable.</p>
+        )}
       </div>
     </div>
   )
@@ -90,6 +94,14 @@ export default function DemoResultsPage() {
 
   return (
     <div className="pt-20 min-h-screen">
+      {/* Medical disclaimer banner */}
+      <div className="bg-yellow-500/10 border-b border-yellow-500/20">
+        <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-center gap-2">
+          <span className="text-sm">⚕️</span>
+          <p className="text-xs text-yellow-400 text-center">This is a research demonstration only. Results are not a medical diagnosis. Consult a healthcare professional for any health concerns.</p>
+        </div>
+      </div>
+
       {/* Header */}
       <section className="py-12 bg-gradient-to-b from-violet-950/20 to-transparent">
         <div className="max-w-5xl mx-auto px-6">
