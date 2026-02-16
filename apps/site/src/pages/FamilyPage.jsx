@@ -55,19 +55,6 @@ export default function FamilyPage() {
         </div>
       </Section>
 
-      {/* Peace of Mind */}
-      <Section>
-        <SectionHeader label={t('familyPage.peaceMindLabel')} title={t('familyPage.peaceMindTitle')} highlight={t('familyPage.peaceMindHighlight')} />
-        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {[1, 2, 3, 4].map(i => (
-            <div key={i} className="p-6 rounded-xl bg-white/[0.02] border border-white/5">
-              <h3 className="text-sm font-semibold text-white mb-2">{t(`familyPage.peace${i}Title`)}</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">{t(`familyPage.peace${i}Desc`)}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
       {/* Two Modes */}
       <Section className="bg-white/[0.01]">
         <div className="text-center mb-16">
@@ -130,6 +117,19 @@ export default function FamilyPage() {
               </div>
             </div>
           </div>
+        </div>
+      </Section>
+
+      {/* Peace of Mind */}
+      <Section>
+        <SectionHeader label={t('familyPage.peaceMindLabel')} title={t('familyPage.peaceMindTitle')} highlight={t('familyPage.peaceMindHighlight')} />
+        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="p-6 rounded-xl bg-white/[0.02] border border-white/5">
+              <h3 className="text-sm font-semibold text-white mb-2">{t(`familyPage.peace${i}Title`)}</h3>
+              <p className="text-sm text-slate-400 leading-relaxed">{t(`familyPage.peace${i}Desc`)}</p>
+            </div>
+          ))}
         </div>
       </Section>
 
