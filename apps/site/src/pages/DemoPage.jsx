@@ -33,6 +33,19 @@ const ACCEPTED_FORMATS = { 'audio/wav': 'wav', 'audio/x-wav': 'wav', 'audio/wave
 const ACCEPTED_EXTENSIONS = { wav: 'wav', mp3: 'mp3', ogg: 'ogg', webm: 'webm', flac: 'flac' }
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
+const PROGRESS_STAGES = [
+  { at: 0, label: 'Uploading audio...' },
+  { at: 8, label: 'Converting audio format...' },
+  { at: 15, label: 'Extracting acoustic features (F0, jitter, shimmer)...' },
+  { at: 30, label: 'Computing nonlinear dynamics (PPE, RPDE, DFA)...' },
+  { at: 45, label: 'Transcribing speech with Claude...' },
+  { at: 62, label: 'Running 25 NLP anchors...' },
+  { at: 75, label: 'Assembling 107-indicator vector...' },
+  { at: 85, label: 'Scoring 11 cognitive domains...' },
+  { at: 92, label: 'Running 35-rule differential engine...' },
+  { at: 97, label: 'Finalizing results...' },
+]
+
 export default function DemoPage() {
   const { navigate } = useRouter()
   const { lang } = useT()
@@ -169,31 +182,17 @@ export default function DemoPage() {
   }, [])
 
   // Simulated progress bar — models the real pipeline timing
-  const STAGES = [
-    { at: 0, label: 'Uploading audio...' },
-    { at: 8, label: 'Converting audio format...' },
-    { at: 15, label: 'Extracting acoustic features (F0, jitter, shimmer)...' },
-    { at: 30, label: 'Computing nonlinear dynamics (PPE, RPDE, DFA)...' },
-    { at: 45, label: 'Transcribing speech with Claude...' },
-    { at: 62, label: 'Running 25 NLP anchors...' },
-    { at: 75, label: 'Assembling 107-indicator vector...' },
-    { at: 85, label: 'Scoring 11 cognitive domains...' },
-    { at: 92, label: 'Running 35-rule differential engine...' },
-    { at: 97, label: 'Finalizing results...' },
-  ]
   const startProgress = useCallback(() => {
     setProgress(0)
-    setProgressStage(STAGES[0].label)
+    setProgressStage(PROGRESS_STAGES[0].label)
     let elapsed = 0
     clearInterval(progressRef.current)
     progressRef.current = setInterval(() => {
       elapsed += 0.5
-      // Ease-out curve: fast start, slows near end. Caps at 98% until real response arrives.
       const pct = Math.min(98, Math.round(100 * (1 - Math.exp(-elapsed / 18))))
       setProgress(pct)
-      // Find current stage
-      for (let i = STAGES.length - 1; i >= 0; i--) {
-        if (pct >= STAGES[i].at) { setProgressStage(STAGES[i].label); break }
+      for (let i = PROGRESS_STAGES.length - 1; i >= 0; i--) {
+        if (pct >= PROGRESS_STAGES[i].at) { setProgressStage(PROGRESS_STAGES[i].label); break }
       }
     }, 500)
   }, [])
