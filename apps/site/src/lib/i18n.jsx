@@ -28,7 +28,7 @@ const loaders = {
 
 const I18nContext = createContext()
 
-const PAGE_SLUGS = new Set(['cognitivevoicefingerprint', 'family', 'opensource', 'demo', 'privacy', 'legal', 'compliance', 'creators', 'corevoiceframework'])
+const PAGE_SLUGS = new Set(['science', 'cognitivevoicefingerprint', 'family', 'opensource', 'demo', 'privacy', 'legal', 'compliance', 'creators'])
 
 function getLangFromPath() {
   const seg = window.location.pathname.split('/')[1]

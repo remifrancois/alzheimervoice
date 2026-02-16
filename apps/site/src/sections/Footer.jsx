@@ -31,8 +31,8 @@ export default function Footer() {
           <div>
             <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">{t('footer.researchHeader')}</h4>
             <ul className="space-y-2">
-              <li><a href={buildPath(lang, 'cognitivevoicefingerprint')} onClick={(e) => handleNav(e, 'cognitivevoicefingerprint')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkScience')}</a></li>
-              <li><a href={buildPath(lang, 'corevoiceframework')} onClick={(e) => handleNav(e, 'corevoiceframework')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkCvf')}</a></li>
+              <li><a href={buildPath(lang, 'science')} onClick={(e) => handleNav(e, 'science')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkScience')}</a></li>
+              <li><a href={buildPath(lang, 'cognitivevoicefingerprint')} onClick={(e) => handleNav(e, 'cognitivevoicefingerprint')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkCvf')}</a></li>
               <li><a href={buildPath(lang, 'opensource')} onClick={(e) => handleNav(e, 'opensource')} className="text-sm text-slate-500 hover:text-white transition-colors">{t('footer.linkOpenSource')}</a></li>
             </ul>
           </div>

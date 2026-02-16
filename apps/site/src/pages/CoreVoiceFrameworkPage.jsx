@@ -295,7 +295,7 @@ export default function CoreVoiceFrameworkPage() {
       <Section>
         <div className="text-center">
           <div className="flex items-center justify-center gap-4">
-            <button onClick={() => navigate('cognitivevoicefingerprint')} className="px-6 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors">
+            <button onClick={() => navigate('science')} className="px-6 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors">
               {t('nav.scientific')}
             </button>
             <button onClick={() => navigate('home')} className="px-6 py-3 rounded-lg border border-white/10 hover:border-white/20 text-sm font-medium text-slate-300 transition-colors">

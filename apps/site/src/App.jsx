@@ -24,7 +24,8 @@ import CreatorsPage from './pages/CreatorsPage'
 import CoreVoiceFrameworkPage from './pages/CoreVoiceFrameworkPage'
 
 const pages = {
-  cognitivevoicefingerprint: ScientificPage,
+  science: ScientificPage,
+  cognitivevoicefingerprint: CoreVoiceFrameworkPage,
   family: FamilyPage,
   opensource: OpenSourcePage,
   demo: DemoPage,
@@ -32,7 +33,6 @@ const pages = {
   legal: LegalPage,
   compliance: CompliancePage,
   creators: CreatorsPage,
-  corevoiceframework: CoreVoiceFrameworkPage,
   trydemo: DemoPage,
 }
 
