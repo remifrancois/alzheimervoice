@@ -122,7 +122,6 @@ export default function SettingsPage() {
                 </tr>
               </thead>
               <tbody>
-                <UserRow name="Dr. Remi Francois" email="remi@memovoice.ai" role="Admin" active t={t} />
                 <UserRow name="Dr. Sophie Martin" email="sophie@memovoice.ai" role="Clinician" active t={t} />
                 <UserRow name="Pierre Dupont" email="pierre@family.com" role="Family" active={false} t={t} />
               </tbody>
