@@ -960,34 +960,25 @@ export default async function v5Routes(app) {
       // Clear the base64 string from the request body to free memory early
       request.body.audioBase64 = null;
 
-      // 1. Extract acoustic features + Whisper transcription
+      // 1. Extract acoustic features (no Whisper — too slow for ARM CPU)
       const audioResult = await extractAcousticFeatures(audioBuffer, {
         format: audioFormat || 'webm',
         gender: 'unknown',
-        gpu: true,
-        whisperModel: 'base',
-        wordTimestamps: true,
+        gpu: false,
+        wordTimestamps: false,
       });
 
       const acousticVector = audioResult.acousticVector || {};
-      const whisperResult = audioResult.whisperResult || null;
       const temporalIndicators = audioResult.temporalIndicators || {};
-      const transcript = whisperResult?.transcript || '';
 
       // Audio buffer no longer needed — release memory
       audioBuffer = null;
 
       // Check if the acoustic pipeline failed entirely (all null values = Python crash)
       const hasAnyAcoustic = Object.values(acousticVector).some(v => v != null);
-      if (!hasAnyAcoustic && !whisperResult) {
+      if (!hasAnyAcoustic) {
         return reply.code(500).send({
           error: 'Audio processing pipeline failed. The server may be missing Python dependencies. Please try again or contact support.',
-        });
-      }
-
-      if (!transcript || transcript.trim().length < 5) {
-        return reply.code(400).send({
-          error: 'No speech detected in the recording. Please try again with a longer recording (at least 30 seconds of clear speech).',
         });
       }
 
@@ -995,11 +986,11 @@ export default async function v5Routes(app) {
       const f0Mean = acousticVector.ACU_F0_MEAN;
       const detectedGender = f0Mean != null && f0Mean < 0.4 ? 'male' : 'female';
 
-      // 3. Compute deterministic NLP anchors from transcript
-      const nlpAnchors = computeDeterministicIndicators(transcript, language || 'fr');
+      // 3. NLP anchors skipped (no transcript in acoustic-only mode)
+      const nlpAnchors = {};
 
-      // 4. Detect topic genre
-      const topicResult = detectTopicGenre(transcript);
+      // 4. Topic genre defaults to 'daily' without transcript
+      const topicResult = { genre: 'daily', confidence: 0 };
 
       // 5. Build full feature vector (107 indicators)
       const fullVector = {};
@@ -1046,13 +1037,11 @@ export default async function v5Routes(app) {
 
       return {
         version: 'v5',
-        mode: 'demo_instant',
+        mode: 'demo_acoustic',
         engine_codename: 'deep_voice',
         timestamp: new Date().toISOString(),
         processing_ms: Math.round(duration),
         detected_gender: detectedGender,
-        transcript,
-        word_count: transcript.split(/\s+/).filter(w => w.length > 0).length,
         language: language || 'fr',
         topic_genre: topicResult.genre,
         topic_confidence: topicResult.confidence,
@@ -1076,7 +1065,6 @@ export default async function v5Routes(app) {
         },
         cascade: result.cascade,
         sentinel_alerts: result.sentinel_alerts,
-        nlp_anchors: nlpAnchors,
         acoustic_summary: {
           f0_mean: acousticVector.ACU_F0_MEAN,
           f0_sd: acousticVector.ACU_F0_SD,

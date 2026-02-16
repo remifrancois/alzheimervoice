@@ -116,8 +116,6 @@ export default function DemoResultsPage() {
               <span>•</span>
               <span>{(result.processing_ms / 1000).toFixed(1)}s processing</span>
               <span>•</span>
-              <span>{result.word_count} words</span>
-              <span>•</span>
               <span>{result.detected_gender}</span>
             </div>
           </div>
