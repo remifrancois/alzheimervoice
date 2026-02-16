@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useRouter } from '../lib/router'
 
-const CVF_URL = import.meta.env.VITE_CVF_URL || 'http://localhost:3002'
+const CVF_URL = import.meta.env.VITE_CVF_URL || 'https://cvf.alzheimervoice.org'
 
 const DOMAIN_LABELS = {
   lexical: { name: 'Lexical', icon: '📝', desc: 'Word choice & vocabulary richness' },
@@ -134,6 +134,7 @@ export default function DemoPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ audioBase64: base64, audioFormat: 'webm', language: 'fr' }),
+        signal: AbortSignal.timeout(120000),
       })
       if (!resp.ok) {
         const err = await resp.json().catch(() => ({}))
@@ -207,6 +208,7 @@ export default function DemoPage() {
                   <div className="w-12 h-12 mx-auto border-4 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mb-4" />
                   <p className="text-sm text-slate-400">Analyzing your voice...</p>
                   <p className="text-xs text-slate-600 mt-1">Acoustic extraction + Whisper transcription + NLP analysis</p>
+                  <p className="text-xs text-slate-600 mt-1">This may take 20-40 seconds — the engine processes your recording on a dedicated server.</p>
                 </div>
               )}
               {state === STATE.ERROR && (
