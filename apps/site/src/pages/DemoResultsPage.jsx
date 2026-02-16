@@ -239,6 +239,9 @@ export default function DemoResultsPage() {
         {/* Disclaimer */}
         <div className="p-4 rounded-lg bg-yellow-500/5 border border-yellow-500/10">
           <p className="text-xs text-yellow-400/80 text-center">{result.disclaimer || 'This is a research demonstration only. Results are not a medical diagnosis. Consult a healthcare professional for any health concerns.'}</p>
+          {result.mode === 'demo_acoustic' && (
+            <p className="text-xs text-yellow-400/60 text-center mt-2">⚠️ Demo mode — acoustic indicators only. The full 107-indicator analysis (NLP anchors, Claude AI transcription, temporal dynamics) requires production infrastructure funded through SaaS subscriptions.</p>
+          )}
         </div>
 
         {/* Footer actions */}

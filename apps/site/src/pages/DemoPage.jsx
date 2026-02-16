@@ -296,6 +296,7 @@ export default function DemoPage() {
             Record yourself speaking for 30-60 seconds. Our V5 engine analyzes 107 cognitive indicators across 11 domains in real-time.
           </p>
           <p className="text-xs text-slate-500 mt-3">Currently available in English and French only.</p>
+          <p className="text-xs text-yellow-500/70 mt-2">⚠️ Demo mode — acoustic analysis only. Full 107-indicator analysis with Claude AI transcription available on the SaaS platform.</p>
           <p className="text-xs text-slate-600 mt-2">🔒 Your audio is sent directly to our analysis server, processed in memory, and immediately discarded. No recordings, transcripts, or results are ever stored.</p>
         </div>
       </section>
@@ -502,6 +503,16 @@ export default function DemoPage() {
             <div>
               <p className="text-sm text-white font-medium">Serverless Lambda Version in Development</p>
               <p className="text-xs text-slate-400 mt-1">A fully serverless architecture using AWS Lambda + Lambda Layers (ffmpeg, Claude, Python audio stack) is currently in development. This will enable auto-scaling, zero idle cost, and sub-second cold starts — removing the single-server bottleneck of the current Graviton deployment.</p>
+            </div>
+          </div>
+
+          {/* Demo limitation notice */}
+          <div className="p-4 rounded-xl bg-yellow-500/5 border border-yellow-500/10 flex items-start gap-3 mb-8">
+            <span className="text-lg mt-0.5">⚠️</span>
+            <div>
+              <p className="text-sm text-white font-medium">Demo Limitations</p>
+              <p className="text-xs text-slate-400 mt-1">This demo runs on a minimal AWS Graviton instance (t4g.small, 2 vCPU, 2GB RAM) without GPU acceleration or Anthropic API integration. As a result, only acoustic indicators are extracted — the full 107-indicator analysis (including NLP anchors and Claude-powered transcription) requires production-grade infrastructure.</p>
+              <p className="text-xs text-slate-400 mt-2">The full V5 engine with Claude API transcription, GPU-accelerated feature extraction, and real-time NLP analysis is available through the SaaS platform. Paid subscriptions fund the AWS infrastructure and Anthropic API costs required to run the complete cognitive analysis pipeline.</p>
             </div>
           </div>
 
