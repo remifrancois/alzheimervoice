@@ -43,11 +43,14 @@ export default function DemoPage() {
   const [queuePosition, setQueuePosition] = useState(0)
   const [queueTotal, setQueueTotal] = useState(0)
   const [uploadedFile, setUploadedFile] = useState(null)
+  const [progress, setProgress] = useState(0)
+  const [progressStage, setProgressStage] = useState('')
   const mediaRef = useRef(null)
   const chunksRef = useRef([])
   const timerRef = useRef(null)
   const pollRef = useRef(null)
   const fileInputRef = useRef(null)
+  const progressRef = useRef(null)
 
   // Check queue status before recording
   const checkQueue = useCallback(async () => {
@@ -112,6 +115,7 @@ export default function DemoPage() {
 
   const submitAudio = useCallback(async () => {
     setState(STATE.PROCESSING)
+    startProgress()
     try {
       const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
       chunksRef.current = []
@@ -141,13 +145,15 @@ export default function DemoPage() {
       const { transcript, nlp_anchors, ...safeResult } = data
       // Store in sessionStorage and navigate to results page
       sessionStorage.setItem('cvf_demo_result', JSON.stringify(safeResult))
+      stopProgress()
       navigate('demoresults')
     } catch (err) {
+      stopProgress()
       setError(err.message)
       setState(STATE.ERROR)
       chunksRef.current = []
     }
-  }, [language, navigate])
+  }, [language, navigate, startProgress, stopProgress])
 
   const reset = useCallback(() => {
     setState(STATE.IDLE)
@@ -155,8 +161,46 @@ export default function DemoPage() {
     setSeconds(0)
     setQueuePosition(0)
     setUploadedFile(null)
+    setProgress(0)
+    setProgressStage('')
     chunksRef.current = []
     clearInterval(pollRef.current)
+    clearInterval(progressRef.current)
+  }, [])
+
+  // Simulated progress bar — models the real pipeline timing
+  const STAGES = [
+    { at: 0, label: 'Uploading audio...' },
+    { at: 8, label: 'Converting audio format...' },
+    { at: 15, label: 'Extracting acoustic features (F0, jitter, shimmer)...' },
+    { at: 30, label: 'Computing nonlinear dynamics (PPE, RPDE, DFA)...' },
+    { at: 45, label: 'Transcribing speech with Claude...' },
+    { at: 62, label: 'Running 25 NLP anchors...' },
+    { at: 75, label: 'Assembling 107-indicator vector...' },
+    { at: 85, label: 'Scoring 11 cognitive domains...' },
+    { at: 92, label: 'Running 35-rule differential engine...' },
+    { at: 97, label: 'Finalizing results...' },
+  ]
+  const startProgress = useCallback(() => {
+    setProgress(0)
+    setProgressStage(STAGES[0].label)
+    let elapsed = 0
+    clearInterval(progressRef.current)
+    progressRef.current = setInterval(() => {
+      elapsed += 0.5
+      // Ease-out curve: fast start, slows near end. Caps at 98% until real response arrives.
+      const pct = Math.min(98, Math.round(100 * (1 - Math.exp(-elapsed / 18))))
+      setProgress(pct)
+      // Find current stage
+      for (let i = STAGES.length - 1; i >= 0; i--) {
+        if (pct >= STAGES[i].at) { setProgressStage(STAGES[i].label); break }
+      }
+    }, 500)
+  }, [])
+  const stopProgress = useCallback(() => {
+    clearInterval(progressRef.current)
+    setProgress(100)
+    setProgressStage('Done!')
   }, [])
 
   const handleFileSelect = useCallback((e) => {
@@ -206,6 +250,7 @@ export default function DemoPage() {
   const doSubmitFile = useCallback(async () => {
     if (!uploadedFile) return
     setState(STATE.PROCESSING)
+    startProgress()
     try {
       const { file, format } = uploadedFile
       const buffer = await file.arrayBuffer()
@@ -232,16 +277,18 @@ export default function DemoPage() {
       const data = await resp.json()
       const { transcript, nlp_anchors, ...safeResult } = data
       sessionStorage.setItem('cvf_demo_result', JSON.stringify(safeResult))
+      stopProgress()
       setUploadedFile(null)
       navigate('demoresults')
     } catch (err) {
+      stopProgress()
       setError(err.message)
       setState(STATE.ERROR)
       setUploadedFile(null)
     }
-  }, [uploadedFile, language, navigate])
+  }, [uploadedFile, language, navigate, startProgress, stopProgress])
 
-  useEffect(() => () => { clearInterval(timerRef.current); clearInterval(pollRef.current); chunksRef.current = [] }, [])
+  useEffect(() => () => { clearInterval(timerRef.current); clearInterval(pollRef.current); clearInterval(progressRef.current); chunksRef.current = [] }, [])
   const formatTime = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
 
   return (
@@ -356,16 +403,34 @@ export default function DemoPage() {
             )}
             {state === STATE.PROCESSING && (
               <div className="py-8">
-                <div className="w-12 h-12 mx-auto border-4 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mb-4" />
-                <p className="text-sm text-slate-400">Analyzing your voice...</p>
-                <p className="text-xs text-slate-600 mt-1">Acoustic extraction + Claude transcription + NLP analysis</p>
-                <p className="text-xs text-slate-600 mt-1">This may take 20-40 seconds on our Graviton server.</p>
-                <div className="mt-4 flex items-center justify-center gap-3 text-[11px] text-slate-600">
-                  <span>🔊 Acoustic</span><span>→</span>
-                  <span>🗣️ Claude</span><span>→</span>
-                  <span>🧠 NLP</span><span>→</span>
-                  <span>📊 Scoring</span>
+                <p className="text-sm font-medium text-white mb-4">Analyzing your voice...</p>
+                {/* Progress bar */}
+                <div className="w-full h-3 rounded-full bg-white/5 overflow-hidden mb-3">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-violet-600 to-blue-500 transition-all duration-500 ease-out"
+                    style={{ width: `${progress}%` }}
+                  />
                 </div>
+                <div className="flex justify-between items-center mb-4">
+                  <p className="text-xs text-slate-400">{progressStage}</p>
+                  <span className="text-xs font-mono text-slate-500">{progress}%</span>
+                </div>
+                {/* Pipeline steps */}
+                <div className="flex items-center justify-center gap-2 text-[11px]">
+                  {[
+                    { icon: '🔊', label: 'Acoustic', at: 8 },
+                    { icon: '🗣️', label: 'Transcribe', at: 45 },
+                    { icon: '🧠', label: 'NLP', at: 62 },
+                    { icon: '📊', label: 'Scoring', at: 85 },
+                  ].map((step, i) => (
+                    <span key={step.label} className="flex items-center gap-1">
+                      {i > 0 && <span className="text-slate-700 mx-1">→</span>}
+                      <span className={progress >= step.at ? 'text-slate-300' : 'text-slate-600'}>{step.icon} {step.label}</span>
+                      {progress >= step.at + 10 && <span className="text-emerald-500">✓</span>}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-[10px] text-slate-600 mt-4">Processing on our Graviton ARM64 server. Typically 20-40 seconds.</p>
               </div>
             )}
             {state === STATE.ERROR && (
