@@ -25,6 +25,9 @@ await app.register(cors, {
   origin: [
     process.env.API_URL || 'http://localhost:3001',
     process.env.SITE_URL || 'http://localhost:5175',
+    'https://alzheimervoice.org',
+    'https://www.alzheimervoice.org',
+    'https://alzheimervoice.vercel.app',
   ],
   credentials: true,
 });

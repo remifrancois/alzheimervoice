@@ -943,7 +943,10 @@ export default async function v5Routes(app) {
     const start = performance.now();
 
     try {
-      const audioBuffer = Buffer.from(audioBase64, 'base64');
+      // Decode audio — this is the only copy; it stays in memory only during processing
+      let audioBuffer = Buffer.from(audioBase64, 'base64');
+      // Clear the base64 string from the request body to free memory early
+      request.body.audioBase64 = null;
 
       // 1. Extract acoustic features + Whisper transcription
       const audioResult = await extractAcousticFeatures(audioBuffer, {
@@ -958,6 +961,9 @@ export default async function v5Routes(app) {
       const whisperResult = audioResult.whisperResult || null;
       const temporalIndicators = audioResult.temporalIndicators || {};
       const transcript = whisperResult?.transcript || '';
+
+      // Audio buffer no longer needed — release memory
+      audioBuffer = null;
 
       if (!transcript || transcript.trim().length < 5) {
         return reply.code(400).send({
@@ -1016,6 +1022,7 @@ export default async function v5Routes(app) {
       const totalCount = Object.values(fullVector).filter(v => v != null).length;
 
       const duration = performance.now() - start;
+      console.log(`[V5 demo-analyze] Completed in ${Math.round(duration)}ms — ${totalCount} indicators extracted. No data retained.`);
 
       return {
         version: 'v5',
