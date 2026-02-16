@@ -4,7 +4,7 @@
  * Extended rule-based differential diagnosis compiled from 80+ studies.
  * No LLM inference needed — the decision tree IS the science.
  *
- * 30 rules across 10 conditions:
+ * 35 rules across 11 conditions (V5.1: +3 age-normalization, V5.2: +2 VCI):
  *   1. Alzheimer's Disease (cascade pattern)
  *   2. Major Depression (episodic, affective)
  *   3. Parkinson's Disease (motor-dominant)
@@ -15,6 +15,7 @@
  *   8. Progressive Supranuclear Palsy (PSP — PD-like with stuttering)
  *   9. Lewy Body Dementia (LBD — fluctuating cognition + parkinsonism)
  *  10. Frontotemporal Dementia (FTD — behavioral/semantic variants)
+ *  11. Vascular Cognitive Impairment (VCI — executive+speed, step-wise decline)
  *
  * V5 additions over V4:
  *   - 2 new conditions: LBD (Lewy Body Dementia), FTD (Frontotemporal Dementia)
@@ -26,6 +27,15 @@
  *   - Topic-genre and indicator-confidence context integration
  *   - detectLBDPattern() and detectFTDPattern() exported helpers
  *
+ * V5.1 additions (age-normalization layer):
+ *   - Rule 31: Uniform age-consistent decline detection — boosts normal_aging,
+ *     dampens disease scores when decline is uniform and within age-band norms
+ *   - Rule 32: Acceleration requirement — disease requires accelerating decline
+ *     (2nd derivative), not just declining. Linear decline = aging.
+ *   - Rule 33: Excess decline beyond age norms — only flags disease when
+ *     domain decline rate exceeds age-expected rate (Salthouse 2004)
+ *   - context.patientAge and context.declineProfile integration
+ *
  * V4 additions over V3 (preserved):
  *   - 9 rules (15-23) for PD subtypes, MSA/PSP, acoustic depression
  *   - Updated Rule 6 depression weighting (r=0.458, Yamamoto 2020)
@@ -34,6 +44,7 @@
  */
 
 import { INDICATORS, DOMAINS, SENTINELS } from './indicators.js';
+import { getAgeBand, getAgeAdjustedRate, AGE_BANDS } from './trajectory.js';
 
 // ════════════════════════════════════════════════════════════════
 // MAIN ENTRY POINT
@@ -44,7 +55,7 @@ import { INDICATORS, DOMAINS, SENTINELS } from './indicators.js';
  *
  * @param {Object} domainScores — per-domain z-scores
  * @param {Object} zScores — per-indicator z-scores
- * @param {Object} context — { timeline, confounders, sessionCount, topicGenre, topicAdjustments, indicatorConfidence }
+ * @param {Object} context — { timeline, confounders, sessionCount, topicGenre, topicAdjustments, indicatorConfidence, patientAge, declineProfile }
  * @returns {Object} probability distribution + reasoning
  */
 export function runDifferential(domainScores, zScores, context = {}) {
@@ -59,6 +70,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
     psp: 0,
     lbd: 0,   // NEW in V5
     ftd: 0,   // NEW in V5
+    vci: 0,   // NEW in V5.2 — Vascular Cognitive Impairment
   };
 
   const evidence = {
@@ -72,6 +84,7 @@ export function runDifferential(domainScores, zScores, context = {}) {
     psp: [],
     lbd: [],  // NEW in V5
     ftd: [],  // NEW in V5
+    vci: [],  // NEW in V5.2
   };
 
   const flags = [];
@@ -547,6 +560,198 @@ export function runDifferential(domainScores, zScores, context = {}) {
     }
   }
 
+  // ════════════════════════════════════════════════════════════════
+  //
+  //  V5.1 RULES 31-33 — AGE-NORMALIZATION LAYER
+  //
+  //  Separates disease-driven decline from normal age-related decline.
+  //  Key principles:
+  //    1. Normal aging is UNIFORM across domains, disease is ASYMMETRIC
+  //    2. Normal aging is LINEAR, disease ACCELERATES
+  //    3. Decline within age-expected rates is NOT pathological
+  //
+  // ════════════════════════════════════════════════════════════════
+
+  // ════════════════════════════════════════════════
+  // RULE 31: Uniform Age-Consistent Decline
+  // When all domains decline at roughly the same rate AND that rate
+  // is within the age-band expected range → strong normal aging signal.
+  // Dampens disease scores proportionally.
+  //
+  // Salthouse 2004: general cognitive decline is domain-symmetric.
+  // Disease (AD, PD, FTD) always shows domain-specific leading edges.
+  // ════════════════════════════════════════════════
+  if (context.declineProfile?.age_consistent) {
+    scores.normal_aging += 0.40;
+    evidence.normal_aging.push(
+      'Decline rate is uniform across all domains and within age-expected range — consistent with normal aging, not disease'
+    );
+    // Dampen all disease scores — uniform decline is strongly anti-disease
+    for (const condition of ['alzheimer', 'parkinson', 'lbd', 'ftd', 'msa', 'psp', 'vci']) {
+      const reduction = scores[condition] * 0.4;
+      if (Number.isFinite(reduction) && reduction > 0) {
+        scores[condition] -= reduction;
+        evidence[condition].push(
+          `Score dampened by ${(reduction * 100).toFixed(0)}% — decline is uniform and age-consistent`
+        );
+      }
+    }
+    flags.push('age_consistent_decline');
+  }
+
+  // ════════════════════════════════════════════════
+  // RULE 32: Acceleration Requirement for Disease Flags
+  // Normal aging produces CONSTANT rate decline (linear slope).
+  // Neurodegenerative disease produces ACCELERATING decline
+  // (slope gets steeper over time — 2nd derivative is negative).
+  //
+  // If decline is NOT accelerating AND patient has known age,
+  // reduce disease flag confidence.
+  // If decline IS accelerating beyond age-expected rates,
+  // boost disease flag confidence.
+  // ════════════════════════════════════════════════
+  if (context.declineProfile?.acceleration) {
+    const accel = context.declineProfile.acceleration;
+    const acceleratingDomains = Object.entries(accel)
+      .filter(([, v]) => v < -0.003); // significant acceleration threshold
+
+    if (acceleratingDomains.length >= 2) {
+      // Multiple domains accelerating — strong disease signal
+      const leadingAccel = acceleratingDomains.sort(([, a], [, b]) => a - b);
+      const leadDomain = leadingAccel[0][0];
+
+      // Boost the most likely disease based on which domains accelerate
+      const adDomains = ['lexical', 'semantic', 'syntactic', 'memory'];
+      const pdDomains = ['acoustic', 'pd_motor'];
+      const ftdDomains = ['pragmatic', 'executive'];
+      const lbdDomains = ['executive', 'memory', 'acoustic'];
+
+      if (adDomains.includes(leadDomain)) {
+        scores.alzheimer += 0.15;
+        evidence.alzheimer.push(
+          `Accelerating decline in ${leadDomain} (accel=${leadingAccel[0][1].toFixed(4)}/week²) — disease trajectory, not aging`
+        );
+      }
+      if (pdDomains.includes(leadDomain)) {
+        scores.parkinson += 0.15;
+        evidence.parkinson.push(
+          `Accelerating motor decline in ${leadDomain} — PD progression signal`
+        );
+      }
+      if (ftdDomains.includes(leadDomain)) {
+        scores.ftd += 0.15;
+        evidence.ftd.push(
+          `Accelerating ${leadDomain} decline — FTD progression signal`
+        );
+      }
+      if (lbdDomains.includes(leadDomain)) {
+        scores.lbd += 0.10;
+        evidence.lbd.push(
+          `Accelerating decline in ${leadDomain} — possible LBD progression`
+        );
+      }
+      flags.push('accelerating_decline');
+    } else if (acceleratingDomains.length === 0 && context.patientAge) {
+      // NO acceleration detected — linear decline is more consistent with aging
+      scores.normal_aging += 0.10;
+      evidence.normal_aging.push(
+        'No acceleration detected in any domain — linear decline consistent with normal aging'
+      );
+      // Mild dampening of disease scores when there's no acceleration
+      for (const condition of ['alzheimer', 'parkinson', 'lbd', 'ftd', 'vci']) {
+        if (scores[condition] > 0.10) {
+          scores[condition] *= 0.85;
+        }
+      }
+    }
+  }
+
+  // ════════════════════════════════════════════════
+  // RULE 33: Excess Decline Beyond Age Norms
+  // Only flag disease when a domain declines FASTER than
+  // the age-expected rate. The excess (observed - expected)
+  // is the pathological signal, not the raw decline itself.
+  //
+  // This prevents an 80-year-old's naturally faster memory
+  // decline from being flagged as AD when it matches 80+ norms.
+  // ════════════════════════════════════════════════
+  if (context.declineProfile?.excess_decline && context.patientAge) {
+    const excess = context.declineProfile.excess_decline;
+    const significantExcess = Object.entries(excess)
+      .filter(([, v]) => v > 0.005); // 0.005/week excess threshold
+
+    if (significantExcess.length === 0) {
+      // No domain exceeds age-expected rate — boost normal aging
+      scores.normal_aging += 0.20;
+      evidence.normal_aging.push(
+        `All domain decline rates within age-expected range (${getAgeBand(context.patientAge)} band) — no pathological excess detected`
+      );
+    } else {
+      // Some domains exceed expected rate — map to conditions
+      for (const [domain, excessRate] of significantExcess) {
+        const excessStr = `${domain} excess: +${(excessRate * 52).toFixed(2)}/year beyond age norms`;
+        if (['semantic', 'lexical', 'memory'].includes(domain)) {
+          scores.alzheimer += 0.05;
+          evidence.alzheimer.push(excessStr);
+        }
+        if (['acoustic', 'pd_motor'].includes(domain)) {
+          scores.parkinson += 0.05;
+          evidence.parkinson.push(excessStr);
+        }
+        if (['pragmatic', 'executive'].includes(domain)) {
+          scores.ftd += 0.05;
+          evidence.ftd.push(excessStr);
+        }
+        if (['executive', 'temporal'].includes(domain)) {
+          scores.vci += 0.05;
+          evidence.vci.push(excessStr);
+        }
+      }
+    }
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  //
+  //  V5.2 RULES 34-35 — VASCULAR COGNITIVE IMPAIRMENT (VCI)
+  //
+  //  VCI is characterized by executive dysfunction + processing speed
+  //  decline with relatively preserved episodic memory, and a step-wise
+  //  (rather than gradual) decline pattern.
+  //
+  // ════════════════════════════════════════════════════════════════
+
+  // ════════════════════════════════════════════════
+  // RULE 34: VCI — Executive + Processing Speed + Preserved Memory
+  // Executive dysfunction and temporal/fluency decline with relatively
+  // preserved episodic memory is the hallmark VCI pattern.
+  // ════════════════════════════════════════════════
+  const exeDomain = domainScores.executive ?? 0;
+  const tmpDomain = domainScores.temporal ?? 0;
+  const memDomain = domainScores.memory ?? 0;
+
+  if (exeDomain < -0.4 && tmpDomain < -0.3 && memDomain > -0.25) {
+    scores.vci += 0.25;
+    evidence.vci.push(
+      `Executive dysfunction (${exeDomain.toFixed(2)}) + processing speed decline (${tmpDomain.toFixed(2)}) with preserved memory (${memDomain.toFixed(2)}) — VCI pattern`
+    );
+  }
+
+  // ════════════════════════════════════════════════
+  // RULE 35: VCI — Step-wise Decline + Executive Impairment
+  // VCI shows acute drops (vascular events) then plateau, unlike AD's
+  // gradual decline. Check timeline for acute_drop pattern combined
+  // with executive impairment.
+  // ════════════════════════════════════════════════
+  if (context.timeline?.length >= 4) {
+    const pattern = detectTemporalPattern(context.timeline);
+    if (pattern.type === 'acute_drop' && exeDomain < -0.3) {
+      scores.vci += 0.20;
+      evidence.vci.push(
+        `Step-wise decline pattern (acute drop at position ${pattern.drop_at}) with executive impairment — VCI step-wise progression`
+      );
+    }
+  }
+
   // ════════════════════════════════════════════════
   // NORMALIZE TO PROBABILITIES
   // ════════════════════════════════════════════════
@@ -578,6 +783,28 @@ export function runDifferential(domainScores, zScores, context = {}) {
   // Confidence: how decisive is the distribution?
   const confidence = Math.min(sorted[0][1] / (sorted[1][1] || 0.01) * 0.3, 0.95);
 
+  // ════════════════════════════════════════════════
+  // V5.2: INDEPENDENT (NON-ZERO-SUM) PROBABILITIES
+  // Sigmoid-mapped per-condition 0-1 scores that can overlap.
+  // Unlike zero-sum probabilities, multiple conditions can be
+  // simultaneously elevated, enabling mixed pathology detection.
+  // ════════════════════════════════════════════════
+  const independentProbabilities = {};
+  const diseaseConditions = ['alzheimer', 'depression', 'parkinson', 'lbd', 'ftd', 'msa', 'psp', 'vci'];
+  for (const [condition, rawScore] of Object.entries(scores)) {
+    // Sigmoid: maps raw accumulated score to 0-1 independently per condition.
+    // Center at 0.25 (typical activation threshold), steepness 6.
+    independentProbabilities[condition] = Math.round(
+      (1 / (1 + Math.exp(-6 * (rawScore - 0.25)))) * 1000
+    ) / 1000;
+  }
+
+  // Detect mixed pathology: 2+ disease conditions above 0.3
+  const elevatedConditions = diseaseConditions.filter(
+    c => independentProbabilities[c] > 0.3
+  );
+  const mixedPathology = elevatedConditions.length >= 2;
+
   return {
     probabilities,
     primary_hypothesis: primary,
@@ -586,7 +813,11 @@ export function runDifferential(domainScores, zScores, context = {}) {
     evidence,
     flags,
     rules_fired: Object.values(evidence).flat().length,
-    recommendation: generateRecommendation(primary, secondary, confidence, evidence)
+    recommendation: generateRecommendation(primary, secondary, confidence, evidence),
+    // V5.2 independent probabilities
+    independent_probabilities: independentProbabilities,
+    mixed_pathology: mixedPathology,
+    elevated_conditions: elevatedConditions,
   };
 }
 
@@ -917,6 +1148,13 @@ function generateRecommendation(primary, secondary, confidence, evidence) {
     }
     if (evidence.ftd?.some(e => e.includes('semantic'))) {
       recs.push('Semantic variant suspected — assess confrontation naming (Boston Naming Test) and word comprehension.');
+    }
+  } else if (primary === 'vci') {
+    recs.push('Executive dysfunction with preserved memory and step-wise decline suggests Vascular Cognitive Impairment (VCI).');
+    recs.push('Recommend brain MRI (white matter hyperintensities), vascular risk factor assessment, and neuropsychological battery.');
+    recs.push('Manage vascular risk factors (hypertension, diabetes, hyperlipidemia) to slow progression.');
+    if (secondary === 'alzheimer') {
+      recs.push('Mixed VCI+AD pathology is common — consider amyloid PET to evaluate AD co-pathology.');
     }
   }
 

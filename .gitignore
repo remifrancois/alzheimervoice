@@ -7,6 +7,7 @@ node_modules/
 dist/
 data/
 !apps/interface/src/data/
+records/
 research/
 .vercel
 .env*.local

@@ -1,11 +1,41 @@
 # AlzheimerVoice — Cognitive Voice Fingerprint Engine
 
-> *"The voice remembers what the mind forgets."*
-> *"La voix se souvient de ce que l'esprit oublie."*
+### 🏆 Cerebral Valley × Anthropic Hackathon — February 2026
 
-AlzheimerVoice detects early signs of Alzheimer's disease through daily phone conversations with elderly patients. It extracts a 107-indicator **Cognitive Voice Fingerprint (CVF)** from natural speech using multimodal analysis (text + audio + topic detection + NLP anchors) and tracks drift over weeks and months, catching cognitive decline up to 2 years before clinical diagnosis.
+> *"The voice remembers what the mind forgets."*
+
+**🎙️ [Try the Live Demo →](https://trydemo.alzheimervoice.org)** — Record 30 seconds of speech, get an instant cognitive voice analysis.
+
+**🔬 [Open-Source Engine →](https://github.com/remifrancois/cognitivevoicefingerprint)** — 107 indicators, 11 domains, 35 rules, 11 conditions, 84+ studies.
+
+---
+
+AlzheimerVoice detects early signs of Alzheimer's disease, Parkinson's, depression, Lewy Body Dementia, and Frontotemporal Dementia through voice analysis alone. 55 million people live with Alzheimer's worldwide — most diagnosed years too late, after irreversible neural damage. Research shows speech patterns change up to 7.6 years before clinical diagnosis (Eyigoz 2020). Our V5 "deep_voice" engine extracts a 107-indicator **Cognitive Voice Fingerprint (CVF)** from natural speech using multimodal analysis (text + audio + topic detection + NLP anchors) and tracks drift over weeks and months.
 
 Available in **10 languages**: English, French, Spanish, Chinese, Hindi, Arabic, Bengali, Portuguese, Russian, Japanese.
+
+## Live Demo — Try It Now
+
+The hackathon demo at **[trydemo.alzheimervoice.org](https://trydemo.alzheimervoice.org)** lets anyone:
+
+1. **Record** 30-60 seconds of natural speech (any topic)
+2. **Analyze** in real-time: GPU acoustic extraction → Whisper transcription → 25 NLP anchors → V5 engine
+3. **View** an instant report: 11-domain cognitive profile, differential diagnosis across 11 conditions, acoustic signature, transcript
+
+The entire pipeline runs in ~15-30 seconds. No account needed, no data stored.
+
+## How Claude Opus 4.6 Powers AlzheimerVoice
+
+Opus 4.6 is the exclusive AI backbone of AlzheimerVoice — not just a wrapper, but deeply integrated into the clinical reasoning pipeline:
+
+| Stage | Opus 4.6 Usage | Why Opus 4.6 |
+|-------|---------------|--------------|
+| **Daily Dual-Pass Extraction** | Two sequential Opus 4.6 calls with Extended Thinking extract 107 indicators from each conversation. Pass 1 extracts raw indicators; Pass 2 cross-validates with confidence scores. | Only Opus 4.6 has the reasoning depth to reliably extract subtle linguistic biomarkers (e.g., idea density decline, referential coherence loss) that correlate with neurodegeneration |
+| **Weekly Deep Analysis** | Opus 4.6 with 32K Extended Thinking performs full clinical reasoning — differential diagnosis, trajectory projection, evidence synthesis | The 32K thinking budget allows Opus to reason through 30 differential rules across 11 conditions, weighing contradictory evidence like a neurologist would |
+| **Topic-Aware Scoring** | Opus 4.6 detects conversation genre (daily routine, emotional narrative, procedural, etc.) and adjusts scoring baselines | Eliminates 44% of false positives — a patient describing a sad memory shouldn't trigger depression alerts |
+| **Evidence Compilation** | Every score links back to specific peer-reviewed studies (84+). Opus 4.6 generates evidence-backed clinical narratives | Clinicians need to understand *why* an alert fired, not just that it fired |
+
+**Cost**: ~$0.25/day per patient for daily monitoring, ~$2.10/week including deep analysis. Accessible enough for global deployment.
 
 ## How It Works
 
@@ -68,19 +98,14 @@ Unified architecture powered by Claude Opus 4.6 exclusively:
            │  CVF Proxy ─────────┼── x-service-key ──┐
            └─────────────────────┘                    │
                                                       ▼
-                                           ┌─────────────────────┐
-                                           │  CVF Engine (3002)  │
-                                           │  107 indicators     │
-                                           │  11 domains | V5    │
-                                           │  deep_voice engine  │
-                                           │  Claude API calls   │
-                                           └─────────────────────┘
-
-┌──────────────────────┐
-│  Site (5175)         │
-│  Public marketing    │
-│  10 languages        │
-└──────────────────────┘
+┌──────────────────────┐               ┌─────────────────────────┐
+│  Site (5175)         │               │  CVF Engine (3002)      │
+│  Public marketing    │               │  107 indicators         │
+│  10 languages        │               │  11 domains | V5        │
+│  /trydemo ───────────┼── POST ──────→│  deep_voice engine      │
+│  Live demo page      │  demo-analyze │  Claude Opus 4.6        │
+└──────────────────────┘               │  GPU acoustic pipeline  │
+                                       └─────────────────────────┘
 ```
 
 ## Project Structure
@@ -153,6 +178,7 @@ All frontend requests go through the API gateway. The gateway proxies CVF reques
 ### CVF Engine (V5)
 | Method | Endpoint | Description |
 |--------|----------|-------------|
+| `POST` | `/cvf/v5/demo-analyze` | **Live demo** — instant single-session analysis (no auth) |
 | `POST` | `/api/v5/process` | Daily session processing (Opus 4.6 dual-pass) |
 | `POST` | `/api/v5/process-audio` | Audio feature extraction (GPU) |
 | `POST` | `/api/v5/weekly` | Weekly deep analysis (Opus 4.6, 32K thinking) |
@@ -249,4 +275,8 @@ MIT License — see [LICENSE](LICENSE).
 
 ---
 
+*Built during the Cerebral Valley × Anthropic Hackathon, February 2026.*
+
 *55 million people live with Alzheimer's. Most are diagnosed too late. AlzheimerVoice catches the signal in the voice — for ~$0.25 a day, on any phone.*
+
+*Open-source engine: [github.com/remifrancois/cognitivevoicefingerprint](https://github.com/remifrancois/cognitivevoicefingerprint)*

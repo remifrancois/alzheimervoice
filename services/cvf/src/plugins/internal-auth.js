@@ -36,8 +36,8 @@ export default async function internalAuthPlugin(fastify) {
   fastify.decorateRequest('userContext', null);
 
   fastify.addHook('onRequest', async (request, reply) => {
-    // Health check is always public
-    if (request.url === '/health' || request.url === '/healthz') return;
+    // Health check and demo endpoints are always public
+    if (request.url === '/health' || request.url === '/healthz' || request.url === '/cvf/v5/demo-analyze') return;
 
     // Validate service key if set
     if (serviceKeyBuffer) {

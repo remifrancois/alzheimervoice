@@ -7,7 +7,7 @@
  *   WEEKLY      → Opus 4.6 deep clinical reasoning with 32K thinking ($0.50-0.80/week)
  *   MICRO-TASKS → Targeted cognitive/motor/pragmatic assessment (sustained vowel, DDK, fluency, depression, attention, pragmatic)
  *
- * 107 indicators across 11 domains, 10-condition differential, 30 diagnostic rules.
+ * 107 indicators across 11 domains, 11-condition differential, 35 diagnostic rules.
  * Platform-ready: register v5ApiPlugin with your Fastify instance.
  */
 
@@ -22,12 +22,13 @@ export {
   applyConfounders,
   checkSentinels,
   computeDeclineProfile,
+  computeSessionQuality,
   analyzeSession,
   analyzeWeek,
   ALERT_THRESHOLDS,
 } from './algorithm.js';
 
-// Differential diagnosis (30-rule engine, 10 conditions)
+// Differential diagnosis (35-rule engine, 11 conditions)
 export {
   runDifferential,
   detectTemporalPattern,
@@ -128,12 +129,12 @@ export {
  * V5 version info.
  */
 export const V5_META = {
-  version: '5.0.0',
+  version: '5.2.0',
   codename: 'deep_voice',
   indicator_count: 107,
   domains: 11,
-  conditions_detected: 10,
-  differential_rules: 30,
+  conditions_detected: 11,
+  differential_rules: 35,
   architecture: {
     daily_text: { model: 'claude-opus-4-6', cost: '$0.25/session', mode: 'dual-pass', indicators: 107 },
     daily_audio: { engine: 'GPU-accelerated parselmouth+librosa+nolds+Whisper', cost: '$0.00' },
@@ -143,7 +144,7 @@ export const V5_META = {
   cost: { daily: '$0.25', weekly_opus: '$0.50-0.80', weekly_total: '~$2.10/patient' },
   new_in_v5: [
     'topic_detection', 'deterministic_nlp_anchors', 'dual_pass_extraction',
-    'whisper_temporal', 'lbd_ftd_detection', '11_domains', '30_rules',
+    'whisper_temporal', 'lbd_ftd_detection', '11_domains', '35_rules',
     'cross_validation', 'gpu_acceleration', 'pragmatic_domain', 'executive_domain',
   ],
 };

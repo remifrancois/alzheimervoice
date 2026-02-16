@@ -22,6 +22,7 @@ import LegalPage from './pages/LegalPage'
 import CompliancePage from './pages/CompliancePage'
 import CreatorsPage from './pages/CreatorsPage'
 import CoreVoiceFrameworkPage from './pages/CoreVoiceFrameworkPage'
+import TryDemoPage from './pages/TryDemoPage'
 
 const pages = {
   cognitivevoicefingerprint: ScientificPage,
@@ -33,6 +34,7 @@ const pages = {
   compliance: CompliancePage,
   creators: CreatorsPage,
   corevoiceframework: CoreVoiceFrameworkPage,
+  trydemo: TryDemoPage,
 }
 
 function HomePage() {

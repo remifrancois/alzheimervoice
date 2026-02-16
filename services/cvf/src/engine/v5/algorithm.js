@@ -17,6 +17,14 @@
  *   - Sentinel sets expanded: +LBD, +FTD
  *   - analyzeSession returns topic_genre, topic_adjusted, indicator_confidence
  *
+ * V5.1 additions (age-normalization layer):
+ *   - computeZScores gains patientAge parameter for age-adjusted acoustic offsets
+ *   - AGE_ACOUSTIC_OFFSETS: per-decade offset tables for 17 acoustic/PD indicators
+ *   - computeDeclineProfile gains acceleration detection (2nd derivative)
+ *   - computeDeclineProfile gains excess_decline (observed - age-expected rate)
+ *   - computeDeclineProfile gains age_consistent flag for uniform age-expected decline
+ *   - analyzeSession accepts patientAge, propagates through pipeline
+ *
  * Cost: ~$0.10 per session (feature extraction via Claude + audio pipeline)
  */
 
@@ -25,6 +33,7 @@ import {
   SENTINELS, EARLY_DETECTION_INDICATORS
 } from './indicators.js';
 import { applyTopicAdjustments } from './topic-profiles.js';
+import { getAgeBand, getAgeAdjustedRate } from './trajectory.js';
 
 // ════════════════════════════════════════════════
 // NUMERIC SAFETY HELPERS
@@ -44,6 +53,63 @@ function safeDiv(a, b, fallback = 0) {
 // ════════════════════════════════════════════════
 
 const AUDIO_DOMAIN_IDS = [...DOMAINS.acoustic, ...DOMAINS.pd_motor];
+
+// ════════════════════════════════════════════════
+// AGE-ADJUSTED ACOUSTIC OFFSETS
+// ════════════════════════════════════════════════
+//
+// Normal voice aging produces changes that mimic PD/disease markers:
+//   - Jitter increases ~0.3%/decade after 60 (Xue & Hao 2003)
+//   - Shimmer increases ~0.5%/decade after 60
+//   - HNR decreases ~1-2 dB/decade after 60
+//   - F0 drops ~1Hz/decade in males, rises post-menopause in females
+//   - Voice breaks increase with age (laryngeal calcification)
+//   - Breathiness increases with age (vocal fold atrophy)
+//
+// These offsets are SUBTRACTED from raw z-scores for acoustic/PD indicators
+// to prevent age-related voice changes from falsely triggering disease flags.
+// Offset = how much z-score shift is expected purely from aging.
+// Positive offset means the indicator naturally gets "worse" with age.
+
+const AGE_ACOUSTIC_OFFSETS = {
+  '50-59': {
+    ACU_JITTER: 0.05, ACU_SHIMMER: 0.05, ACU_HNR: 0.05,
+    ACU_F0_SD: 0.03, ACU_F0_MEAN: 0.02, ACU_VOICE_BREAKS: 0.03,
+    ACU_BREATHINESS: 0.03, ACU_CPP: 0.03, ACU_LOUDNESS_DECAY: 0.02,
+    PDM_PPE: 0.03, PDM_RPDE: 0.03, PDM_DFA: 0.02,
+    PDM_MONOPITCH: 0.03, PDM_DDK_RATE: 0.03, PDM_DDK_REG: 0.02,
+    PDM_VSA: 0.03, PDM_VOT: 0.02,
+  },
+  '60-69': {
+    ACU_JITTER: 0.12, ACU_SHIMMER: 0.12, ACU_HNR: 0.15,
+    ACU_F0_SD: 0.08, ACU_F0_MEAN: 0.05, ACU_VOICE_BREAKS: 0.08,
+    ACU_BREATHINESS: 0.08, ACU_CPP: 0.08, ACU_LOUDNESS_DECAY: 0.06,
+    PDM_PPE: 0.08, PDM_RPDE: 0.06, PDM_DFA: 0.05,
+    PDM_MONOPITCH: 0.08, PDM_DDK_RATE: 0.08, PDM_DDK_REG: 0.05,
+    PDM_VSA: 0.06, PDM_VOT: 0.05,
+  },
+  '70-79': {
+    ACU_JITTER: 0.22, ACU_SHIMMER: 0.22, ACU_HNR: 0.28,
+    ACU_F0_SD: 0.15, ACU_F0_MEAN: 0.10, ACU_VOICE_BREAKS: 0.15,
+    ACU_BREATHINESS: 0.15, ACU_CPP: 0.15, ACU_LOUDNESS_DECAY: 0.12,
+    PDM_PPE: 0.15, PDM_RPDE: 0.12, PDM_DFA: 0.10,
+    PDM_MONOPITCH: 0.15, PDM_DDK_RATE: 0.15, PDM_DDK_REG: 0.10,
+    PDM_VSA: 0.12, PDM_VOT: 0.10,
+  },
+  '80+': {
+    ACU_JITTER: 0.35, ACU_SHIMMER: 0.35, ACU_HNR: 0.40,
+    ACU_F0_SD: 0.25, ACU_F0_MEAN: 0.18, ACU_VOICE_BREAKS: 0.25,
+    ACU_BREATHINESS: 0.25, ACU_CPP: 0.22, ACU_LOUDNESS_DECAY: 0.20,
+    PDM_PPE: 0.25, PDM_RPDE: 0.20, PDM_DFA: 0.18,
+    PDM_MONOPITCH: 0.22, PDM_DDK_RATE: 0.25, PDM_DDK_REG: 0.18,
+    PDM_VSA: 0.20, PDM_VOT: 0.18,
+  },
+};
+
+/** Set of indicator IDs eligible for age-based acoustic offset. */
+const AGE_OFFSET_INDICATORS = new Set(
+  Object.values(AGE_ACOUSTIC_OFFSETS).flatMap(band => Object.keys(band))
+);
 
 export const ALERT_THRESHOLDS = {
   green:  { min: -0.5, label: 'Normal variation' },
@@ -117,28 +183,61 @@ export function computeV5Baseline(sessionVectors, minSessions = 14) {
  *
  * V5 addition: applies topic-genre adjustments when topicGenre is provided,
  * eliminating false positives from topic/genre-driven vocabulary shifts.
+ *
+ * V5.1 addition: applies age-based acoustic offsets when patientAge is provided.
+ * This prevents natural voice aging (increased jitter/shimmer, decreased HNR)
+ * from falsely triggering PD motor and acoustic disease indicators.
  */
-export function computeZScores(sessionVector, baseline, topicGenre = null) {
+export function computeZScores(sessionVector, baseline, topicGenre = null, patientAge = null, indicatorConfidence = null) {
   const zScores = {};
   const bv = baseline.vector || baseline;
+  const ageBand = getAgeBand(patientAge);
+  const ageOffsets = ageBand ? (AGE_ACOUSTIC_OFFSETS[ageBand] || null) : null;
 
   for (const id of ALL_INDICATOR_IDS) {
     const value = sessionVector[id];
     const base = bv[id];
     if (value == null || !base) { zScores[id] = null; continue; }
 
-    const z = safeDiv(value - base.mean, base.std || 0.05, 0);
-    const dirs = INDICATORS[id].directions;
-    const adDir = dirs.alzheimer || 0;
-    const depDir = dirs.depression || 0;
-    const pdDir = dirs.parkinson || 0;
+    let z = safeDiv(value - base.mean, base.std || 0.05, 0);
+    const ind = INDICATORS[id];
+    const dirs = ind.directions;
+    const effects = ind.effect_sizes || {};
 
-    // Dominant pathological direction across conditions
-    const dominantDir = Math.abs(adDir) >= Math.abs(depDir)
-      ? (Math.abs(adDir) >= Math.abs(pdDir) ? adDir : pdDir)
-      : (Math.abs(depDir) >= Math.abs(pdDir) ? depDir : pdDir);
+    // Dominant pathological direction: pick from whichever condition
+    // has the strongest expected effect size (not just AD/dep/PD).
+    // This fixes z-score polarity for LBD/FTD-dominant indicators
+    // like EXE_INHIBITION (FTD effect_size 0.9, all others ≈ 0).
+    let dominantDir = 0;
+    let maxEffect = 0;
+    for (const condition of Object.keys(effects)) {
+      const eff = effects[condition] || 0;
+      if (eff > maxEffect) {
+        maxEffect = eff;
+        dominantDir = dirs[condition] || 0;
+      }
+    }
 
-    zScores[id] = dominantDir === 1 ? -z : z;
+    z = dominantDir === 1 ? -z : z;
+
+    // V5.1: Apply age-based acoustic offset for eligible indicators.
+    // The offset represents expected age-related z-score shift.
+    // By adding it back (making the score less negative), we cancel out
+    // the portion of decline attributable to normal voice aging.
+    if (ageOffsets && AGE_OFFSET_INDICATORS.has(id)) {
+      const offset = ageOffsets[id] || 0;
+      z = z + offset; // offset is positive, so this moves z toward 0 (less impaired)
+    }
+
+    // V5.2: Dampen low-confidence indicators toward 0.
+    // Indicators with confidence < 1.0 are shrunk proportionally,
+    // reducing their influence on downstream domain and composite scores.
+    if (indicatorConfidence && indicatorConfidence[id] != null) {
+      const conf = Math.max(0, Math.min(1, indicatorConfidence[id]));
+      z = z * conf;
+    }
+
+    zScores[id] = z;
   }
 
   // Apply topic adjustments if genre detected
@@ -157,23 +256,45 @@ export function computeZScores(sessionVector, baseline, topicGenre = null) {
  * Compute per-domain scores from z-scores. Covers all 11 domains.
  * Accepts either raw z-scores object or topic-adjusted result
  * (extracts .adjusted if present).
+ *
+ * V5.2: when indicatorConfidence is provided, indicators are weighted
+ * by confidence * base_weight, and per-domain confidence is computed.
+ *
+ * @returns {{ scores: Object, domain_confidence?: Object }} or plain scores object
  */
-export function computeDomainScores(zScores) {
+export function computeDomainScores(zScores, indicatorConfidence = null) {
   // Handle topic-adjusted result shape from applyTopicAdjustments
   const z = zScores.adjusted || zScores;
 
   const scores = {};
+  const domainConfidence = {};
   for (const [domain, indicatorIds] of Object.entries(DOMAINS)) {
     const valid = [];
     for (const id of indicatorIds) {
       const zVal = z[id];
-      if (zVal != null) valid.push({ z: zVal, weight: INDICATORS[id].base_weight || 0.5 });
+      if (zVal != null) {
+        const conf = (indicatorConfidence && indicatorConfidence[id] != null)
+          ? Math.max(0, Math.min(1, indicatorConfidence[id]))
+          : 1.0;
+        valid.push({ z: zVal, weight: (INDICATORS[id].base_weight || 0.5) * conf, conf });
+      }
     }
-    if (valid.length === 0) { scores[domain] = null; continue; }
+    if (valid.length === 0) { scores[domain] = null; domainConfidence[domain] = null; continue; }
     const tw = valid.reduce((s, v) => s + v.weight, 0);
     const score = safeDiv(valid.reduce((s, v) => s + v.z * v.weight, 0), tw, 0);
     scores[domain] = Number.isFinite(score) ? score : null;
+    // Per-domain confidence: mean confidence of contributing indicators
+    const confSum = valid.reduce((s, v) => s + v.conf, 0);
+    domainConfidence[domain] = valid.length > 0 ? Math.round((confSum / valid.length) * 1000) / 1000 : null;
   }
+
+  // Store domain_confidence as a non-enumerable property so Object.keys(scores)
+  // still returns exactly 11 domain keys (backward compat).
+  Object.defineProperty(scores, '_domain_confidence', {
+    value: domainConfidence,
+    enumerable: false,
+    configurable: true,
+  });
   return scores;
 }
 
@@ -523,12 +644,25 @@ export function checkSentinels(zScores) {
 /**
  * Analyze which domains are declining fastest across history.
  * Per-domain velocity via linear slope over last 4 weeks.
- * Returns { leading_edge, domain_velocities, predicted_next, profile_type }
+ * Returns { leading_edge, domain_velocities, predicted_next, profile_type,
+ *           acceleration, excess_decline, age_consistent }
  *
  * V5: extended sequences for LBD and FTD cascades, profile types expanded.
+ *
+ * V5.1 additions:
+ *   - acceleration: 2nd derivative of decline (change in velocity over time).
+ *     Disease produces ACCELERATING decline; normal aging is LINEAR.
+ *     This is the single highest-ROI differentiator between aging and disease.
+ *   - excess_decline: per-domain decline beyond age-expected rate.
+ *   - age_consistent: boolean flag — true when decline is uniform and within
+ *     age-expected range (strong evidence for normal aging, not disease).
  */
-export function computeDeclineProfile(history) {
-  const empty = { leading_edge: null, domain_velocities: {}, predicted_next: null, profile_type: 'stable' };
+export function computeDeclineProfile(history, patientAge = null) {
+  const empty = {
+    leading_edge: null, domain_velocities: {}, predicted_next: null,
+    profile_type: 'stable', acceleration: null, excess_decline: null,
+    age_consistent: false,
+  };
   if (!history || history.length < 2) return empty;
 
   // Group last 28 sessions into weekly bins
@@ -606,7 +740,156 @@ export function computeDeclineProfile(history) {
     else if (ftdDom.includes(leadingEdge)) profileType = 'ftd_like';
   }
 
-  return { leading_edge: leadingEdge, domain_velocities: velocities, predicted_next: predictedNext, profile_type: profileType };
+  // ────────────────────────────────────────
+  // V5.1: Acceleration detection (2nd derivative)
+  // ────────────────────────────────────────
+  // Disease = accelerating decline. Normal aging = constant rate (linear).
+  // Compare velocity in recent half vs prior half of the analysis window.
+  let acceleration = null;
+  if (weeks.length >= 4) {
+    const midWeek = Math.floor(weeks.length / 2);
+    const firstHalfWeeks = weeks.slice(0, midWeek);
+    const secondHalfWeeks = weeks.slice(midWeek);
+
+    const computeHalfVelocity = (halfWeeks) => {
+      const halfVel = {};
+      for (const domain of Object.keys(DOMAINS)) {
+        const halfAvgs = halfWeeks.map(w => {
+          const vals = w.map(s => s.domain_scores?.[domain]).filter(v => v != null);
+          return vals.length > 0 ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+        });
+        const pts = halfAvgs.map((v, i) => v != null ? { x: i, y: v } : null).filter(p => p != null);
+        if (pts.length < 2) { halfVel[domain] = 0; continue; }
+        const n = pts.length;
+        const xm = pts.reduce((s, p) => s + p.x, 0) / n;
+        const ym = pts.reduce((s, p) => s + p.y, 0) / n;
+        let num2 = 0, den2 = 0;
+        for (const p of pts) { num2 += (p.x - xm) * (p.y - ym); den2 += (p.x - xm) ** 2; }
+        halfVel[domain] = den2 > 0 ? num2 / den2 : 0;
+      }
+      return halfVel;
+    };
+
+    const priorVel = computeHalfVelocity(firstHalfWeeks);
+    const recentVel = computeHalfVelocity(secondHalfWeeks);
+
+    acceleration = {};
+    for (const domain of Object.keys(DOMAINS)) {
+      // acceleration = change in velocity. Negative = getting worse faster.
+      acceleration[domain] = Math.round(((recentVel[domain] || 0) - (priorVel[domain] || 0)) * 10000) / 10000;
+    }
+  }
+
+  // ────────────────────────────────────────
+  // V5.1: Excess decline (beyond age-expected)
+  // ────────────────────────────────────────
+  let excessDecline = null;
+  let ageConsistent = false;
+
+  const domainVelocityValues = Object.values(velocities).filter(v => v !== 0);
+  if (domainVelocityValues.length > 0) {
+    excessDecline = {};
+    for (const [domain, vel] of Object.entries(velocities)) {
+      const expectedRate = getAgeAdjustedRate(domain, patientAge);
+      // excess = how much faster than age-expected (positive = pathological)
+      excessDecline[domain] = Math.round((Math.abs(vel) - Math.abs(expectedRate)) * 10000) / 10000;
+    }
+
+    // Check if decline is age-consistent: uniform and within expected range
+    const excessValues = Object.values(excessDecline).filter(v => v !== 0);
+    if (excessValues.length > 0) {
+      const maxExcess = Math.max(...excessValues);
+      const minExcess = Math.min(...excessValues);
+      const excessRange = maxExcess - minExcess;
+      // Age-consistent if: no domain exceeds expected rate by much AND spread is low
+      ageConsistent = maxExcess < 0.01 && excessRange < 0.008;
+    }
+  }
+
+  return {
+    leading_edge: leadingEdge, domain_velocities: velocities,
+    predicted_next: predictedNext, profile_type: profileType,
+    acceleration, excess_decline: excessDecline, age_consistent: ageConsistent,
+  };
+}
+
+// ════════════════════════════════════════════════
+// SESSION QUALITY SCORING (V5.2)
+// ════════════════════════════════════════════════
+
+/**
+ * Compute a session quality score based on multiple factors.
+ * Returns { score: 0-1, level: 'high'|'medium'|'low'|'unusable', factors }
+ *
+ * Factors:
+ *   - indicator_coverage: fraction of non-null indicators
+ *   - extraction_confidence: mean confidence across indicators (if available)
+ *   - audio_coverage: whether audio indicators are present
+ *   - outlier_ratio: fraction of indicators with |z| > 3 (likely errors)
+ *   - transcript_length: proxy from indicator count (text indicators populated)
+ */
+export function computeSessionQuality(sessionVector, zScores, baseline, indicatorConfidence = null) {
+  const factors = {};
+
+  // 1. Indicator coverage: fraction of indicators with non-null values
+  const totalIndicators = ALL_INDICATOR_IDS.length;
+  const nonNullCount = ALL_INDICATOR_IDS.filter(id => sessionVector[id] != null).length;
+  factors.indicator_coverage = nonNullCount / totalIndicators;
+
+  // 2. Extraction confidence: mean confidence (1.0 if not provided)
+  if (indicatorConfidence) {
+    const confValues = Object.values(indicatorConfidence).filter(v => v != null && Number.isFinite(v));
+    factors.extraction_confidence = confValues.length > 0
+      ? confValues.reduce((a, b) => a + b, 0) / confValues.length
+      : 1.0;
+  } else {
+    factors.extraction_confidence = 1.0;
+  }
+
+  // 3. Audio coverage: whether acoustic/pd_motor indicators are present
+  const audioCount = AUDIO_DOMAIN_IDS.filter(id => sessionVector[id] != null).length;
+  factors.audio_coverage = audioCount > 0 ? Math.min(audioCount / AUDIO_DOMAIN_IDS.length, 1.0) : 0;
+
+  // 4. Outlier ratio: fraction of z-scores with |z| > 3 (likely extraction errors)
+  const z = zScores.adjusted || zScores;
+  const validZ = Object.values(z).filter(v => v != null && Number.isFinite(v));
+  const outliers = validZ.filter(v => Math.abs(v) > 3).length;
+  factors.outlier_ratio = validZ.length > 0 ? outliers / validZ.length : 0;
+
+  // 5. Transcript length proxy: text indicators populated
+  const textCount = ALL_INDICATOR_IDS.filter(id => {
+    const ind = INDICATORS[id];
+    return (ind.extractable === 'text' || ind.extractable === 'conversation') && sessionVector[id] != null;
+  }).length;
+  const totalText = ALL_INDICATOR_IDS.filter(id => {
+    const ind = INDICATORS[id];
+    return ind.extractable === 'text' || ind.extractable === 'conversation';
+  }).length;
+  factors.transcript_length = totalText > 0 ? textCount / totalText : 0;
+
+  // Composite quality score: weighted combination
+  const score = Math.max(0, Math.min(1,
+    factors.indicator_coverage * 0.30 +
+    factors.extraction_confidence * 0.25 +
+    factors.audio_coverage * 0.15 +
+    (1 - factors.outlier_ratio) * 0.15 +
+    factors.transcript_length * 0.15
+  ));
+
+  // Classify quality level
+  let level;
+  if (score >= 0.75) level = 'high';
+  else if (score >= 0.50) level = 'medium';
+  else if (score >= 0.25) level = 'low';
+  else level = 'unusable';
+
+  return {
+    score: Math.round(score * 1000) / 1000,
+    level,
+    factors: Object.fromEntries(
+      Object.entries(factors).map(([k, v]) => [k, Math.round(v * 1000) / 1000])
+    ),
+  };
 }
 
 // ════════════════════════════════════════════════
@@ -615,7 +898,7 @@ export function computeDeclineProfile(history) {
 
 /**
  * Run the complete V5 analysis pipeline on a session.
- * 1. Z-scores (+ topic adjustment) -> 2. Domain scores (11) -> 3. Confounders
+ * 1. Z-scores (+ topic + age adjustment) -> 2. Domain scores (11) -> 3. Confounders
  * -> 4. Composite -> 5. Alert level -> 6. Cascade (AD/PD/Dep/LBD/FTD)
  * -> 7. Sentinels -> 8. Decline profile
  *
@@ -623,29 +906,51 @@ export function computeDeclineProfile(history) {
  *   - topicGenre parameter for topic-based z-score adjustment
  *   - indicatorConfidence for per-indicator reliability reporting
  *   - Return object includes topic_genre, topic_adjusted, indicator_confidence
+ *
+ * V5.1 additions:
+ *   - patientAge parameter for age-adjusted acoustic z-scores and decline profiles
+ *   - Return object includes patient_age
  */
-export function analyzeSession(sessionVector, baseline, confounders = {}, history = [], topicGenre = null, indicatorConfidence = null) {
+export function analyzeSession(sessionVector, baseline, confounders = {}, history = [], topicGenre = null, indicatorConfidence = null, patientAge = null) {
   const audioAvailable = AUDIO_DOMAIN_IDS.some(id => sessionVector[id] != null);
-  const zScoresResult = computeZScores(sessionVector, baseline, topicGenre);
+  const zScoresResult = computeZScores(sessionVector, baseline, topicGenre, patientAge, indicatorConfidence);
 
   // computeZScores returns either plain z-scores object or topic-adjusted result
   // with { adjusted, adjustments_applied, genre, confidence } shape
   const isTopicAdjusted = !!(zScoresResult && zScoresResult.adjusted);
   const zScores = isTopicAdjusted ? zScoresResult.adjusted : zScoresResult;
 
-  const rawDomainScores = computeDomainScores(zScores);
+  const rawDomainScores = computeDomainScores(zScores, indicatorConfidence);
   const { domainScores, globalWeight, domainAdjustments } = applyConfounders(zScores, rawDomainScores, confounders);
   const composite = computeComposite(domainScores);
   const alertLevel = getAlertLevel(composite);
   const cascade = detectCascade(domainScores);
   const sentinelAlerts = checkSentinels(zScores);
-  const declineProfile = history.length >= 2 ? computeDeclineProfile(history) : null;
+  const declineProfile = history.length >= 2 ? computeDeclineProfile(history, patientAge) : null;
 
   // Extract per-indicator acoustic/pd_motor z-scores for dedicated reporting
   const acousticScores = {}, pdMotorScores = {};
   if (audioAvailable) {
     for (const id of DOMAINS.acoustic) { if (zScores[id] != null) acousticScores[id] = zScores[id]; }
     for (const id of DOMAINS.pd_motor) { if (zScores[id] != null) pdMotorScores[id] = zScores[id]; }
+  }
+
+  // V5.2: Session quality scoring
+  const sessionQuality = computeSessionQuality(sessionVector, zScores, baseline, indicatorConfidence);
+
+  // V5.2: Extract domain confidence and compute confidence bands on composite
+  const domainConfidence = rawDomainScores._domain_confidence || null;
+  let confidenceBands = null;
+  if (indicatorConfidence) {
+    const confValues = Object.values(indicatorConfidence).filter(v => v != null && Number.isFinite(v));
+    const meanConf = confValues.length > 0 ? confValues.reduce((a, b) => a + b, 0) / confValues.length : 1.0;
+    // Confidence band width is inversely proportional to mean confidence
+    const bandWidth = (1 - meanConf) * 0.5;
+    confidenceBands = {
+      lower: Math.round((composite - bandWidth) * 1000) / 1000,
+      upper: Math.round((composite + bandWidth) * 1000) / 1000,
+      mean_confidence: Math.round(meanConf * 1000) / 1000,
+    };
   }
 
   return {
@@ -663,6 +968,12 @@ export function analyzeSession(sessionVector, baseline, confounders = {}, histor
     topic_genre: topicGenre || null,
     topic_adjusted: !!topicGenre,
     indicator_confidence: indicatorConfidence || null,
+    // V5.1 new fields:
+    patient_age: patientAge,
+    // V5.2 new fields:
+    domain_confidence: domainConfidence,
+    confidence_bands: confidenceBands,
+    session_quality: sessionQuality,
   };
 }
 
@@ -670,19 +981,29 @@ export function analyzeSession(sessionVector, baseline, confounders = {}, histor
 // WEEKLY AGGREGATION
 // ════════════════════════════════════════════════
 
-/** Run weekly aggregation over sessions. Same V4 pattern, 11 domains. */
-export function analyzeWeek(sessions, baseline, weekNumber) {
+/** Run weekly aggregation over sessions. Same V4 pattern, 11 domains. V5.1: accepts patientAge. */
+export function analyzeWeek(sessions, baseline, weekNumber, patientAge = null) {
   if (sessions.length === 0) return null;
 
   const results = sessions.map(s => analyzeSession(
-    s.feature_vector, baseline, s.confounders, [], s.topic_genre || null, s.indicator_confidence || null
+    s.feature_vector, baseline, s.confounders, [], s.topic_genre || null, s.indicator_confidence || null, patientAge
   ));
   const weekAudio = results.some(r => r.audio_available);
 
+  // V5.2: Quality-weighted domain averaging — higher-quality sessions contribute more
   const avgDomainScores = {};
   for (const domain of Object.keys(DOMAINS)) {
-    const vals = results.map(r => r.domain_scores[domain]).filter(v => v != null);
-    avgDomainScores[domain] = vals.length > 0 ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+    let weightedSum = 0;
+    let weightSum = 0;
+    for (const r of results) {
+      const val = r.domain_scores[domain];
+      if (val != null) {
+        const qualityWeight = r.session_quality?.score ?? 1.0;
+        weightedSum += val * qualityWeight;
+        weightSum += qualityWeight;
+      }
+    }
+    avgDomainScores[domain] = weightSum > 0 ? weightedSum / weightSum : null;
   }
 
   const composite = computeComposite(avgDomainScores);

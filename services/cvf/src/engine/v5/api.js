@@ -35,6 +35,8 @@ import {
   extractAcousticFeatures,
   extractMicroTaskAudio,
   convertToWav,
+  normalizeAcousticValue,
+  computeWhisperTemporalIndicators,
   cleanupAudioTemp,
   runPDAnalysis,
   MICRO_TASKS,
@@ -48,6 +50,8 @@ import {
   aggregateCrossValidatedResults,
   detectTopicGenre,
   applyTopicAdjustments,
+  computeDeterministicIndicators,
+  DETERMINISTIC_INDICATOR_IDS,
   INDICATORS,
   ALL_INDICATOR_IDS,
   INDICATOR_COUNT,
@@ -56,6 +60,7 @@ import {
   AUDIO_INDICATORS,
   WHISPER_TEMPORAL_INDICATORS,
   SENTINELS,
+  ACOUSTIC_NORMS,
   V5_META,
 } from './index.js';
 
@@ -914,5 +919,149 @@ export default async function v5Routes(app) {
       timestamp: new Date().toISOString(),
       ...results,
     };
+  });
+
+  // ────────────────────────────────────────────
+  // 18. POST /demo-analyze — Hackathon live demo (single-session instant analysis)
+  //     Accepts raw audio (base64 WebM/WAV), runs acoustic + Whisper + NLP anchors,
+  //     returns a full V5 report. No baseline, no patient ID needed.
+  // ────────────────────────────────────────────
+  app.post('/demo-analyze', {
+    schema: {
+      body: {
+        type: 'object',
+        required: ['audioBase64'],
+        properties: {
+          audioBase64: { type: 'string', maxLength: 15728640 },
+          audioFormat: { type: 'string', default: 'webm', enum: ['wav', 'mp3', 'ogg', 'webm', 'flac'] },
+          language: { type: 'string', default: 'fr', enum: ['fr', 'en'] },
+        }
+      }
+    }
+  }, async (request, reply) => {
+    const { audioBase64, audioFormat, language } = request.body;
+    const start = performance.now();
+
+    try {
+      const audioBuffer = Buffer.from(audioBase64, 'base64');
+
+      // 1. Extract acoustic features + Whisper transcription
+      const audioResult = await extractAcousticFeatures(audioBuffer, {
+        format: audioFormat || 'webm',
+        gender: 'unknown',
+        gpu: true,
+        whisperModel: 'base',
+        wordTimestamps: true,
+      });
+
+      const acousticVector = audioResult.acousticVector || {};
+      const whisperResult = audioResult.whisperResult || null;
+      const temporalIndicators = audioResult.temporalIndicators || {};
+      const transcript = whisperResult?.transcript || '';
+
+      if (!transcript || transcript.trim().length < 5) {
+        return reply.code(400).send({
+          error: 'No speech detected in the recording. Please try again with a longer recording.',
+        });
+      }
+
+      // 2. Detect gender from F0
+      const f0Mean = acousticVector.ACU_F0_MEAN;
+      const detectedGender = f0Mean != null && f0Mean < 0.4 ? 'male' : 'female';
+
+      // 3. Compute deterministic NLP anchors from transcript
+      const nlpAnchors = computeDeterministicIndicators(transcript, language || 'fr');
+
+      // 4. Detect topic genre
+      const topicResult = detectTopicGenre(transcript);
+
+      // 5. Build full feature vector (107 indicators)
+      const fullVector = {};
+      for (const id of ALL_INDICATOR_IDS) {
+        const indicator = INDICATORS[id];
+        if (!indicator) { fullVector[id] = null; continue; }
+        const extractable = indicator.extractable;
+        if (extractable === 'micro_task' || extractable === 'meta') {
+          fullVector[id] = null;
+        } else if (DETERMINISTIC_INDICATOR_IDS.includes(id) && nlpAnchors[id] != null) {
+          fullVector[id] = Math.max(0, Math.min(1, nlpAnchors[id]));
+        } else {
+          fullVector[id] = null;
+        }
+      }
+
+      // Merge acoustic features
+      for (const [id, value] of Object.entries(acousticVector)) {
+        if (value != null) fullVector[id] = value;
+      }
+
+      // Merge Whisper temporal indicators
+      for (const [id, value] of Object.entries(temporalIndicators)) {
+        if (value != null && Number.isFinite(value)) fullVector[id] = value;
+      }
+
+      // 6. Single-session analysis (use self as baseline — snapshot mode)
+      const baseline = computeV5Baseline([fullVector], 1);
+      const result = analyzeSession(fullVector, baseline, {}, [], topicResult.genre);
+
+      // 7. Run differential on single session
+      const differential = runDifferential(result.domain_scores, result.z_scores, {
+        sessionCount: 1,
+        topicGenres: [topicResult.genre],
+      });
+
+      // 8. Count what we extracted
+      const textCount = Object.entries(fullVector).filter(([id, v]) => v != null && !AUDIO_INDICATORS.includes(id)).length;
+      const audioCount = Object.entries(fullVector).filter(([id, v]) => v != null && AUDIO_INDICATORS.includes(id)).length;
+      const totalCount = Object.values(fullVector).filter(v => v != null).length;
+
+      const duration = performance.now() - start;
+
+      return {
+        version: 'v5',
+        mode: 'demo_instant',
+        engine_codename: 'deep_voice',
+        timestamp: new Date().toISOString(),
+        processing_ms: Math.round(duration),
+        detected_gender: detectedGender,
+        transcript,
+        word_count: transcript.split(/\s+/).filter(w => w.length > 0).length,
+        language: language || 'fr',
+        topic_genre: topicResult.genre,
+        topic_confidence: topicResult.confidence,
+        indicators: {
+          text: textCount,
+          audio: audioCount,
+          total: totalCount,
+          max: INDICATOR_COUNT,
+        },
+        composite: result.composite,
+        alert_level: result.alert_level,
+        domain_scores: result.domain_scores,
+        differential: {
+          primary: differential.primary_hypothesis,
+          secondary: differential.secondary_hypothesis,
+          confidence: differential.confidence,
+          probabilities: differential.probabilities,
+          independent_probabilities: differential.independent_probabilities || null,
+          evidence: differential.evidence,
+          recommendation: differential.recommendation,
+        },
+        cascade: result.cascade,
+        sentinel_alerts: result.sentinel_alerts,
+        nlp_anchors: nlpAnchors,
+        acoustic_summary: {
+          f0_mean: acousticVector.ACU_F0_MEAN,
+          f0_sd: acousticVector.ACU_F0_SD,
+          jitter: acousticVector.ACU_JITTER,
+          shimmer: acousticVector.ACU_SHIMMER,
+          hnr: acousticVector.ACU_HNR,
+        },
+        disclaimer: 'This is a research demonstration only. Results are not a medical diagnosis. Consult a healthcare professional for any health concerns.',
+      };
+    } catch (err) {
+      console.error('[V5 demo-analyze] Error:', err.message);
+      return reply.code(500).send({ error: 'Analysis failed: ' + err.message });
+    }
   });
 }

@@ -27,6 +27,7 @@ await app.register(rateLimit, { max: 200, timeWindow: '1 minute' });
 await app.register(cors, {
   origin: [
     process.env.API_URL || 'http://localhost:3001',
+    process.env.SITE_URL || 'http://localhost:5175',
   ],
   credentials: true,
 });

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { LANGUAGES } from './i18n'
 
 const LANG_CODES = new Set(LANGUAGES.map(l => l.code))
-const PAGE_SLUGS = new Set(['cognitivevoicefingerprint', 'family', 'opensource', 'demo', 'privacy', 'legal', 'compliance', 'creators', 'corevoiceframework'])
+const PAGE_SLUGS = new Set(['cognitivevoicefingerprint', 'family', 'opensource', 'demo', 'privacy', 'legal', 'compliance', 'creators', 'corevoiceframework', 'trydemo'])
 
 function parseURL() {
   const parts = window.location.pathname.split('/').filter(Boolean)
