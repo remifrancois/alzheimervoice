@@ -81,32 +81,51 @@ Unified architecture powered by Claude Opus 4.6 exclusively:
 ## Architecture
 
 ```
-┌──────────────────────┐   ┌──────────────────────┐
-│  Interface (5173)     │   │  Admin (5174)         │
-│  Family + Clinician   │   │  Network-restricted   │
-│  React 19 + Vite 7   │   │  AWS WAF protected    │
-└──────────┬───────────┘   └──────────┬───────────┘
-           │  Bearer JWT              │  Bearer JWT
-           └──────────┬───────────────┘
-                      ▼
-           ┌─────────────────────┐
-           │  API Gateway (3001) │
-           │  Auth + RBAC        │
-           │  Rate limiting      │
-           │  Audit logging      │
-           │  HIPAA / GDPR       │
-           │  CVF Proxy ─────────┼── x-service-key ──┐
-           └─────────────────────┘                    │
-                                                      ▼
-┌──────────────────────┐               ┌─────────────────────────┐
-│  Site (5175)         │               │  CVF Engine (3002)      │
-│  Public marketing    │               │  107 indicators         │
-│  10 languages        │               │  11 domains | V5        │
-│  /trydemo ───────────┼── POST ──────→│  deep_voice engine      │
-│  Live demo page      │  demo-analyze │  Claude Opus 4.6        │
-└──────────────────────┘               │  GPU acoustic pipeline  │
-                                       └─────────────────────────┘
+┌──────────────────────────┐  ┌──────────────────────────┐
+│  Demo Portal (5173)       │  │  SaaS Platform (5176)     │
+│  demo.alzheimervoice.org  │  │  app.alzheimervoice.org   │
+│  Hardcoded demo data      │  │  Real API + Cognito auth  │
+│  React 19 + Vite 7        │  │  Family + Clinician       │
+└───────────┬──────────────┘  └───────────┬──────────────┘
+            │  (demo data)                │  Bearer JWT
+            │                             │
+            │  ┌──────────────────────────┐
+            │  │  Admin (5174)             │
+            │  │  admin.alzheimervoice.org │
+            │  │  Network-restricted       │
+            │  └───────────┬──────────────┘
+            │              │  Bearer JWT
+            └──────┬───────┘
+                   ▼
+        ┌─────────────────────┐
+        │  API Gateway (3001) │
+        │  api.alzheimervoice │
+        │  Auth + RBAC        │
+        │  HIPAA / GDPR       │
+        │  CVF Proxy ─────────┼── x-service-key ──┐
+        └─────────────────────┘                    │
+                                                   ▼
+┌──────────────────────────┐        ┌─────────────────────────┐
+│  Site (5175)              │        │  CVF Engine (3002)      │
+│  alzheimervoice.org       │        │  cvf.alzheimervoice.org │
+│  Public marketing         │        │  107 indicators | V5    │
+│  10 languages             │        │  deep_voice engine      │
+│  /trydemo ────────────────┼─ POST→ │  Claude Opus 4.6        │
+│  trydemo.alzheimervoice   │        │  GPU acoustic pipeline  │
+└──────────────────────────┘        └─────────────────────────┘
 ```
+
+### Deployment URLs
+
+| App | Local | Production | Description |
+|-----|-------|------------|-------------|
+| Site | `localhost:5175` | `alzheimervoice.org` | Public site + `/trydemo` hackathon demo |
+| Try Demo | `localhost:5175/trydemo` | `trydemo.alzheimervoice.org` | Live voice analysis demo |
+| Demo Portal | `localhost:5173` | `demo.alzheimervoice.org` | Interactive demo with hardcoded data |
+| SaaS Platform | `localhost:5176` | `app.alzheimervoice.org` | Family + clinician platform (Cognito auth) |
+| Admin | `localhost:5174` | `admin.alzheimervoice.org` | Admin panel (network-restricted) |
+| API Gateway | `localhost:3001` | `api.alzheimervoice.org` | Auth, RBAC, CRUD, CVF proxy |
+| CVF Engine | `localhost:3002` | `cvf.alzheimervoice.org` | V5 deep_voice engine (internal) |
 
 ## Project Structure
 
