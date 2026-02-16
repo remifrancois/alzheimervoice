@@ -977,9 +977,17 @@ export default async function v5Routes(app) {
       // Audio buffer no longer needed — release memory
       audioBuffer = null;
 
+      // Check if the acoustic pipeline failed entirely (all null values = Python crash)
+      const hasAnyAcoustic = Object.values(acousticVector).some(v => v != null);
+      if (!hasAnyAcoustic && !whisperResult) {
+        return reply.code(500).send({
+          error: 'Audio processing pipeline failed. The server may be missing Python dependencies. Please try again or contact support.',
+        });
+      }
+
       if (!transcript || transcript.trim().length < 5) {
         return reply.code(400).send({
-          error: 'No speech detected in the recording. Please try again with a longer recording.',
+          error: 'No speech detected in the recording. Please try again with a longer recording (at least 30 seconds of clear speech).',
         });
       }
 

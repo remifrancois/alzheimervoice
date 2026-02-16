@@ -445,6 +445,7 @@ export async function extractAcousticFeatures(audioBuffer, {
       `[acoustic-pipeline] Feature extraction failed, returning null vector:`,
       err.message || err
     );
+    if (err.stderr) console.warn(`[acoustic-pipeline] stderr:`, err.stderr.slice(0, 2000));
     return {
       acousticVector: buildNullVector(),
       temporalIndicators: {},
