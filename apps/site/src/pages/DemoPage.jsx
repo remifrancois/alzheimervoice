@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useRouter } from '../lib/router'
+import { useT } from '../lib/i18n'
 
 const CVF_URL = import.meta.env.VITE_CVF_URL || 'https://cvf.alzheimervoice.org'
 
@@ -34,10 +35,11 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
 export default function DemoPage() {
   const { navigate } = useRouter()
+  const { lang } = useT()
   const [state, setState] = useState(STATE.IDLE)
   const [seconds, setSeconds] = useState(0)
   const [error, setError] = useState(null)
-  const [language, setLanguage] = useState('fr')
+  const [language, setLanguage] = useState(lang === 'fr' ? 'fr' : 'en')
   const [queuePosition, setQueuePosition] = useState(0)
   const [queueTotal, setQueueTotal] = useState(0)
   const [uploadedFile, setUploadedFile] = useState(null)
