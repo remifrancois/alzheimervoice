@@ -80,6 +80,7 @@ export default function Navbar() {
             )}
           </div>
           <a href="https://demo.alzheimervoice.org" target="_blank" rel="noopener noreferrer" className="px-5 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium text-white transition-colors">{t('nav.cta')}</a>
+          <a href={buildPath(lang, 'trydemo')} onClick={(e) => handleNav(e, 'trydemo')} className="px-5 py-2 rounded-lg bg-gradient-to-r from-violet-500 to-blue-500 hover:from-violet-400 hover:to-blue-400 text-sm font-medium text-white transition-colors animate-pulse">Hackathon Demo</a>
         </div>
         <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 text-slate-400">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -103,6 +104,7 @@ export default function Navbar() {
             </div>
           </div>
           <a href="https://demo.alzheimervoice.org" target="_blank" rel="noopener noreferrer" className="block px-4 py-2 rounded-lg bg-violet-600 text-sm font-medium text-white text-center">{t('nav.cta')}</a>
+          <a href={buildPath(lang, 'trydemo')} onClick={(e) => handleNav(e, 'trydemo')} className="block px-4 py-2 rounded-lg bg-gradient-to-r from-violet-500 to-blue-500 text-sm font-medium text-white text-center animate-pulse">Hackathon Demo</a>
         </div>
       )}
     </nav>

@@ -104,7 +104,13 @@ export default function TryDemoPage() {
     try {
       const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
       const buffer = await blob.arrayBuffer()
-      const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)))
+      const bytes = new Uint8Array(buffer)
+      let base64 = ''
+      const chunk = 8192
+      for (let i = 0; i < bytes.length; i += chunk) {
+        base64 += String.fromCharCode(...bytes.subarray(i, i + chunk))
+      }
+      base64 = btoa(base64)
 
       const resp = await fetch(`${CVF_URL}/cvf/v5/demo-analyze`, {
         method: 'POST',
@@ -149,6 +155,7 @@ export default function TryDemoPage() {
           <p className="text-slate-400 max-w-2xl mx-auto">
             Record yourself speaking for 30-60 seconds. Our V5 engine analyzes 107 cognitive indicators across 11 domains in real-time.
           </p>
+          <p className="text-xs text-slate-500 mt-3">Currently available in English and French only.</p>
         </div>
       </section>
 

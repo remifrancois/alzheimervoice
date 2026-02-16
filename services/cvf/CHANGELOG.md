@@ -6,6 +6,27 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This pr
 
 ---
 
+## [5.2.0] - 2026-02-16
+
+### Added
+- **Hackathon live demo** — `POST /cvf/v5/demo-analyze` endpoint: instant single-session analysis from raw audio (no auth, no baseline, no patient ID). Pipeline: WebM → GPU acoustic extraction → Whisper transcription → 25 NLP anchors → V5 engine → full report.
+- **TryDemoPage** — `/trydemo` route on the site app. Record voice in browser, analyze, view 11-domain cognitive profile + differential diagnosis + transcript + acoustic summary.
+- **Hackathon Demo navbar button** — Gradient CTA in desktop and mobile nav linking to `/trydemo`.
+- **Language note** — Demo page indicates English and French only for now.
+
+### Changed
+- **V5.2 engine sync** from cognitivevoicefingerprint: age-normalization, VCI as 11th condition, 35 rules (was 30), 25 NLP anchors.
+- **V1–V4 engines archived** to `services/cvf/previous-engine-releases/`. `index.js` now only loads V5 "deep_voice". Forkers get a clean V5-only codebase.
+- **docs/ removed from git** — Work preparation files excluded from public repo.
+- **RESEARCH.md** moved to repo root for visibility.
+- **CORS** — Site origin added to CVF service allowed origins.
+- **Auth bypass** — Demo endpoint excluded from service key requirement.
+
+### Fixed
+- **Base64 encoding crash** — `btoa(String.fromCharCode(...new Uint8Array(buffer)))` blew the call stack for recordings >30KB ("too many function arguments"). Replaced with chunked 8KB encoding.
+
+---
+
 ## [5.0.2] - 2026-02-13
 
 ### Security Hardening

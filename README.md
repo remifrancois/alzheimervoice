@@ -117,14 +117,12 @@ azh/
 │   ├── shared-auth/              # @azh/shared-auth — JWT + RBAC middleware
 │   └── shared-ui/                # @azh/shared-ui — React components, auth, i18n
 ├── services/
-│   ├── api/                      # API Gateway — auth, CRUD, GDPR, CVF proxy
-│   └── cvf/                      # CVF Engine — evidence-compiled scoring
+│   └── cvf/                      # CVF Engine — V5 "deep_voice" (V1-V4 in /previous-engine-releases)
 ├── apps/
 │   ├── interface/                # SaaS platform — families + clinicians
 │   ├── admin/                    # Admin panel — network-restricted
-│   └── site/                     # Public marketing — 10 languages
-├── data/                         # Patient data (gitignored, encrypted)
-├── docs/                         # Architecture documentation
+│   └── site/                     # Public site + /trydemo hackathon demo
+├── RESEARCH.md                   # 84+ peer-reviewed studies backing the engine
 └── pnpm-workspace.yaml           # Monorepo workspace
 ```
 
