@@ -16,7 +16,7 @@ import rateLimit from '@fastify/rate-limit';
 import internalAuthPlugin from './plugins/internal-auth.js';
 import v5Api from './engine/v5/api.js';
 
-const app = Fastify({ logger: true });
+const app = Fastify({ logger: true, bodyLimit: 16 * 1024 * 1024 });
 
 // --- Security middleware ---
 await app.register(helmet, { contentSecurityPolicy: false });
