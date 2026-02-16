@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from '../lib/router'
 
 const DOMAIN_LABELS = {
@@ -15,10 +16,10 @@ const DOMAIN_LABELS = {
 }
 
 const ALERT_COLORS = {
-  green: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/40', text: 'text-emerald-400', label: 'Normal', icon: '✅' },
-  yellow: { bg: 'bg-yellow-500/20', border: 'border-yellow-500/40', text: 'text-yellow-400', label: 'Monitor', icon: '⚠️' },
-  orange: { bg: 'bg-orange-500/20', border: 'border-orange-500/40', text: 'text-orange-400', label: 'Attention', icon: '🔶' },
-  red: { bg: 'bg-red-500/20', border: 'border-red-500/40', text: 'text-red-400', label: 'Alert', icon: '🔴' },
+  green: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/40', text: 'text-emerald-400', label: 'Normal', icon: '✅', desc: '"Normal" means no significant deviation was detected from the expected acoustic baseline in this single recording. This does not constitute a diagnosis — it simply indicates that the indicators analyzed fall within typical ranges.' },
+  yellow: { bg: 'bg-yellow-500/20', border: 'border-yellow-500/40', text: 'text-yellow-400', label: 'Monitor', icon: '⚠️', desc: 'Some indicators show mild deviation. This may warrant monitoring over multiple sessions to determine if a pattern emerges.' },
+  orange: { bg: 'bg-orange-500/20', border: 'border-orange-500/40', text: 'text-orange-400', label: 'Attention', icon: '🔶', desc: 'Multiple indicators show notable deviation. Further evaluation with a healthcare professional is recommended.' },
+  red: { bg: 'bg-red-500/20', border: 'border-red-500/40', text: 'text-red-400', label: 'Alert', icon: '🔴', desc: 'Significant deviations detected across multiple domains. Please consult a healthcare professional.' },
 }
 
 function DomainBar({ domain, score }) {
@@ -61,15 +62,65 @@ function ProbabilityBar({ condition, probability }) {
   )
 }
 
+// Compress result to a shareable URL hash
+function encodeResult(result) {
+  try {
+    const json = JSON.stringify(result)
+    return btoa(unescape(encodeURIComponent(json)))
+  } catch { return null }
+}
+function decodeResult(hash) {
+  try {
+    return JSON.parse(decodeURIComponent(escape(atob(hash))))
+  } catch { return null }
+}
+
 export default function DemoResultsPage() {
   const { navigate } = useRouter()
+  const [shareUrl, setShareUrl] = useState(null)
+  const [copied, setCopied] = useState(false)
 
-  // Read result from sessionStorage (set by DemoPage after analysis)
+  // Load result: try sessionStorage first, then URL hash, then localStorage
   let result = null
   try {
     const raw = sessionStorage.getItem('cvf_demo_result')
     if (raw) result = JSON.parse(raw)
   } catch {}
+  if (!result) {
+    const hash = window.location.hash?.slice(1)
+    if (hash) result = decodeResult(hash)
+  }
+  if (!result) {
+    try {
+      const raw = localStorage.getItem('cvf_demo_result_persist')
+      if (raw) result = JSON.parse(raw)
+    } catch {}
+  }
+
+  // Persist result to localStorage so it survives refresh
+  useEffect(() => {
+    if (result) {
+      localStorage.setItem('cvf_demo_result_persist', JSON.stringify(result))
+    }
+  }, [result])
+
+  const generateShareUrl = useCallback(() => {
+    if (!result) return
+    const encoded = encodeResult(result)
+    if (!encoded) return
+    const url = `${window.location.origin}/demoresults#${encoded}`
+    setShareUrl(url)
+    navigator.clipboard?.writeText(url).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }, [result])
+
+  const clearResults = useCallback(() => {
+    sessionStorage.removeItem('cvf_demo_result')
+    localStorage.removeItem('cvf_demo_result_persist')
+    navigate('demo')
+  }, [navigate])
 
   // No result — redirect back to demo
   if (!result) {
@@ -94,7 +145,7 @@ export default function DemoResultsPage() {
 
   return (
     <div className="pt-20 min-h-screen">
-      {/* Medical disclaimer banner */}
+      {/* Medical disclaimer — top of page */}
       <div className="bg-yellow-500/10 border-b border-yellow-500/20">
         <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-center gap-2">
           <span className="text-sm">⚕️</span>
@@ -107,15 +158,35 @@ export default function DemoResultsPage() {
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center justify-between mb-6">
             <span className="inline-block px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-xs font-medium text-violet-300">CVF V5 Analysis Results</span>
-            <button onClick={() => { sessionStorage.removeItem('cvf_demo_result'); navigate('demo') }} className="px-4 py-2 rounded-lg border border-white/10 hover:border-white/20 text-xs text-slate-400 transition-colors">
-              ← New Recording
-            </button>
+            <div className="flex items-center gap-2">
+              <button onClick={generateShareUrl} className="px-4 py-2 rounded-lg border border-white/10 hover:border-violet-500/30 text-xs text-slate-400 hover:text-slate-300 transition-colors flex items-center gap-1.5">
+                {copied ? '✓ Copied' : '🔗 Share'}
+              </button>
+              <button onClick={clearResults} className="px-4 py-2 rounded-lg border border-white/10 hover:border-white/20 text-xs text-slate-400 transition-colors">
+                ← New Recording
+              </button>
+            </div>
           </div>
 
+          {shareUrl && (
+            <div className="p-3 rounded-lg bg-violet-500/5 border border-violet-500/10 mb-4 flex items-center gap-2">
+              <input type="text" readOnly value={shareUrl} className="flex-1 bg-transparent text-xs text-slate-400 font-mono outline-none truncate" onClick={e => e.target.select()} />
+              <button onClick={() => { navigator.clipboard?.writeText(shareUrl); setCopied(true); setTimeout(() => setCopied(false), 2000) }} className="px-3 py-1 rounded text-xs bg-violet-600 text-white shrink-0">
+                {copied ? 'Copied' : 'Copy'}
+              </button>
+            </div>
+          )}
+
           {/* Privacy banner */}
-          <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center gap-2 mb-8">
+          <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center gap-2 mb-4">
             <svg className="w-4 h-4 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-            <p className="text-xs text-emerald-400">Your audio recording has been deleted from server memory. These results exist only in your browser session and will disappear when you close this tab.</p>
+            <p className="text-xs text-emerald-400">Your audio has been deleted from server memory. Results are stored locally in your browser only.</p>
+          </div>
+
+          {/* Persistence notice */}
+          <div className="p-2.5 rounded-lg bg-blue-500/5 border border-blue-500/10 flex items-center justify-center gap-2 mb-8">
+            <span className="text-xs">💾</span>
+            <p className="text-[11px] text-blue-400/80">Results are saved in your browser. You can refresh or come back later — they will persist until you click "New Recording".</p>
           </div>
 
           {/* Alert level hero */}
@@ -130,15 +201,34 @@ export default function DemoResultsPage() {
               <span>•</span>
               <span>{result.detected_gender}</span>
             </div>
+            {/* Explain what the alert level means */}
+            <p className="text-xs text-slate-400 mt-4 max-w-xl mx-auto leading-relaxed">{a.desc}</p>
           </div>
         </div>
       </section>
 
       <div className="max-w-5xl mx-auto px-6 pb-12 space-y-8">
+        {/* Demo limitations notice */}
+        <div className="p-5 rounded-xl bg-orange-500/5 border border-orange-500/10">
+          <div className="flex items-start gap-3">
+            <span className="text-lg mt-0.5">🔬</span>
+            <div>
+              <p className="text-sm text-white font-medium mb-2">Demo Mode — Limited Analysis</p>
+              <p className="text-xs text-slate-400 leading-relaxed">This demo runs on a minimal AWS Graviton instance without GPU acceleration or Anthropic Claude API integration. Only acoustic indicators are extracted from your voice recording. The full 107-indicator analysis — including NLP anchors, Claude-powered transcription, semantic analysis, and temporal dynamics — requires production-grade infrastructure with GPU capacity and Claude API tokens.</p>
+              <p className="text-xs text-slate-400 leading-relaxed mt-2">For accurate cognitive profiling, long-term monitoring is recommended with a minimum learning baseline of 90 minutes of recorded speech (approximately 18 sessions of 5 minutes each). A single recording provides only a snapshot — the CVF engine becomes significantly more precise as it builds a personalized baseline over time.</p>
+              <p className="text-xs text-slate-400 leading-relaxed mt-2">To support the infrastructure costs (AWS compute, Claude API) and run the full model, paid SaaS subscriptions are required. This is a core part of the AlzheimerVoice business model — enabling sustainable, production-grade cognitive monitoring.</p>
+              <div className="flex items-center gap-2 mt-3 p-2.5 rounded-lg bg-violet-500/5 border border-violet-500/10">
+                <span className="text-sm">🚀</span>
+                <p className="text-[11px] text-violet-300">Engine V6 is currently in development — featuring improved acoustic models, expanded language support, and enhanced differential diagnosis capabilities.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* 11-Domain Profile */}
         <div className="p-6 rounded-xl bg-white/[0.02] border border-white/5">
           <h2 className="text-lg font-semibold text-white mb-1">11-Domain Cognitive Profile</h2>
-          <p className="text-xs text-slate-500 mb-5">Each domain is scored relative to a single-session snapshot baseline. Negative scores indicate potential areas of concern.</p>
+          <p className="text-xs text-slate-500 mb-5">Each domain is scored relative to a single-session snapshot baseline. Scores near 0 indicate no deviation detected. In demo mode with limited indicators, many domains may show neutral scores.</p>
           <div className="grid md:grid-cols-2 gap-x-8">
             {Object.entries(result.domain_scores || {}).map(([d, s]) => <DomainBar key={d} domain={d} score={s} />)}
           </div>
@@ -165,7 +255,6 @@ export default function DemoResultsPage() {
 
           {/* Acoustic + Meta */}
           <div className="space-y-6">
-            {/* Acoustic summary */}
             {result.acoustic_summary && (
               <div className="p-6 rounded-xl bg-white/[0.02] border border-white/5">
                 <h2 className="text-lg font-semibold text-white mb-1">🔊 Acoustic Signature</h2>
@@ -188,7 +277,6 @@ export default function DemoResultsPage() {
               </div>
             )}
 
-            {/* Topic & Meta */}
             <div className="p-6 rounded-xl bg-white/[0.02] border border-white/5">
               <h2 className="text-lg font-semibold text-white mb-4">📋 Session Metadata</h2>
               <div className="grid grid-cols-2 gap-3 text-sm">
@@ -250,17 +338,17 @@ export default function DemoResultsPage() {
 
         {/* Disclaimer */}
         <div className="p-4 rounded-lg bg-yellow-500/5 border border-yellow-500/10">
-          <p className="text-xs text-yellow-400/80 text-center">{result.disclaimer || 'This is a research demonstration only. Results are not a medical diagnosis. Consult a healthcare professional for any health concerns.'}</p>
-          {result.mode === 'demo_acoustic' && (
-            <p className="text-xs text-yellow-400/60 text-center mt-2">⚠️ Demo mode — acoustic indicators only. The full 107-indicator analysis (NLP anchors, Claude AI transcription, temporal dynamics) requires production infrastructure funded through SaaS subscriptions.</p>
-          )}
+          <p className="text-xs text-yellow-400/80 text-center">⚕️ This is a research demonstration only. Results are not a medical diagnosis. Consult a healthcare professional for any health concerns.</p>
         </div>
 
         {/* Footer actions */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
           <p className="text-xs text-slate-600">AlzheimerVoice CVF V5 — {result.indicators?.max} indicators, 11 domains, 35 rules</p>
           <div className="flex items-center gap-3">
-            <button onClick={() => { sessionStorage.removeItem('cvf_demo_result'); navigate('demo') }} className="px-6 py-2.5 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm text-white font-medium transition-colors">
+            <button onClick={generateShareUrl} className="px-6 py-2.5 rounded-lg border border-white/10 hover:border-violet-500/30 text-sm text-slate-300 font-medium transition-colors flex items-center gap-1.5">
+              🔗 Share Results
+            </button>
+            <button onClick={clearResults} className="px-6 py-2.5 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm text-white font-medium transition-colors">
               Record Again
             </button>
             <a href="https://demo.alzheimervoice.org" className="px-6 py-2.5 rounded-lg border border-white/10 hover:border-white/20 text-sm text-slate-300 font-medium transition-colors">
