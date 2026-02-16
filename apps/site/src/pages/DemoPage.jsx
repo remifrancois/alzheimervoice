@@ -310,6 +310,15 @@ export default function DemoPage() {
             </div>
           </div>
 
+          {/* Serverless note */}
+          <div className="p-4 rounded-xl bg-orange-500/5 border border-orange-500/10 flex items-start gap-3 mb-8">
+            <span className="text-lg mt-0.5">⚡</span>
+            <div>
+              <p className="text-sm text-white font-medium">Serverless Lambda Version in Development</p>
+              <p className="text-xs text-slate-400 mt-1">A fully serverless architecture using AWS Lambda + Lambda Layers (ffmpeg, Whisper, Python audio stack) is currently in development. This will enable auto-scaling, zero idle cost, and sub-second cold starts — removing the single-server bottleneck of the current Graviton deployment.</p>
+            </div>
+          </div>
+
           {/* Privacy flow */}
           <div className="grid sm:grid-cols-4 gap-3">
             {[
