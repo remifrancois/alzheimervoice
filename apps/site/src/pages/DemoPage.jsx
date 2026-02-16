@@ -28,6 +28,9 @@ const SESSIONS = [
 ]
 
 const STATE = { IDLE: 'idle', RECORDING: 'recording', QUEUED: 'queued', PROCESSING: 'processing', ERROR: 'error' }
+const ACCEPTED_FORMATS = { 'audio/wav': 'wav', 'audio/x-wav': 'wav', 'audio/wave': 'wav', 'audio/mpeg': 'mp3', 'audio/mp3': 'mp3', 'audio/ogg': 'ogg', 'audio/webm': 'webm', 'audio/flac': 'flac', 'audio/x-flac': 'flac' }
+const ACCEPTED_EXTENSIONS = { wav: 'wav', mp3: 'mp3', ogg: 'ogg', webm: 'webm', flac: 'flac' }
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
 export default function DemoPage() {
   const { navigate } = useRouter()
@@ -37,10 +40,12 @@ export default function DemoPage() {
   const [language, setLanguage] = useState('fr')
   const [queuePosition, setQueuePosition] = useState(0)
   const [queueTotal, setQueueTotal] = useState(0)
+  const [uploadedFile, setUploadedFile] = useState(null)
   const mediaRef = useRef(null)
   const chunksRef = useRef([])
   const timerRef = useRef(null)
   const pollRef = useRef(null)
+  const fileInputRef = useRef(null)
 
   // Check queue status before recording
   const checkQueue = useCallback(async () => {
@@ -147,9 +152,92 @@ export default function DemoPage() {
     setError(null)
     setSeconds(0)
     setQueuePosition(0)
+    setUploadedFile(null)
     chunksRef.current = []
     clearInterval(pollRef.current)
   }, [])
+
+  const handleFileSelect = useCallback((e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    // Validate size
+    if (file.size > MAX_FILE_SIZE) {
+      setError(`File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum is 10MB.`)
+      setState(STATE.ERROR)
+      return
+    }
+    // Detect format from MIME type or extension
+    const ext = file.name.split('.').pop()?.toLowerCase()
+    const format = ACCEPTED_FORMATS[file.type] || ACCEPTED_EXTENSIONS[ext]
+    if (!format) {
+      setError(`Unsupported format. Please use WAV, MP3, OGG, WebM, or FLAC.`)
+      setState(STATE.ERROR)
+      return
+    }
+    setUploadedFile({ file, format })
+    setError(null)
+  }, [])
+
+  const submitUploadedFile = useCallback(async () => {
+    if (!uploadedFile) return
+    // Check queue first
+    const queueStatus = await checkQueue()
+    if (queueStatus.active > 0) {
+      setState(STATE.QUEUED)
+      setQueuePosition(queueStatus.queued + 1)
+      setQueueTotal(queueStatus.active + queueStatus.queued + 1)
+      pollRef.current = setInterval(async () => {
+        const status = await checkQueue()
+        if (status.active === 0) {
+          clearInterval(pollRef.current)
+          doSubmitFile()
+        } else {
+          setQueuePosition(Math.max(1, status.queued))
+          setQueueTotal(status.active + status.queued)
+        }
+      }, 3000)
+      return
+    }
+    doSubmitFile()
+  }, [uploadedFile, language, checkQueue])
+
+  const doSubmitFile = useCallback(async () => {
+    if (!uploadedFile) return
+    setState(STATE.PROCESSING)
+    try {
+      const { file, format } = uploadedFile
+      const buffer = await file.arrayBuffer()
+      const bytes = new Uint8Array(buffer)
+      let base64 = ''
+      const chunk = 8192
+      for (let i = 0; i < bytes.length; i += chunk) {
+        base64 += String.fromCharCode(...bytes.subarray(i, i + chunk))
+      }
+      base64 = btoa(base64)
+
+      const resp = await fetch(`${CVF_URL}/cvf/v5/demo-analyze`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ audioBase64: base64, audioFormat: format, language }),
+        signal: AbortSignal.timeout(180000),
+      })
+      base64 = null
+
+      if (!resp.ok) {
+        const errData = await resp.json().catch(() => ({}))
+        throw new Error(errData.error || `Server error ${resp.status}`)
+      }
+      const data = await resp.json()
+      const { transcript, nlp_anchors, ...safeResult } = data
+      sessionStorage.setItem('cvf_demo_result', JSON.stringify(safeResult))
+      setUploadedFile(null)
+      navigate('demoresults')
+    } catch (err) {
+      setError(err.message)
+      setState(STATE.ERROR)
+      setUploadedFile(null)
+    }
+  }, [uploadedFile, language, navigate])
 
   useEffect(() => () => { clearInterval(timerRef.current); clearInterval(pollRef.current); chunksRef.current = [] }, [])
   const formatTime = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
@@ -196,6 +284,45 @@ export default function DemoPage() {
                 <button onClick={startRecording} className="px-8 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-medium transition-colors">
                   Start Recording
                 </button>
+                {/* Divider */}
+                <div className="flex items-center gap-3 mt-6 mb-4">
+                  <div className="flex-1 h-px bg-white/5" />
+                  <span className="text-xs text-slate-600">or upload an audio file</span>
+                  <div className="flex-1 h-px bg-white/5" />
+                </div>
+                {/* File upload */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".wav,.mp3,.ogg,.webm,.flac"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                  aria-label="Upload audio file"
+                />
+                {!uploadedFile ? (
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="px-6 py-2.5 rounded-xl border border-dashed border-white/10 hover:border-violet-500/30 hover:bg-violet-500/5 text-sm text-slate-400 hover:text-slate-300 transition-colors flex items-center justify-center gap-2 mx-auto"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" /></svg>
+                    Choose File
+                  </button>
+                ) : (
+                  <div className="p-3 rounded-lg bg-violet-500/5 border border-violet-500/10">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-sm">📎</span>
+                        <span className="text-xs text-slate-300 truncate">{uploadedFile.file.name}</span>
+                        <span className="text-[10px] text-slate-500 shrink-0">{(uploadedFile.file.size / 1024 / 1024).toFixed(1)}MB · {uploadedFile.format.toUpperCase()}</span>
+                      </div>
+                      <button onClick={() => { setUploadedFile(null); if (fileInputRef.current) fileInputRef.current.value = '' }} className="text-slate-500 hover:text-slate-300 text-xs shrink-0">✕</button>
+                    </div>
+                    <button onClick={submitUploadedFile} className="mt-3 w-full px-6 py-2.5 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium transition-colors">
+                      Analyze File
+                    </button>
+                  </div>
+                )}
+                <p className="text-[10px] text-slate-600 mt-3">WAV, MP3, OGG, WebM, or FLAC · Max 10MB · 30 seconds minimum of speech</p>
               </>
             )}
             {state === STATE.RECORDING && (
