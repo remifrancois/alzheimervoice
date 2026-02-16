@@ -4,7 +4,8 @@
  * Internal microservice for Cognitive Voice Fingerprint computation.
  * Called exclusively by the API gateway (api.alzheimervoice.org).
  *
- * Handles V1/V2/V3/V4/V5 analysis pipelines, feature extraction, and Claude API calls.
+ * V5 "deep_voice" engine — 107 indicators, 11 domains, 35 rules, 11 conditions.
+ * Previous engine versions (V1-V4) archived in /previous-engine-releases.
  */
 
 import 'dotenv/config';
@@ -13,10 +14,6 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
 import internalAuthPlugin from './plugins/internal-auth.js';
-import v1Routes from './routes/v1.js';
-import v2Routes from './routes/v2.js';
-import v3Routes from './routes/v3.js';
-import v4Api from './engine/v4/api.js';
 import v5Api from './engine/v5/api.js';
 
 const app = Fastify({ logger: true });
@@ -33,11 +30,7 @@ await app.register(cors, {
 });
 await app.register(internalAuthPlugin);
 
-// --- CVF Route Groups ---
-await app.register(v1Routes, { prefix: '/cvf/v1' });
-await app.register(v2Routes, { prefix: '/cvf/v2' });
-await app.register(v3Routes, { prefix: '/cvf/v3' });
-await app.register(v4Api, { prefix: '/cvf/v4' });
+// --- CVF V5 Routes ---
 await app.register(v5Api, { prefix: '/cvf/v5' });
 
 // --- Health Check ---
@@ -45,23 +38,18 @@ app.get('/health', async () => ({
   status: 'ok',
   service: 'cvf-engine',
   domain: 'cvf.alzheimervoice.org',
-  version: '5.0.0',
-  features: {
-    v1: ['cvf_extraction', 'baseline_calibration', 'drift_detection', 'weekly_analysis'],
-    v2: ['living_library', 'differential_diagnosis', 'cognitive_archaeology', 'cognitive_twin', 'synthetic_cohort', 'temporal_hologram'],
-    v3: ['47_indicators', '6_condition_differential', 'cascade_detection', 'trajectory_prediction', 'daily_sonnet_drift', 'weekly_opus_deep'],
-    v4: ['85_indicators', '9_domains', 'acoustic_pipeline', 'pd_motor_domain', 'nonlinear_dynamics', 'micro_tasks', '8_condition_differential', '23_rules', 'decline_profiling', 'parkinsonian_differential'],
-    v5: ['107_indicators', '11_domains', 'opus_daily', 'dual_pass_extraction', 'topic_detection', 'nlp_anchors', 'gpu_acoustic', 'whisper_temporal', 'lbd_ftd_detection', '10_condition_differential', '30_rules', 'cross_validation', 'decline_profiling', 'pragmatic_domain', 'executive_domain']
-  },
+  version: '5.2.0',
+  engine: 'deep_voice',
+  features: ['107_indicators', '11_domains', 'opus_daily', 'dual_pass_extraction', 'topic_detection', 'nlp_anchors', 'gpu_acoustic', 'whisper_temporal', 'lbd_ftd_detection', '11_condition_differential', '35_rules', 'cross_validation', 'decline_profiling', 'pragmatic_domain', 'executive_domain', 'age_normalization', 'vci_detection'],
 }));
 
 // --- Start ---
 const port = process.env.CVF_PORT || 3002;
 try {
   await app.listen({ port, host: '0.0.0.0' });
-  console.log(`\n  CVF Engine running on http://localhost:${port}`);
-  console.log(`  Internal service — accepts only x-service-key authenticated requests`);
-  console.log(`  V1: /cvf/v1/* | V2: /cvf/v2/* | V3: /cvf/v3/* | V4: /cvf/v4/* | V5: /cvf/v5/*\n`);
+  console.log(`\n  CVF Engine V5.2 "deep_voice" running on http://localhost:${port}`);
+  console.log(`  107 indicators | 11 domains | 35 rules | 11 conditions`);
+  console.log(`  V5: /cvf/v5/*\n`);
 } catch (err) {
   app.log.error(err);
   process.exit(1);

@@ -9,6 +9,7 @@ data/
 !apps/interface/src/data/
 records/
 research/
+docs/
 .vercel
 .env*.local
 
