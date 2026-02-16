@@ -126,6 +126,7 @@ function RoleSwitcher() {
           </option>
         ))}
       </select>
+      <div className="text-[9px] text-slate-700 mt-1 italic">Demo only — not available in production</div>
     </div>
   )
 }

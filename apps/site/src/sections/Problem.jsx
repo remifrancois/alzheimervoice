@@ -90,13 +90,13 @@ export default function Problem() {
 
                   {/* Detection badge */}
                   {stage.detection && (
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-3">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                       <span className="text-xs text-emerald-400 font-medium">{t('problem.detection')}</span>
                     </div>
                   )}
 
-                  <span className="text-xs text-slate-600 font-medium uppercase tracking-wider">{stage.year}</span>
+                  <div className="text-xs text-slate-500 font-medium uppercase tracking-wider">{stage.year}</div>
                   <h3 className="text-lg font-semibold text-white mt-1 mb-2">{stage.title}</h3>
                   <p className="text-sm text-slate-400 leading-relaxed">{stage.desc}</p>
                 </div>
