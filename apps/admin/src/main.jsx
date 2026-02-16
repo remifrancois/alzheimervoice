@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { AuthProvider } from '@azh/shared-ui'
+import { AuthProvider, I18nProvider } from '@azh/shared-ui'
 import './index.css'
 import App from './App.jsx'
 
@@ -17,7 +17,9 @@ createRoot(document.getElementById('root')).render(
           clientId: import.meta.env.VITE_COGNITO_ADMIN_CLIENT_ID,
         }}
       >
-        <App />
+        <I18nProvider>
+          <App />
+        </I18nProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
